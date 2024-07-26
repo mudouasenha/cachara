@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text.Json.Serialization;
 using Cachara.API.Extensions;
 using Cachara.API.Infrastructure;
 using Cachara.API.Options;
@@ -8,6 +9,7 @@ using Cachara.Data.Interfaces;
 using Cachara.Data.Persistence.Connections;
 using Flurl;
 using Hellang.Middleware.ProblemDetails;
+using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -45,14 +47,18 @@ namespace Cachara.API
             services.AddCrossCutting(Configuration);
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             
-            services.AddProblemDetails();
             services.AddControllers(options =>
             {
                 options.Conventions.Add(new ApiExplorerGroupPerVersionConvention());
 
                 options.InputFormatters.Add(new TextPlainInputFormatter());
                 options.InputFormatters.Add(new StreamInputFormatter());
-            });
+            }).AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never;
+            })
+            .AddProblemDetailsConventions();
             
             services.AddResponseCaching();
 

@@ -3,7 +3,7 @@ using Cachara.Domain.Entities;
 
 namespace Cachara.Domain.Specification;
 
-public class PostUserNameSpecification : ISpecification<Post>
+public class PostUserNameSpecification : BaseSpecification<Post>
 {
     private string _userName;
 
