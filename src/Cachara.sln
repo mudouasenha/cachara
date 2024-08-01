@@ -39,6 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Docs", "0 - Docs", "{EF
 		..\docs\ROADMAP.md = ..\docs\ROADMAP.md
 		..\docs\USER-DOCUMENTATION.md = ..\docs\USER-DOCUMENTATION.md
 		..\docs\WORK-IN-PROGRESS.md = ..\docs\WORK-IN-PROGRESS.md
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Global
