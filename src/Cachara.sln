@@ -31,6 +31,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7 - Tests", "7 - Tests", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cachara.Domain.Tests", "..\tests\Cachara.Domain.Tests\Cachara.Domain.Tests.csproj", "{347F7A6C-AE42-4BFF-9905-BC5F02804425}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Docs", "0 - Docs", "{EFCBB95A-AACA-4CCC-9E04-86478C83A3B6}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\HOME.md = ..\docs\HOME.md
+		..\docs\MAINTENANCE-AND-SUPPORT.md = ..\docs\MAINTENANCE-AND-SUPPORT.md
+		..\docs\RELEASE-NOTES.md = ..\docs\RELEASE-NOTES.md
+		..\docs\ROADMAP.md = ..\docs\ROADMAP.md
+		..\docs\USER-DOCUMENTATION.md = ..\docs\USER-DOCUMENTATION.md
+		..\docs\WORK-IN-PROGRESS.md = ..\docs\WORK-IN-PROGRESS.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
