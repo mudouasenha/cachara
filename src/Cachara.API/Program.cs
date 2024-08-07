@@ -7,9 +7,10 @@ using Hellang.Middleware.ProblemDetails;
 
 var builder = WebApplication.CreateBuilder(args);
 var service = new CacharaService<CacharaOptions>(builder.Environment, builder.Configuration);
+//var logging = new CacharaLogging<CacharaOptions>(builder.Environment, builder.Configuration);
 
-//builder.Services.AddSerilog();
 builder.Host.ConfigureServices(service.ConfigureServices);
+builder.Logging.ConfigureOpenTelemetry(); // TODO: Use CacharaLogging Class
 
 var app = builder.Build();
 service.ConfigureApp(app);

@@ -37,7 +37,7 @@ namespace Cachara.API
             }
             catch (Exception)
             {
-                Console.WriteLine("Could not Bind Options");
+                Console.WriteLine($"Could not Bind Options for {nameof(CacharaService<TOptions>)}");
                 throw;
             }
         }
@@ -46,6 +46,8 @@ namespace Cachara.API
         {
             services.AddCrossCutting(Configuration);
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            
+            services.AddProblemDetails(delegate (Hellang.Middleware.ProblemDetails.ProblemDetailsOptions opts) { });
             
             services.AddControllers(options =>
             {
@@ -84,11 +86,14 @@ namespace Cachara.API
         
         public void ConfigureApp(IApplicationBuilder app)
         {
+            app.UseProblemDetails();
+            
             app.UseSwaggerUI(opts =>
             {
                 opts.EnableTryItOutByDefault();
                 opts.EnablePersistAuthorization();
                 opts.DisplayRequestDuration();
+                opts.DefaultModelsExpandDepth(-1);
                 
                 var swaggerGenOptions = app.ApplicationServices.GetService<SwaggerGeneratorOptions>();
 
@@ -101,7 +106,7 @@ namespace Cachara.API
                 }
             });
 
-            app.UseProblemDetails();
+            
             app.UseHttpsRedirection();
             
             app.UseResponseCaching();

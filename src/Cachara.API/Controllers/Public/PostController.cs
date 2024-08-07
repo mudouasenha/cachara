@@ -37,6 +37,7 @@ namespace Cachara.API.Controllers.Public
         [HttpPost()]
         public async Task<Post> Create(PostCreateCommand create)
         {
+            _logger.LogInformation("Creating a Post named {Title}, Which AuthorId is {AuthorId}", create.Title, create.AuthorId);
             return await _postService.CreatePost(create);
         }
 
