@@ -44,6 +44,8 @@ namespace Cachara.API
         
         public void ConfigureServices(IServiceCollection services)
         {
+            // Dependency Injection Options
+            OptionsServiceCollectionExtensions.AddOptions<TOptions>(services).Bind(Configuration);
             services.AddCrossCutting(Configuration);
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             
@@ -61,6 +63,8 @@ namespace Cachara.API
                 options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never;
             })
             .AddProblemDetailsConventions();
+
+            services.AddOpenApiDocument();
             
             services.AddResponseCaching();
 
@@ -87,7 +91,7 @@ namespace Cachara.API
         public void ConfigureApp(IApplicationBuilder app)
         {
             app.UseProblemDetails();
-            
+            app.UseOpenApi();
             app.UseSwaggerUI(opts =>
             {
                 opts.EnableTryItOutByDefault();

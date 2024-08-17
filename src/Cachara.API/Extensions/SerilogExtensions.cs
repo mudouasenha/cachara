@@ -60,9 +60,10 @@ namespace Cachara.API.Extensions
         public bool CaptureHeaders { get; set; }
     }
 
+    // TODO: Use Serilog based on AppSettings, make this code work
     public static class SerilogExtensions
     {
-        public static IHostBuilder UseWay2Serilog(this IHostBuilder builder, Action<SerilogOptions> serilogOptionsAction = null, Action<LoggerConfiguration> customAditionalLoggerConfigurationAction = null, string configurationKey = "Serilog")
+        public static IHostBuilder UseSerilog(this IHostBuilder builder, Action<SerilogOptions> serilogOptionsAction = null, Action<LoggerConfiguration> customAditionalLoggerConfigurationAction = null, string configurationKey = "Serilog")
         {
             builder.ConfigureLogging(delegate (HostBuilderContext hb, ILoggingBuilder lb)
             {
@@ -90,34 +91,34 @@ namespace Cachara.API.Extensions
             });
             builder.UseSerilog(delegate (HostBuilderContext context, IServiceProvider services, LoggerConfiguration loggerConfiguration)
             {
-                SerilogOptions way2SerilogOptions = ServiceProviderServiceExtensions.GetRequiredService<IOptions<SerilogOptions>>(services).Value;
+                SerilogOptions serilogOptions = ServiceProviderServiceExtensions.GetRequiredService<IOptions<SerilogOptions>>(services).Value;
                 IConfiguration requiredService = ServiceProviderServiceExtensions.GetRequiredService<IConfiguration>(services);
-                if (way2SerilogOptions.UseDefaults)
+                if (serilogOptions.UseDefaults)
                 {
                     loggerConfiguration.Enrich.FromLogContext().Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName).Enrich.WithMachineName();
-                    if (way2SerilogOptions.APMIntegrationEnabled)
+                    if (serilogOptions.APMIntegrationEnabled)
                     {
                         loggerConfiguration.Enrich.WithElasticApmCorrelationInfo();
                     }
 
-                    string outputTemplate = (way2SerilogOptions.APMIntegrationEnabled ? "[{ElasticApmTraceId} {ElasticApmTransactionId} {Message:lj} {NewLine}{Exception}" : "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}");
-                    if (way2SerilogOptions.Console.WriteTo)
+                    string outputTemplate = (serilogOptions.APMIntegrationEnabled ? "[{ElasticApmTraceId} {ElasticApmTransactionId} {Message:lj} {NewLine}{Exception}" : "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}");
+                    if (serilogOptions.Console.WriteTo)
                     {
                         loggerConfiguration.WriteTo.Console(LogEventLevel.Verbose, outputTemplate);
                     }
 
-                    if (way2SerilogOptions.ElasticSearch.WriteTo && !string.IsNullOrEmpty(way2SerilogOptions.ElasticSearch.ServerUrl))
+                    if (serilogOptions.ElasticSearch.WriteTo && !string.IsNullOrEmpty(serilogOptions.ElasticSearch.ServerUrl))
                     {
-                        ElasticsearchSinkOptions elasticsearchSinkOptions = new(new Uri(way2SerilogOptions.ElasticSearch.ServerUrl))
+                        ElasticsearchSinkOptions elasticsearchSinkOptions = new(new Uri(serilogOptions.ElasticSearch.ServerUrl))
                         {
                             TypeName = null,
                             AutoRegisterTemplate = true,
                             IndexFormat = context.HostingEnvironment.EnvironmentName + "-{0:yyyy.MM.dd}",
                             DetectElasticsearchVersion = true
                         };
-                        if (!string.IsNullOrEmpty(way2SerilogOptions.ElasticSearch.ApiKey))
+                        if (!string.IsNullOrEmpty(serilogOptions.ElasticSearch.ApiKey))
                         {
-                            elasticsearchSinkOptions.ModifyConnectionSettings = (ConnectionConfiguration x) => x.ApiKeyAuthentication(new ApiKeyAuthenticationCredentials(way2SerilogOptions.ElasticSearch.ApiKey));
+                            elasticsearchSinkOptions.ModifyConnectionSettings = (ConnectionConfiguration x) => x.ApiKeyAuthentication(new ApiKeyAuthenticationCredentials(serilogOptions.ElasticSearch.ApiKey));
                         }
 
                         loggerConfiguration.WriteTo.Elasticsearch(elasticsearchSinkOptions);

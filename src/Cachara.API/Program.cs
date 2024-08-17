@@ -10,7 +10,7 @@ var service = new CacharaService<CacharaOptions>(builder.Environment, builder.Co
 //var logging = new CacharaLogging<CacharaOptions>(builder.Environment, builder.Configuration);
 
 builder.Host.ConfigureServices(service.ConfigureServices);
-builder.Logging.ConfigureOpenTelemetry(); // TODO: Use CacharaLogging Class
+builder.Logging.ConfigureOpenTelemetry(builder.Environment, builder.Configuration); // TODO: Use CacharaLogging Class
 
 var app = builder.Build();
 service.ConfigureApp(app);
