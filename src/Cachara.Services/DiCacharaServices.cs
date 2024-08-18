@@ -10,9 +10,9 @@ public static class DiCacharaServices
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddScoped<IPostService, PostService>()
-                .AddScoped<IUserService, UserService>()
-                .AddScoped<PostManagerService>();
+                //.AddScoped<IPostService, PostService>()
+                //.AddScoped<IUserService, UserService>()
+                .AddScoped<IPostManagerService, PostManagerService>();
             
             return services;
         }

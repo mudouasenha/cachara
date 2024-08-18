@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Cachara.Data.Interfaces
 {
-    public interface IApplicationContext : IUnitOfWork
+    public interface ICacharaSocialDbContext : IUnitOfWork
     {
         DbSet<Post> Posts { get; }
 

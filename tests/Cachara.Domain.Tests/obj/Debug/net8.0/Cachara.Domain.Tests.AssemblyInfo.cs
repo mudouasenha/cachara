@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cachara.Domain.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7a25e2a515649e85dd7a18b97b0b69b77c2a121b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+248b60bdb7a4773a6f57b119ea0b047567bcd494")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cachara.Domain.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cachara.Domain.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

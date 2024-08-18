@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cachara.Data.Migrations
 {
-    [DbContext(typeof(ApplicationContext))]
+    [DbContext(typeof(CacharaSocialDbContext))]
     [Migration("20240320101323_InitialCreate")]
     partial class InitialCreate
     {

@@ -1,13 +1,18 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
 using Cachara.API.Extensions;
+using Cachara.API.Hangfire;
 using Cachara.API.Infrastructure;
 using Cachara.API.Options;
 using Cachara.CrossCutting;
 using Cachara.Data.EF;
 using Cachara.Data.Interfaces;
 using Cachara.Data.Persistence.Connections;
+using Cachara.Services.Services;
 using Flurl;
+using Hangfire;
+using Hangfire.Console;
+using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -65,27 +70,58 @@ namespace Cachara.API
             .AddProblemDetailsConventions();
 
             services.AddOpenApiDocument();
-            
             services.AddResponseCaching();
-
             services.AddEndpointsApiExplorer();
             services.AddCustomSwagger();
+            
+            ConfigureHangfire(services);
             ConfigureDataAccess(services);
         }
+        
+        public void ConfigureHangfire(IServiceCollection services)
+        {
+            services.AddScoped<IBackgroundServiceManager, BackgroundServiceManager>();
 
+            services.AddHangfire((provider, config) =>
+            {
+                config.UseSimpleAssemblyNameTypeSerializer();
+                config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
+                config.UseRecommendedSerializerSettings(x =>
+                {
+                    //x.Converters.Add(new JsonDateOnlyConverter());
+                });
+                config.UseSqlServerStorage(Options.JobsSqlDb, new SqlServerStorageOptions()
+                {
+                    SchemaName = "CacharaHangfire",
+                    PrepareSchemaIfNecessary = true
+                });
+                config.UseConsole();
+            });
+            
+            int totalWorkerCount = System.Environment.ProcessorCount * 20;
+            services.AddHangfireServer(options =>
+            {
+                options.WorkerCount = totalWorkerCount;
+                options.Queues = new string[]
+                {
+                    "default"
+                };
+            });
+        }
+        
         public void ConfigureDataAccess(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationContext>(options =>
+            services.AddDbContext<CacharaSocialDbContext>(options =>
             {
                 options.UseSqlServer(Options.SqlDb);
                 options.UseQueryTrackingBehavior((QueryTrackingBehavior.NoTracking));
                 options.EnableSensitiveDataLogging(Environment.IsDevelopment());
-            });
+            }).AddAsyncInitializer<DbContextInitializer<CacharaSocialDbContext>>();
 
-            services.AddScoped<IApplicationContext>(provider => provider.GetRequiredService<ApplicationContext>());
+            //services.AddScoped<ICacharaSocialDbContext>(provider => provider.GetRequiredService<CacharaSocialDbContext>());
 
-            services.AddScoped<IApplicationWriteDbConnection, ApplicationWriteDbConnection>();
-            services.AddScoped<IApplicationReadDbConnection, ApplicationReadDbConnection>();
+            //services.AddScoped<IApplicationWriteDbConnection, ApplicationWriteDbConnection>();
+            //services.AddScoped<IApplicationReadDbConnection, ApplicationReadDbConnection>();
         }
         
         public void ConfigureApp(IApplicationBuilder app)
@@ -124,6 +160,8 @@ namespace Cachara.API
                 endpoints.MapControllers();
                 endpoints.MapSwagger();
             });
+
+            app.UseHangfireDashboard();
         }
         
         public virtual void Configure(IApplicationBuilder app)

@@ -10,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace Cachara.Data.Persistence.Repositories
 {
+    // TODO: IRepository Needs Rework
     public class BaseRepository<TEntity> : IRepository<TEntity>, IReadRepository<TEntity> where TEntity : class
     {
-        private readonly ApplicationContext _context;
+        private readonly CacharaSocialDbContext _context;
 
-        public BaseRepository(ApplicationContext context)
+        public BaseRepository(CacharaSocialDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
@@ -26,6 +27,9 @@ namespace Cachara.Data.Persistence.Repositories
                 return _context;
             }
         }
+        
+        public async Task Commit()
+            => await _context.SaveChangesAsync();
 
 
         public virtual IQueryable<TEntity> GetAll(bool asNoTracking = true)

@@ -8,9 +8,9 @@ namespace Cachara.Data.Persistence.Connections
 {
     public class ApplicationReadDbConnection : IApplicationReadDbConnection, IDisposable
     {
-        private readonly IApplicationContext context;
+        private readonly ICacharaSocialDbContext context;
 
-        public ApplicationReadDbConnection(IApplicationContext context)
+        public ApplicationReadDbConnection(ICacharaSocialDbContext context)
         {
             this.context = context;
         }

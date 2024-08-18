@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Cachara.Data.EF
 {
-    public class ApplicationContext : DbContext, IApplicationContext
+    public class CacharaSocialDbContext : DbContext, ICacharaSocialDbContext
     {
         private const string StaticSchema = "Social";
         private string Schema => StaticSchema;
@@ -19,7 +19,7 @@ namespace Cachara.Data.EF
 
         public IDbConnection Connection => Database.GetDbConnection();
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
+        public CacharaSocialDbContext(DbContextOptions<CacharaSocialDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

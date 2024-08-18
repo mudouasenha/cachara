@@ -1,7 +1,8 @@
-﻿using Hangfire;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
+using Cachara.API.Hangfire;
+using Hangfire;
 
-namespace Cachara.API.Hangfire
+namespace Cachara.Services.Services
 {
     public class BackgroundServiceManager : IBackgroundServiceManager
     {

@@ -6,9 +6,9 @@ namespace Cachara.Data.Persistence.Connections
 {
     public class ApplicationWriteDbConnection : IApplicationWriteDbConnection
     {
-        private readonly IApplicationContext context;
+        private readonly ICacharaSocialDbContext context;
 
-        public ApplicationWriteDbConnection(IApplicationContext context)
+        public ApplicationWriteDbConnection(ICacharaSocialDbContext context)
         {
             this.context = context;
         }
