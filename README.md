@@ -32,6 +32,7 @@ tools for data storage, asynchronous communication and enterprise patterns.
 ### 1.1 SQL:
 - [ ] Dapper for data extraction queries (WIP);
 - [ ] EF Core for general use (WIP);
+- [ ] UnitOfWork Pattern;
 
 ### 1.2 Asynchronous Communication:
 - [ ] Azure Service Bus;

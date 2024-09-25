@@ -11,32 +11,30 @@ using System.Threading.Tasks;
 
 namespace Cachara.Data.EF
 {
-    public class CacharaSocialDbContext : DbContext, ICacharaSocialDbContext
+    public class CacharaSocialDbContext : DbContext, IUnitOfWork
     {
-        private const string StaticSchema = "Social";
-        private string Schema => StaticSchema;
-        public DbSet<Post> Posts => Set<Post>();
-
-        public IDbConnection Connection => Database.GetDbConnection();
-
-        public CacharaSocialDbContext(DbContextOptions<CacharaSocialDbContext> options) : base(options) { }
-
-        protected override void OnModelCreating(ModelBuilder builder)
+        private const string Schema = "Social";
+        public CacharaSocialDbContext(DbContextOptions<CacharaSocialDbContext> options) : base(options)
         {
-            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            builder.HasDefaultSchema(Schema);
-
-            base.OnModelCreating(builder);
-        }
-        
-        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-        {
-            base.ConfigureConventions(configurationBuilder);
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            return await base.SaveChangesAsync(cancellationToken);
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.HasDefaultSchema(Schema);
+            modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+        }
+
+        public Task<int> Commit()
+        {
+            return SaveChangesAsync();
+        }
+
+        public Task Discard()
+        {
+            ChangeTracker.Clear();
+            return Task.CompletedTask;
         }
     }
 }

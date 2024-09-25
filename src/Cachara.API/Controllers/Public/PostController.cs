@@ -31,20 +31,14 @@ namespace Cachara.API.Controllers.Public
         [HttpGet("{id}")]
         public async Task<Post> GetById(string id)
         {
-            return await _postService.GetPostById(id);
+            return await _postService.GetById(id);
         }
 
         [HttpPost()]
-        public async Task<Post> Create(PostUpsert create)
+        public async Task<Post> Create(PostUpsert upsert)
         {
-            _logger.LogInformation("Creating a Post named {Title}, Which AuthorId is {AuthorId}", create.Title, create.AuthorId);
-            return await _postService.CreatePost(create);
-        }
-
-        [HttpPut()]
-        public async Task<Post> Update(PostUpdateCommand update)
-        {
-            return await _postService.UpdatePost(update);
+            _logger.LogInformation("Creating a Post named {Title}, Which AuthorId is {AuthorId}", upsert.Title, upsert.AuthorId);
+            return await _postService.Upsert(upsert);
         }
 
         [HttpDelete("{id}")]
@@ -56,7 +50,7 @@ namespace Cachara.API.Controllers.Public
         [HttpPost("read/{id}")]
         public async Task<Post> ReadPost(string id)
         {
-            return await _postService.GetPostById(id);
+            return await _postService.GetById(id);
         }
     }
 }

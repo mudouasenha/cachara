@@ -21,9 +21,9 @@ public class UserController : ControllerBase
         }
         
         [HttpPost("register")]
-        public async Task<User> Register(UserUpsert create)
+        public async Task<User> Register(UserUpsert upsert)
         {
-            return await _userService.CreateUser(create);
+            return await _userService.Upsert(upsert);
         }
         
         [HttpGet("{userName}")]

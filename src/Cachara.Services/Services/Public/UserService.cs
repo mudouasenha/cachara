@@ -3,16 +3,19 @@ using Cachara.Domain.Commands;
 using Cachara.Domain.Entities;
 using Cachara.Domain.Interfaces;
 using Cachara.Domain.Interfaces.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cachara.Services;
 
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
     public async Task<User> CreateUser(UserUpsert upsert)
     {
@@ -32,16 +35,76 @@ public class UserService : IUserService
 
     public async Task<User> GetByUserName(string userName)
     {
+        return await _userRepository.FindByAsync(p => p.UserName == userName) ?? throw new Exception("User Not Found!");
+    }
+
+    public Task<IEnumerable<User>> Search(UserSearchCommand searchCommmand)
+    {
         throw new NotImplementedException();
     }
 
     public async Task<User> GetUserById(string id)
     {
-        return await _userRepository.FindByAsync(p => p.Id == id) ?? throw new Exception("Post Not Found!");
+        return await _userRepository.FindByAsync(p => p.Id == id) ?? throw new Exception("User Not Found!");
     }
 
-    public async Task<User> GetUserPostsById(string id)
+    public async Task<User> GetWithPostsById(string id)
     {
-        throw new NotImplementedException();
+        return await _userRepository
+            .GetEntities(p => p.Posts)
+            .FirstOrDefaultAsync(p => p.Id == id) ?? throw new Exception("User Not Found!");
+    }
+    
+    public async Task<User> Upsert(UserUpsert upsert)
+    {
+        var expression = (User x) => x.Id == upsert.Id;
+        var entityUser = await _userRepository.FindByAsync(x => x.Id == upsert.Id);
+        if (entityUser is null && upsert.Id is not null)
+        {
+            throw new Exception("User not found");
+        }
+
+        entityUser = entityUser == null ?
+            await InsertInternal(new User(), (user) => UpdateFromInternal(user, upsert))
+            :
+            await UpdateInternal(entityUser, (user) => UpdateFromInternal(user, upsert));
+
+        await _unitOfWork.Commit();
+        return entityUser;
+    }
+
+    private void UpdateFromInternal(User user, UserUpsert upsert)
+    {
+        user.Email = upsert.Email;
+        user.Name = upsert.Name;
+        user.Password = upsert.Password; // TODO: Use Chryptography
+        //TODO: Set Author
+    }
+    
+    internal async Task<User> InsertInternal(
+        User user,
+        Action<User> entityUpdate = null
+    )
+    {
+        user.GenerateId();
+        user.UpdateCreatedAt();
+        
+        entityUpdate?.Invoke(user);
+
+        await _userRepository.AddAsync(user);
+        return user;
+    }
+
+    internal async Task<User> UpdateInternal(
+        User user,
+        Action<User> entityUpdate = null
+    )
+    {
+        user.UpdatedAt = DateTimeOffset.UtcNow;
+
+        entityUpdate?.Invoke(user);
+
+        await _userRepository.EditAsync(user);
+        return user;
     }
 }

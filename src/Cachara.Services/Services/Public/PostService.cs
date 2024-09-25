@@ -6,42 +6,18 @@ using Cachara.Domain.Interfaces.Services;
 
 namespace Cachara.Services;
 
-
 public class PostService : IPostService
 {
     private readonly IPostRepository _postRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public PostService(IPostRepository postRepository)
+    public PostService(IPostRepository postRepository, IUnitOfWork unitOfWork)
     {
         _postRepository = postRepository;
+        _unitOfWork = unitOfWork;
     }
     
-    public async Task<Post> Upsert(PostUpsert upsert)
-    {
-        var expression = (Post x) => x.Id == upsert.Id;
-        var post = _postRepository.FindByAsync(x => x.Id )
-        if (entityUser is null && userSpecification.HasIdIdentifier())
-        {
-            throw new DomainException("User not found");
-        }
-
-        entityUser = entityUser == null ?
-            await InsertInternal(new User(), (user) => UpdateFromInternal(user, upsert))
-            :
-            await UpdateInternal(entityUser, (user) => UpdateFromInternal(user, upsert));
-
-        await unitOfWork.Commit();
-        
-    }
-
-    private void UpdateFromInternal(Post user, PostUpsert upsert)
-    {
-        user.Title = upsert.Title;
-        user.Body = upsert.Body;
-        //TODO: Set Author
-    }
-
-    public async Task<Post> GetPostById(string id)
+    public async Task<Post> GetById(string id)
     {
         return await _postRepository.FindByAsync(x => x.Id == id) ?? throw new Exception("Post Not Found!");
     }
@@ -58,6 +34,31 @@ public class PostService : IPostService
         await _postRepository.RemoveAsync(post);
     }
     
+    public async Task<Post> Upsert(PostUpsert upsert)
+    {
+        var expression = (Post x) => x.Id == upsert.Id;
+        var entityPost = await _postRepository.FindByAsync(x => x.Id == upsert.Id);
+        if (entityPost is null && upsert.Id is not null)
+        {
+            throw new Exception("User not found");
+        }
+
+        entityPost = entityPost == null ?
+            await InsertInternal(new Post(), (user) => UpdateFromInternal(user, upsert))
+            :
+            await UpdateInternal(entityPost, (user) => UpdateFromInternal(user, upsert));
+
+        await _unitOfWork.Commit();
+        return entityPost;
+    }
+
+    private void UpdateFromInternal(Post user, PostUpsert upsert)
+    {
+        user.Title = upsert.Title;
+        user.Body = upsert.Body;
+        //TODO: Set Author
+    }
+    
     internal async Task<Post> InsertInternal(
         Post post,
         Action<Post> entityUpdate = null
@@ -66,7 +67,6 @@ public class PostService : IPostService
         post.GenerateId();
         post.UpdateCreatedAt();
         
-
         entityUpdate?.Invoke(post);
 
         await _postRepository.AddAsync(post);

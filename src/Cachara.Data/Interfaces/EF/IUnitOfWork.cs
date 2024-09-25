@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Cachara.Data.Interfaces
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task Discard();
+
+        Task<int> Commit();
     }
 }

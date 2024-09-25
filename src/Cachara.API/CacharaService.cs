@@ -116,12 +116,8 @@ namespace Cachara.API
                 options.UseSqlServer(Options.SqlDb);
                 options.UseQueryTrackingBehavior((QueryTrackingBehavior.NoTracking));
                 options.EnableSensitiveDataLogging(Environment.IsDevelopment());
-            }).AddAsyncInitializer<DbContextInitializer<CacharaSocialDbContext>>();
-
-            //services.AddScoped<ICacharaSocialDbContext>(provider => provider.GetRequiredService<CacharaSocialDbContext>());
-
-            //services.AddScoped<IApplicationWriteDbConnection, ApplicationWriteDbConnection>();
-            //services.AddScoped<IApplicationReadDbConnection, ApplicationReadDbConnection>();
+            }).AddAsyncInitializer<DbContextInitializer<CacharaSocialDbContext>>()
+            .AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<CacharaSocialDbContext>());;
         }
         
         public void ConfigureApp(IApplicationBuilder app)
