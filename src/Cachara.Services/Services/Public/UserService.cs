@@ -14,14 +14,14 @@ public class UserService : IUserService
     {
         _userRepository = userRepository;
     }
-    public async Task<User> CreateUser(UserCreateCommand createCommand)
+    public async Task<User> CreateUser(UserUpsert upsert)
     {
         var user = new User()
         {
-            Email = createCommand.Email,
-            UserName = createCommand.UserName,
-            Password = createCommand.Password,
-            Name = createCommand.Name
+            Email = upsert.Email,
+            UserName = upsert.UserName,
+            Password = upsert.Password,
+            Name = upsert.Name
         };
 
         user.GenerateId();
@@ -30,14 +30,14 @@ public class UserService : IUserService
         return await _userRepository.AddAsync(user);
     }
 
-    public async Task<User> GetUserByUserName(string userName)
+    public async Task<User> GetByUserName(string userName)
     {
         throw new NotImplementedException();
     }
 
     public async Task<User> GetUserById(string id)
     {
-        return await _userRepository.GetByIdAsync(id) ?? throw new Exception("Post Not Found!");
+        return await _userRepository.FindByAsync(p => p.Id == id) ?? throw new Exception("Post Not Found!");
     }
 
     public async Task<User> GetUserPostsById(string id)

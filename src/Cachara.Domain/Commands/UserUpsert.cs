@@ -1,6 +1,6 @@
 namespace Cachara.Domain.Commands;
 
-public class UserCreateCommand
+public class UserUpsert
 {
     public string Name { get; set; }
     public string UserName { get; set; }

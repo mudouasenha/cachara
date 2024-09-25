@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cachara.Data.Interfaces
 {
-    public interface IPostRepository : IRepository<Post>, IReadRepository<Post>
+    public interface IPostRepository : IRepository<Post>
     {
     }
 }

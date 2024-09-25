@@ -21,7 +21,7 @@ public class UserController : ControllerBase
         }
         
         [HttpPost("register")]
-        public async Task<User> Register(UserCreateCommand create)
+        public async Task<User> Register(UserUpsert create)
         {
             return await _userService.CreateUser(create);
         }
@@ -29,7 +29,7 @@ public class UserController : ControllerBase
         [HttpGet("{userName}")]
         public async Task<User> GetByUserName(string userName)
         {
-            return await _userService.GetUserByUserName(userName);
+            return await _userService.GetByUserName(userName);
         }
 
 }

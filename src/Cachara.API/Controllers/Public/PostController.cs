@@ -35,7 +35,7 @@ namespace Cachara.API.Controllers.Public
         }
 
         [HttpPost()]
-        public async Task<Post> Create(PostCreateCommand create)
+        public async Task<Post> Create(PostUpsert create)
         {
             _logger.LogInformation("Creating a Post named {Title}, Which AuthorId is {AuthorId}", create.Title, create.AuthorId);
             return await _postService.CreatePost(create);
@@ -50,7 +50,7 @@ namespace Cachara.API.Controllers.Public
         [HttpDelete("{id}")]
         public async Task Delete(string id)
         {
-            await _postService.DeletePost(id);
+            await _postService.Delete(id);
         }
 
         [HttpPost("read/{id}")]

@@ -16,48 +16,73 @@ public class PostService : IPostService
         _postRepository = postRepository;
     }
     
-    public async Task<Post> CreatePost(PostCreateCommand createCommand)
+    public async Task<Post> Upsert(PostUpsert upsert)
     {
-        var post = new Post()
+        var expression = (Post x) => x.Id == upsert.Id;
+        var post = _postRepository.FindByAsync(x => x.Id )
+        if (entityUser is null && userSpecification.HasIdIdentifier())
         {
-            AuthorId = createCommand.AuthorId,
-            Body = createCommand.Body,
-            Title = createCommand.Title
-        };
+            throw new DomainException("User not found");
+        }
 
-        post.GenerateId();
-        post.UpdateCreatedAt();
+        entityUser = entityUser == null ?
+            await InsertInternal(new User(), (user) => UpdateFromInternal(user, upsert))
+            :
+            await UpdateInternal(entityUser, (user) => UpdateFromInternal(user, upsert));
 
-        return await _postRepository.AddAsync(post);
+        await unitOfWork.Commit();
+        
+    }
+
+    private void UpdateFromInternal(Post user, PostUpsert upsert)
+    {
+        user.Title = upsert.Title;
+        user.Body = upsert.Body;
+        //TODO: Set Author
     }
 
     public async Task<Post> GetPostById(string id)
     {
-        return await _postRepository.GetByIdAsync(id) ?? throw new Exception("Post Not Found!");
+        return await _postRepository.FindByAsync(x => x.Id == id) ?? throw new Exception("Post Not Found!");
     }
-    
+
     public async Task<IEnumerable<Post>> Search(PostSearchCommand searchCommand)
     {
-        return _postRepository.GetAll().ToList();
+        return _postRepository.GetEntities().ToList();
     }
 
-    public async Task<Post> UpdatePost(PostUpdateCommand updateCommand)
+    public async Task Delete(string id)
     {
-        var post = await _postRepository.GetByIdAsync(updateCommand.Id) ?? throw new Exception("Post Not Found");
-
-        post.Title = updateCommand.Title;
-        post.Body = updateCommand.Body;
-        post.UpdateUpdateAt();
-
-        await _postRepository.UpdateAsync(post);
-
-        return await _postRepository.GetByIdAsync(updateCommand.Id) ?? throw new Exception("Post Not Found");
-    }
-
-    public async Task DeletePost(string id)
-    {
-        var post = await _postRepository.GetByIdAsync(id) ?? throw new Exception("Post Not Found");
+        var post = await _postRepository.FindByAsync(x => x.Id == id) ?? throw new Exception("Post Not Found");
         
-        await _postRepository.DeleteAsync(post);
+        await _postRepository.RemoveAsync(post);
+    }
+    
+    internal async Task<Post> InsertInternal(
+        Post post,
+        Action<Post> entityUpdate = null
+    )
+    {
+        post.GenerateId();
+        post.UpdateCreatedAt();
+        
+
+        entityUpdate?.Invoke(post);
+
+        await _postRepository.AddAsync(post);
+        return post;
+    }
+
+    internal async Task<Post> UpdateInternal(
+        Post post,
+        Action<Post> entityUpdate = null
+    )
+    {
+        post.UpdatedAt = DateTimeOffset.UtcNow;
+
+        entityUpdate?.Invoke(post);
+
+        await _postRepository.EditAsync(post);
+        return post;
     }
 }
