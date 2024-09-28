@@ -1,9 +1,10 @@
 ﻿using Cachara.Domain.Entities.Common;
 using Cachara.Domain.Interfaces;
+using FluentValidation.Results;
 
 namespace Cachara.Domain.Entities
 {
-    public class Post : IEntity<string>, IModifiable, IVersable, ISoftDeletable
+    public class Post : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IValidatable
     {
         public string Id { get; set; }
         public string Title { get; set; }
@@ -21,5 +22,14 @@ namespace Cachara.Domain.Entities
         public DateTimeOffset CreatedAt { get; set; }
 
         public DateTimeOffset? UpdatedAt { get; set; }
+        public ValidationResult Validate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ValidateAndThrow()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

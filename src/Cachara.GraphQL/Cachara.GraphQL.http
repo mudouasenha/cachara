@@ -1,0 +1,6 @@
+@Cachara.GraphQL_HostAddress = http://localhost:5195
+
+GET {{Cachara.GraphQL_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -20,6 +20,7 @@ tools for data storage, asynchronous communication and enterprise patterns.
 * --health--;
 * --healthchecks-ui--;
 * --rabbitmq-management--;
+* --graphql--;
 * Seq Log visualization: http://localhost:5341/#/events;
 
 ---

@@ -1,4 +1,5 @@
-﻿namespace Cachara.API.Options
+﻿
+namespace Cachara.API.Options
 {
     public class CacharaOptions
     {
@@ -10,6 +11,8 @@
         public CacharaExporterOptions CacharaExporter { get; set; }
         
         public OpenTelemetryOptions OpenTelemetry { get; set; }
+        
+        public SecurityOptions Security { get; set; }
     }
 
     public class OpenTelemetryOptions
@@ -31,5 +34,10 @@
         public string Url { get; set; }
         
         public string Token { get; set; }
+    }
+    
+    public class SecurityOptions
+    {
+        public string Key { get; set; }
     }
 }

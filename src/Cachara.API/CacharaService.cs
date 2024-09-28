@@ -8,6 +8,8 @@ using Cachara.CrossCutting;
 using Cachara.Data.EF;
 using Cachara.Data.Interfaces;
 using Cachara.Data.Persistence.Connections;
+using Cachara.Domain.Abstractions.Security;
+using Cachara.Services.Security;
 using Cachara.Services.Services;
 using Flurl;
 using Hangfire;
@@ -16,6 +18,7 @@ using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Cachara.API
@@ -52,6 +55,17 @@ namespace Cachara.API
             // Dependency Injection Options
             OptionsServiceCollectionExtensions.AddOptions<TOptions>(services).Bind(Configuration);
             services.AddCrossCutting(Configuration);
+
+            services.AddScoped<IGeneralDataProtectionService, AesGeneralDataProtectionService>(p =>
+                new AesGeneralDataProtectionService(Options.Security.Key));
+            
+            services.AddHealthChecks()
+                .AddSqlServer(
+                    connectionString: Configuration.GetConnectionString(Options.SqlDb),
+                    healthQuery: "SELECT 1;",
+                    name: "database_check",
+                    failureStatus: HealthStatus.Degraded);
+            
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             
             services.AddProblemDetails(delegate (Hellang.Middleware.ProblemDetails.ProblemDetailsOptions opts) { });
@@ -154,6 +168,7 @@ namespace Cachara.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health"); 
                 endpoints.MapSwagger();
             });
 

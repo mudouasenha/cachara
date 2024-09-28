@@ -21,4 +21,16 @@
       <Folder Include="Validators\Queries\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Options\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Options\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Options\**" />
+    </ItemGroup>
+
 </Project>
