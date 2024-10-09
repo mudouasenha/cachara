@@ -26,14 +26,15 @@ tools for data storage, asynchronous communication and enterprise patterns.
 ---
 
 # Features / Architecture:
-- [ ] Onion Architecture
+- [ ] Onion Architecture;
+- [ ] Result Pattern;
 
 ## 1. Infrastructure:
-
-### 1.1 SQL:
-- [ ] Dapper for data extraction queries (WIP);
-- [ ] EF Core for general use (WIP);
-- [ ] UnitOfWork Pattern;
+### 1.1 Data Access:
+- [ ] CQRS Pattern;
+- [ ] Dapper for data extraction queries;
+- [x] EF Core for general use;
+- [x] UnitOfWork Pattern;
 
 ### 1.2 Asynchronous Communication:
 - [ ] Azure Service Bus;
@@ -42,14 +43,14 @@ tools for data storage, asynchronous communication and enterprise patterns.
 ## 2. Presentation:
 - [ ] GraphQL for UI/UX use;
 - [ ] RESTFul APIs;
-- [ ] API Versioning;
+- [x] API Versioning;
 - [ ] Scalar with OpenAPI 3.0 schema;
 - [ ] Swagger option;
 - [ ] Exception Handling Middleware;
 
 ## 3. Security:
 - [ ] API Authentication and Authorization;
-- [ ] Password encryption and decryption;
+- [x] Password encryption and decryption;
 - [ ] Admin and Public APIs;
 
 ## 4. Tests:
