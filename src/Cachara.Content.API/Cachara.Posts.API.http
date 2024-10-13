@@ -1,0 +1,6 @@
+@Cachara.Content.API_HostAddress = http://localhost:5088
+
+GET {{Cachara.Content.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

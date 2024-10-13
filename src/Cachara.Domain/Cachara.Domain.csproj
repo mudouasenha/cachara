@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Abstractions\Services\" />
     <Folder Include="Queries\" />
   </ItemGroup>
 
@@ -20,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Cachara.Core.Models\Cachara.Core.Models.csproj" />
+    <ProjectReference Include="..\Cachara.Shared\Cachara.Shared.csproj" />
   </ItemGroup>
 
 </Project>

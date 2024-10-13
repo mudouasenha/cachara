@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <Compile Remove="Options\**" />
+      <Compile Remove="DiCacharaServices.cs" />
     </ItemGroup>
 
     <ItemGroup>

@@ -15,7 +15,7 @@ public class SocialProfileTests
     [Fact(DisplayName = "Profile Should Have Valid Configuration")]
     public void Profile_ShouldHaveValidConfiguration()
     {
-        var mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(new SocialMappings()));
+        var mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(new UsersMappings()));
         mapperConfiguration.AssertConfigurationIsValid();
         _sut = mapperConfiguration.CreateMapper();
     }

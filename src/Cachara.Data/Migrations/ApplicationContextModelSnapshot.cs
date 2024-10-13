@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cachara.Data.Migrations
 {
-    [DbContext(typeof(CacharaSocialDbContext))]
+    [DbContext(typeof(CacharaUsersDbContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

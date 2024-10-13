@@ -1,5 +1,4 @@
-﻿using Cachara.Data.EF;
-using Cachara.Data.Interfaces;
+﻿using Cachara.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

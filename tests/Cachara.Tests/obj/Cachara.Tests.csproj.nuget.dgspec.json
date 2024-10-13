@@ -4,67 +4,6 @@
     "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Core.Models\\Cachara.Core.Models.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Core.Models\\Cachara.Core.Models.csproj",
-        "projectName": "Cachara.Core.Models",
-        "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Core.Models\\Cachara.Core.Models.csproj",
-        "packagesPath": "C:\\Users\\matheus.gomes\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Core.Models\\obj\\",
-        "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\matheus.gomes\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net8.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
-            "projectReferences": {}
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
-        }
-      }
-    },
     "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Data\\Cachara.Data.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -192,8 +131,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Core.Models\\Cachara.Core.Models.csproj": {
-                "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Core.Models\\Cachara.Core.Models.csproj"
+              "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj": {
+                "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj"
               }
             }
           }
@@ -319,6 +258,265 @@
         }
       }
     },
+    "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj",
+        "projectName": "Cachara.Shared",
+        "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj",
+        "packagesPath": "C:\\Users\\matheus.gomes\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Shared\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\matheus.gomes\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj",
+        "projectName": "Cachara.Users.API",
+        "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj",
+        "packagesPath": "C:\\Users\\matheus.gomes\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Users.API\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\matheus.gomes\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Data\\Cachara.Data.csproj": {
+                "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Data\\Cachara.Data.csproj"
+              },
+              "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Domain\\Cachara.Domain.csproj": {
+                "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Domain\\Cachara.Domain.csproj"
+              },
+              "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Services\\Cachara.Services.csproj": {
+                "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Services\\Cachara.Services.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AspNetCore.HealthChecks.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "Elastic.Apm.SerilogEnricher": {
+              "target": "Package",
+              "version": "[8.11.1, )"
+            },
+            "Elasticsearch.Net": {
+              "target": "Package",
+              "version": "[7.17.5, )"
+            },
+            "Extensions.Hosting.AsyncInitialization": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
+            "FluentResults": {
+              "target": "Package",
+              "version": "[3.16.0, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.10.0, )"
+            },
+            "Flurl": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
+            "Hangfire.AspNetCore": {
+              "target": "Package",
+              "version": "[1.8.14, )"
+            },
+            "Hangfire.Console": {
+              "target": "Package",
+              "version": "[1.4.3, )"
+            },
+            "Hangfire.Core": {
+              "target": "Package",
+              "version": "[1.8.14, )"
+            },
+            "Hangfire.SqlServer": {
+              "target": "Package",
+              "version": "[1.8.14, )"
+            },
+            "Hellang.Middleware.ProblemDetails": {
+              "target": "Package",
+              "version": "[6.5.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
+              "target": "Package",
+              "version": "[1.21.0, )"
+            },
+            "NSwag.AspNetCore": {
+              "target": "Package",
+              "version": "[14.1.0, )"
+            },
+            "OpenTelemetry.Exporter.Console": {
+              "target": "Package",
+              "version": "[1.9.0, )"
+            },
+            "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
+              "target": "Package",
+              "version": "[1.9.0, )"
+            },
+            "OpenTelemetry.Instrumentation.AspNetCore": {
+              "target": "Package",
+              "version": "[1.9.0, )"
+            },
+            "RabbitMQ.Client": {
+              "target": "Package",
+              "version": "[6.8.1, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[4.0.1, )"
+            },
+            "Serilog.Enrichers.Environment": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
+            "Serilog.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Serilog.Extensions.Logging": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Serilog.Settings.Configuration": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Serilog.Sinks.Elasticsearch": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            },
+            "Serilog.Sinks.OpenTelemetry": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.6.2, )"
+            },
+            "Swashbuckle.AspNetCore.Annotations": {
+              "target": "Package",
+              "version": "[6.6.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -354,6 +552,9 @@
               },
               "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Services\\Cachara.Services.csproj": {
                 "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Services\\Cachara.Services.csproj"
+              },
+              "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj": {
+                "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj"
               }
             }
           }

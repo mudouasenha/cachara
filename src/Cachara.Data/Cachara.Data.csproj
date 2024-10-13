@@ -22,4 +22,21 @@
     <ProjectReference Include="..\Cachara.Domain\Cachara.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\**" />
+    <Compile Remove="DICacharaData.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="EF\" />
+  </ItemGroup>
+
 </Project>

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cachara.Data.Migrations
 {
-    [DbContext(typeof(CacharaSocialDbContext))]
+    [DbContext(typeof(CacharaUsersDbContext))]
     [Migration("20240330205128_Create_Table_User")]
     partial class Create_Table_User
     {
