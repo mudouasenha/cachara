@@ -4,6 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -43,10 +44,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="..\.dockerignore">
-        <DependentUpon>Dockerfile</DependentUpon>
-        <Link>.dockerignore</Link>
-      </None>
       <None Remove="Cachara.Posts.API.http" />
     </ItemGroup>
 
@@ -56,6 +53,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Cachara.Shared\Cachara.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

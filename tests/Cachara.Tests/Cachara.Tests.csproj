@@ -7,6 +7,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -40,6 +41,12 @@
       <Folder Include="E2E\" />
       <Folder Include="Integration\" />
       <Folder Include="Unit\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\src\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

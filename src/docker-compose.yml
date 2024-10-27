@@ -1,0 +1,77 @@
+﻿version: '0.1'
+  
+# create_users.sql  
+#  CREATE LOGIN custom_user WITH PASSWORD = 'CustomUser@Pass123';  -- Replace with a strong password
+#  CREATE USER custom_user FOR LOGIN custom_user;
+#  ALTER ROLE db_owner ADD MEMBER custom_user;  -- Grants db_owner role to the user  
+
+services:
+  cachara.api.gateway:
+    image: cachara.api.gateway
+    container_name: cachara.api.gateway
+    build:
+      context: .
+      dockerfile: Cachara.API.Gateway/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"      
+        
+        
+  cachara.users.api:
+    image: cachara.users.api
+    container_name: cachara.users.api
+    build:
+      context: .
+      dockerfile: Cachara.API.Gateway/Dockerfile
+    ports:
+      - "5100:5100"
+      - "5101:5101"
+      - 
+  cachara.users.database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: cachara.users.database
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=admin
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./.containers/cachara-users-db:/var/opt/mssql
+#     - ./create_users.sql:/docker-entrypoint-initdb.d/create_users.sql  # Mounts the SQL script
+#     command:
+#       - /bin/bash -c "/opt/mssql/bin/sqlservr & sleep 30 && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -i /docker-entrypoint-initdb.d/create_users.sql"
+  
+  
+  cachara.content.api:
+    image: cachara.content.api
+    container_name: cachara.content.api
+    build:
+      context: .
+      dockerfile: Cachara.API.Gateway/Dockerfile
+    ports:
+      - "5200:5200"
+      - "5201:5201"
+  cachara.content.database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: cachara.content.database
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=admin
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./.containers/cachara-content-db:/var/opt/mssql
+#      - ./create_users.sql:/docker-entrypoint-initdb.d/create_users.sql  # Mounts the SQL script
+#      command:
+#        - /bin/bash -c "/opt/mssql/bin/sqlservr & sleep 30 && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -i /docker-entrypoint-initdb.d/create_users.sql"
+  
+  
+  cachara.graphql.api:
+    image: cachara.graphql.api
+    container_name: cachara.graphql.api
+    build:
+      context: .
+      dockerfile: Cachara.API.Gateway/Dockerfile
+    ports:
+      - "5300:5300"
+      - "5301:5301"

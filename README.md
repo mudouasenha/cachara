@@ -1,9 +1,9 @@
 # Project Cachara
 
-This project aims to be a social media platform.
+This project aims to be a social media platform based on microservices architecture.
 
 This project was initiated to practice Domain-Driven Design (DDD) Concepts and experiment with various 
-tools for data storage, asynchronous communication and enterprise patterns. 
+tools for data storage, asynchronous communication and enterprise patterns on top of a Microservices Architecture. 
 
 ---
 ## Technologies
@@ -11,22 +11,31 @@ tools for data storage, asynchronous communication and enterprise patterns.
 * REST Standards;
 * MS SQL;
 * Hangfire;
+* RabbitMQ
 
 ---
 
 ## Dashboard
-* --index--;
-* --hangfire--;
-* --health--;
-* --healthchecks-ui--;
+* API Gateway: https://localhost:5000;
+* Users API:
+  * API: https://localhost:5200/users-api/swagger;
+  * --health--;
+  * --healthchecks-ui--;
+* Content API: 
+  * API: https://localhost:5202/content-api/swagger;
+  * --health--;
+  * --healthchecks-ui--;
+* GraphQL:
+  * API: https://localhost:5202/content-api/swagger;
+  * --health--;
+
 * --rabbitmq-management--;
-* --graphql--;
 * Seq Log visualization: http://localhost:5341/#/events;
 
 ---
 
 # Features / Architecture:
-- [ ] Onion Architecture;
+- [X] Onion Architecture for each microservice;
 - [ ] Result Pattern;
 
 ## 1. Infrastructure:
@@ -42,7 +51,7 @@ tools for data storage, asynchronous communication and enterprise patterns.
 
 ## 2. Presentation:
 - [ ] GraphQL for UI/UX use;
-- [ ] RESTFul APIs;
+- [X] RESTFul APIs;
 - [x] API Versioning;
 - [ ] Scalar with OpenAPI 3.0 schema;
 - [ ] Swagger option;
@@ -54,7 +63,7 @@ tools for data storage, asynchronous communication and enterprise patterns.
 - [ ] Admin and Public APIs;
 
 ## 4. Tests:
-- [ ] XUnit;
+- [X] XUnit;
 - [ ] Integration Tests;
 - [ ] Unit Tests;
 
