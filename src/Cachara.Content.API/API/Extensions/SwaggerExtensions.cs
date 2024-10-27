@@ -13,12 +13,12 @@ namespace Cachara.Content.API.Extensions
             {
                 options.SwaggerDoc(
                     "internal",
-                    new OpenApiInfo() { Title = "Social API", Description = "Social API para exploração de tecnologias", Version = "internal" }
-                    );
+                    new OpenApiInfo() { Title = "Cachara Content Internal API", Description = "Content Internal API", Version = "internal" }
+                );
                 
                 options.SwaggerDoc(
                     "public",
-                    new OpenApiInfo() { Title = "Social API", Description = "Social API para exploração de tecnologias", Version = "public" }
+                    new OpenApiInfo() { Title = "Cachara Content Public API", Description = "Content Public API", Version = "public" }
                 );
 
                 options.TagActionsBy(api =>

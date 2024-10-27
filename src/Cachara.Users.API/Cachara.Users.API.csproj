@@ -20,6 +20,7 @@
     <PackageReference Include="Hangfire.Core" Version="1.8.14" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.8.14" />
     <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -48,14 +49,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Internal\" />
     <Folder Include="Domain\Validations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Cachara.Data\Cachara.Data.csproj" />
-    <ProjectReference Include="..\Cachara.Domain\Cachara.Domain.csproj" />
-    <ProjectReference Include="..\Cachara.Services\Cachara.Services.csproj" />
+    <ProjectReference Include="..\Cachara.Shared\Cachara.Shared.csproj" />
   </ItemGroup>
 
 </Project>

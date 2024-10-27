@@ -14,12 +14,12 @@ namespace Cachara.Users.API.Extensions
             {
                 options.SwaggerDoc(
                     "internal",
-                    new OpenApiInfo() { Title = "Social API", Description = "Social API para exploração de tecnologias", Version = "internal" }
+                    new OpenApiInfo() { Title = "Cachara Users Internal API", Description = "Users Internal API", Version = "internal" }
                     );
                 
                 options.SwaggerDoc(
                     "public",
-                    new OpenApiInfo() { Title = "Social API", Description = "Social API para exploração de tecnologias", Version = "public" }
+                    new OpenApiInfo() { Title = "Cachara Users Public API", Description = "Users Public API", Version = "public" }
                 );
 
                 options.TagActionsBy(api =>

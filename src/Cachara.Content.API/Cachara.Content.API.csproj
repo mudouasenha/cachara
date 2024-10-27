@@ -55,9 +55,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Cachara.Data\Cachara.Data.csproj" />
-      <ProjectReference Include="..\Cachara.Domain\Cachara.Domain.csproj" />
-      <ProjectReference Include="..\Cachara.Services\Cachara.Services.csproj" />
+      <ProjectReference Include="..\Cachara.Shared\Cachara.Shared.csproj" />
     </ItemGroup>
 
 </Project>

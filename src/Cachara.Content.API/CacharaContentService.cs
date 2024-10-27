@@ -5,9 +5,13 @@ using Cachara.Content.API.API.Hangfire;
 using Cachara.Content.API.Extensions;
 using Cachara.Content.API.Infrastructure;
 using Cachara.Content.API.Infrastructure.Data;
+using Cachara.Content.API.Infrastructure.Data.Repository;
 using Cachara.Content.API.Options;
+using Cachara.Content.API.Services;
 using Cachara.Data.Interfaces;
 using Cachara.Domain.Abstractions.Security;
+using Cachara.Services;
+using Cachara.Services.Internal;
 using Cachara.Services.Security;
 using Flurl;
 using Hangfire;
@@ -55,6 +59,11 @@ namespace Cachara.Content.API
 
             services.AddScoped<IGeneralDataProtectionService, AesGeneralDataProtectionService>(p =>
                 new AesGeneralDataProtectionService(Options.Security.Key));
+
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IPostManagerService, PostManagerService>();
+
+            services.AddScoped<IPostRepository, PostRepository>();
             
             services.AddHealthChecks()
                 .AddSqlServer(

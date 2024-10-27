@@ -9,9 +9,7 @@
       "Cachara.Users.API/1.0.0": {
         "dependencies": {
           "AspNetCore.HealthChecks.SqlServer": "8.0.2",
-          "Cachara.Data": "1.0.0",
-          "Cachara.Domain": "1.0.0",
-          "Cachara.Services": "1.0.0",
+          "Cachara.Shared": "1.0.0",
           "Elastic.Apm.SerilogEnricher": "8.11.1",
           "Elasticsearch.Net": "7.17.5",
           "Extensions.Hosting.AsyncInitialization": "3.0.1",
@@ -23,6 +21,7 @@
           "Hangfire.Core": "1.8.14",
           "Hangfire.SqlServer": "1.8.14",
           "Hellang.Middleware.ProblemDetails": "6.5.1",
+          "Microsoft.EntityFrameworkCore": "8.0.7",
           "Microsoft.EntityFrameworkCore.Design": "8.0.7",
           "Microsoft.Extensions.DependencyInjection": "8.0.0",
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.21.0",
@@ -2203,43 +2202,19 @@
           }
         }
       },
-      "Cachara.Data/1.0.0": {
+      "Cachara.Shared/1.0.0": {
         "dependencies": {
-          "Cachara.Domain": "1.0.0",
+          "AutoMapper": "13.0.1",
           "Dapper": "2.1.35",
           "Dapper.Contrib": "2.0.78",
+          "FluentResults": "3.16.0",
+          "FluentValidation": "11.10.0",
           "Microsoft.EntityFrameworkCore": "8.0.7",
           "Microsoft.EntityFrameworkCore.Abstractions": "8.0.7",
           "Microsoft.EntityFrameworkCore.Relational": "8.0.7",
-          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.7"
-        },
-        "runtime": {
-          "Cachara.Data.dll": {}
-        }
-      },
-      "Cachara.Domain/1.0.0": {
-        "dependencies": {
-          "AutoMapper": "13.0.1",
-          "Cachara.Shared": "1.0.0",
-          "FluentResults": "3.16.0",
-          "FluentValidation": "11.10.0"
-        },
-        "runtime": {
-          "Cachara.Domain.dll": {}
-        }
-      },
-      "Cachara.Services/1.0.0": {
-        "dependencies": {
-          "Cachara.Data": "1.0.0",
-          "Cachara.Domain": "1.0.0",
-          "FluentResults": "3.16.0",
+          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.7",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.1"
         },
-        "runtime": {
-          "Cachara.Services.dll": {}
-        }
-      },
-      "Cachara.Shared/1.0.0": {
         "runtime": {
           "Cachara.Shared.dll": {}
         }
@@ -3721,21 +3696,6 @@
       "sha512": "sha512-IjWucOgVbhm72da0Ck3KcyvMuKT/TfilHcvtwvhLLnkn2zr5st8BkH3lDoY5lkMH9Z3jsJeLDrnBS4GpAViUqg==",
       "path": "yamldotnet/15.1.4",
       "hashPath": "yamldotnet.15.1.4.nupkg.sha512"
-    },
-    "Cachara.Data/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Cachara.Domain/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Cachara.Services/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     },
     "Cachara.Shared/1.0.0": {
       "type": "project",

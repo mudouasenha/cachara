@@ -1,5 +1,4 @@
-﻿using Cachara.API.Hangfire;
-using Cachara.Users.API.Options;
+﻿using Cachara.Users.API.Options;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.SqlServer;

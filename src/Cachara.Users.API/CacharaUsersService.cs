@@ -6,10 +6,13 @@ using Cachara.Data.EF;
 using Cachara.Data.Interfaces;
 using Cachara.Data.Persistence.Connections;
 using Cachara.Domain.Abstractions.Security;
+using Cachara.Domain.Interfaces.Services;
 using Cachara.Services.Security;
 using Cachara.Services.Services;
 using Cachara.Users.API.Infrastructure;
+using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Options;
+using Cachara.Users.API.Services;
 using Flurl;
 using Hangfire;
 using Hangfire.Console;
@@ -56,6 +59,10 @@ namespace Cachara.Users.API
 
             services.AddScoped<IGeneralDataProtectionService, AesGeneralDataProtectionService>(p =>
                 new AesGeneralDataProtectionService(Options.Security.Key));
+            
+            services.AddScoped<IUserService, UserService>();
+            
+            services.AddScoped<IUserRepository, UserRepository>();
             
             services.AddHealthChecks()
                 .AddSqlServer(

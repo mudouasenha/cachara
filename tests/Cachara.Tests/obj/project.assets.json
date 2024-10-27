@@ -3779,60 +3779,21 @@
           }
         }
       },
-      "Cachara.Data/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
-          "Cachara.Domain": "1.0.0",
-          "Dapper": "2.1.35",
-          "Dapper.Contrib": "2.0.78",
-          "Microsoft.EntityFrameworkCore": "8.0.7",
-          "Microsoft.EntityFrameworkCore.Abstractions": "8.0.7",
-          "Microsoft.EntityFrameworkCore.Relational": "8.0.7",
-          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.7"
-        },
-        "compile": {
-          "bin/placeholder/Cachara.Data.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Cachara.Data.dll": {}
-        }
-      },
-      "Cachara.Domain/1.0.0": {
+      "Cachara.Shared/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "AutoMapper": "13.0.1",
-          "Cachara.Shared": "1.0.0",
+          "Dapper": "2.1.35",
+          "Dapper.Contrib": "2.0.78",
           "FluentResults": "3.16.0",
-          "FluentValidation": "11.10.0"
-        },
-        "compile": {
-          "bin/placeholder/Cachara.Domain.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Cachara.Domain.dll": {}
-        }
-      },
-      "Cachara.Services/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
-          "Cachara.Data": "1.0.0",
-          "Cachara.Domain": "1.0.0",
-          "FluentResults": "3.16.0",
+          "FluentValidation": "11.10.0",
+          "Microsoft.EntityFrameworkCore": "8.0.7",
+          "Microsoft.EntityFrameworkCore.Abstractions": "8.0.7",
+          "Microsoft.EntityFrameworkCore.Relational": "8.0.7",
+          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.7",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.1"
         },
-        "compile": {
-          "bin/placeholder/Cachara.Services.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Cachara.Services.dll": {}
-        }
-      },
-      "Cachara.Shared/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
         "compile": {
           "bin/placeholder/Cachara.Shared.dll": {}
         },
@@ -3845,9 +3806,7 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "AspNetCore.HealthChecks.SqlServer": "8.0.2",
-          "Cachara.Data": "1.0.0",
-          "Cachara.Domain": "1.0.0",
-          "Cachara.Services": "1.0.0",
+          "Cachara.Shared": "1.0.0",
           "Elastic.Apm.SerilogEnricher": "8.11.1",
           "Elasticsearch.Net": "7.17.5",
           "Extensions.Hosting.AsyncInitialization": "3.0.1",
@@ -3859,6 +3818,7 @@
           "Hangfire.Core": "1.8.14",
           "Hangfire.SqlServer": "1.8.14",
           "Hellang.Middleware.ProblemDetails": "6.5.1",
+          "Microsoft.EntityFrameworkCore": "8.0.7",
           "Microsoft.Extensions.DependencyInjection": "8.0.0",
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.21.0",
           "NSwag.AspNetCore": "14.1.0",
@@ -11239,21 +11199,6 @@
         "yamldotnet.nuspec"
       ]
     },
-    "Cachara.Data/1.0.0": {
-      "type": "project",
-      "path": "../../src/Cachara.Data/Cachara.Data.csproj",
-      "msbuildProject": "../../src/Cachara.Data/Cachara.Data.csproj"
-    },
-    "Cachara.Domain/1.0.0": {
-      "type": "project",
-      "path": "../../src/Cachara.Domain/Cachara.Domain.csproj",
-      "msbuildProject": "../../src/Cachara.Domain/Cachara.Domain.csproj"
-    },
-    "Cachara.Services/1.0.0": {
-      "type": "project",
-      "path": "../../src/Cachara.Services/Cachara.Services.csproj",
-      "msbuildProject": "../../src/Cachara.Services/Cachara.Services.csproj"
-    },
     "Cachara.Shared/1.0.0": {
       "type": "project",
       "path": "../../src/Cachara.Shared/Cachara.Shared.csproj",
@@ -11269,8 +11214,6 @@
     "net8.0": [
       "AutoFixture >= 4.18.1",
       "AutoMapper >= 13.0.1",
-      "Cachara.Domain >= 1.0.0",
-      "Cachara.Services >= 1.0.0",
       "Cachara.Users.API >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 17.10.0",
       "coverlet.collector >= 6.0.2",
@@ -11313,12 +11256,6 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Domain\\Cachara.Domain.csproj": {
-              "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Domain\\Cachara.Domain.csproj"
-            },
-            "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Services\\Cachara.Services.csproj": {
-              "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Services\\Cachara.Services.csproj"
-            },
             "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj": {
               "projectPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj"
             }

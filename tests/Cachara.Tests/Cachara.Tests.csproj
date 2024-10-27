@@ -29,8 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Cachara.Domain\Cachara.Domain.csproj" />
-      <ProjectReference Include="..\..\src\Cachara.Services\Cachara.Services.csproj" />
       <ProjectReference Include="..\..\src\Cachara.Users.API\Cachara.Users.API.csproj" />
     </ItemGroup>
 
