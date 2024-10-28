@@ -16,7 +16,6 @@ services:
       - "5000:5000"
       - "5001:5001"      
         
-        
   cachara.users.api:
     image: cachara.users.api
     container_name: cachara.users.api
@@ -26,22 +25,7 @@ services:
     ports:
       - "5100:5100"
       - "5101:5101"
-      - 
-  cachara.users.database:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: cachara.users.database
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=admin
-    ports:
-      - "1433:1433"
-    volumes:
-      - ./.containers/cachara-users-db:/var/opt/mssql
-#     - ./create_users.sql:/docker-entrypoint-initdb.d/create_users.sql  # Mounts the SQL script
-#     command:
-#       - /bin/bash -c "/opt/mssql/bin/sqlservr & sleep 30 && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -i /docker-entrypoint-initdb.d/create_users.sql"
-  
-  
+
   cachara.content.api:
     image: cachara.content.api
     container_name: cachara.content.api
@@ -51,21 +35,7 @@ services:
     ports:
       - "5200:5200"
       - "5201:5201"
-  cachara.content.database:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: cachara.content.database
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=admin
-    ports:
-      - "1433:1433"
-    volumes:
-      - ./.containers/cachara-content-db:/var/opt/mssql
-#      - ./create_users.sql:/docker-entrypoint-initdb.d/create_users.sql  # Mounts the SQL script
-#      command:
-#        - /bin/bash -c "/opt/mssql/bin/sqlservr & sleep 30 && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -i /docker-entrypoint-initdb.d/create_users.sql"
-  
-  
+        
   cachara.graphql.api:
     image: cachara.graphql.api
     container_name: cachara.graphql.api
@@ -75,3 +45,33 @@ services:
     ports:
       - "5300:5300"
       - "5301:5301"
+
+  cachara.sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: cachara.sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=admin
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./.containers/cachara-sqlserver:/var/opt/mssql
+      - ./create_users_cacharasqlserver.sql:/docker-entrypoint-initdb.d/create_users_cacharasqlserver.sql
+    command:
+      - /bin/bash -c "/opt/mssql/bin/sqlserver & sleep 30 && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P admin -i /docker-entrypoint-initdb.d/create_users_cacharasqlserver.sql"
+  
+  cachara.logs:
+    image: datalust/seq:latest
+    container_name: cachara.logs
+    environment:
+      - ACCEPT_EULA=Y
+      - SEQ_FIRSTRUN_ADMINPASSWORDHASH="admin"
+    ports:
+      - "5341:80"
+      - "45341:45341"
+    volumes:
+      - ./.containers/cachara-logs:/data
+    command:
+      - /bin/bash -c "seq config set -k api.listenUris -v http://cachara.logs,http://cachara.logs:45341 && seq config set -k api.ingestionPort -v 45341 && seq service restart"
+    # https://docs.datalust.co/docs/urls#ingestion-port
+    # https://docs.datalust.co/docs/getting-started-with-docker

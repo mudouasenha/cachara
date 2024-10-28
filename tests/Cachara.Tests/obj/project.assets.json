@@ -2033,6 +2033,22 @@
           }
         }
       },
+      "Scalar.AspNetCore/1.2.23": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Serilog/4.0.1": {
         "type": "package",
         "compile": {
@@ -3826,6 +3842,7 @@
           "OpenTelemetry.Exporter.OpenTelemetryProtocol": "1.9.0",
           "OpenTelemetry.Instrumentation.AspNetCore": "1.9.0",
           "RabbitMQ.Client": "6.8.1",
+          "Scalar.AspNetCore": "1.2.23",
           "Serilog": "4.0.1",
           "Serilog.Enrichers.Environment": "3.0.1",
           "Serilog.Extensions.Hosting": "8.0.0",
@@ -6833,6 +6850,23 @@
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.nuspec",
         "runtimes/ubuntu.16.10-x64/native/System.Security.Cryptography.Native.OpenSsl.so"
+      ]
+    },
+    "Scalar.AspNetCore/1.2.23": {
+      "sha512": "rIUvPdUCkjU1H3TCQO6pLqhEIQGfzBSdstW4vzo4Ul/sZlySoV7TEYWuprZuRrgNXjkC2dZ0gQYavYoSapQAJg==",
+      "type": "package",
+      "path": "scalar.aspnetcore/1.2.23",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net8.0/Scalar.AspNetCore.dll",
+        "lib/net8.0/Scalar.AspNetCore.xml",
+        "lib/net9.0/Scalar.AspNetCore.dll",
+        "lib/net9.0/Scalar.AspNetCore.xml",
+        "scalar.aspnetcore.1.2.23.nupkg.sha512",
+        "scalar.aspnetcore.nuspec"
       ]
     },
     "Serilog/4.0.1": {

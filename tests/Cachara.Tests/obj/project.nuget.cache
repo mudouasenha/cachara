@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "koSbXDVf6H9hkbKDcm/4Z5HONxnUadrm8+DhgyBUu9n7HXXIBPibXfRq7pIS5vh28Vl8Pfghw1VFc6XQp8RFHQ==",
+  "dgSpecHash": "UlURIGDoJ89mpfstjAv+3oWVOpvPZq5LI5yPNG04/vphsfF+n3S93P9PfPxHwnO+tT7F/U6CH5JOVijrWhnknw==",
   "success": true,
   "projectFilePath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj",
   "expectedPackageFiles": [
@@ -114,6 +114,7 @@
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
+    "C:\\Users\\matheus.gomes\\.nuget\\packages\\scalar.aspnetcore\\1.2.23\\scalar.aspnetcore.1.2.23.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\serilog\\4.0.1\\serilog.4.0.1.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\serilog.enrichers.environment\\3.0.1\\serilog.enrichers.environment.3.0.1.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\serilog.extensions.hosting\\8.0.0\\serilog.extensions.hosting.8.0.0.nupkg.sha512",

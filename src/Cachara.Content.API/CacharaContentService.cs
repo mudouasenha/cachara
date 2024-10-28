@@ -22,6 +22,7 @@ using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Scalar.AspNetCore;
 
 namespace Cachara.Content.API
 {

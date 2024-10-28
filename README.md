@@ -53,7 +53,7 @@ tools for data storage, asynchronous communication and enterprise patterns on to
 - [ ] GraphQL for UI/UX use;
 - [X] RESTFul APIs;
 - [x] API Versioning;
-- [ ] Scalar with OpenAPI 3.0 schema;
+- [ ] Scalar with OpenAPI 3.0 schema; (WIP)
 - [ ] Swagger option;
 - [ ] Exception Handling Middleware;
 
@@ -67,7 +67,7 @@ tools for data storage, asynchronous communication and enterprise patterns on to
 - [ ] Integration Tests;
 - [ ] Unit Tests;
 
-## 5. Deployment:
+## 5. Deployment: (WIP)
 - [ ] Kubernetes;
 - [ ] Containers:
   - [ ] SqlServer;
