@@ -5,73 +5,124 @@
 #  CREATE USER custom_user FOR LOGIN custom_user;
 #  ALTER ROLE db_owner ADD MEMBER custom_user;  -- Grants db_owner role to the user  
 
+networks:
+  devnet:
+
 services:
+  cachara.sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: cachara-sqlserver
+    hostname: cachara-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${Sa_Password:-passwordD123}
+      - MSSQL_PID=Developer
+    ports:
+      - 1433:1433
+    volumes:
+      - ./.containers/cachara-sqlserver:/var/opt/mssql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${Sa_Password:-passwordD123} -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
+    networks:
+      - devnet
+  sqlserver.configurator:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    depends_on:
+      cachara.sqlserver:
+        condition: service_healthy
+    command: >
+      bash -c '
+      /opt/mssql-tools/bin/sqlcmd -S cachara-sqlserver -U sa -P ${Sa_Password:-passwordD123} -d master -i docker-entrypoint-initdb.d/init.sql;
+      echo "All done!";
+      '
+    networks:
+      - devnet
+
   cachara.api.gateway:
     image: cachara.api.gateway
-    container_name: cachara.api.gateway
+    container_name: cachara-api-gateway
+    hostname: cachara-api-gateway
     build:
       context: .
       dockerfile: Cachara.API.Gateway/Dockerfile
     ports:
       - "5000:5000"
-      - "5001:5001"      
+      - "5001:5001"
+    networks:
+      - devnet
         
   cachara.users.api:
     image: cachara.users.api
-    container_name: cachara.users.api
+    container_name: cachara-users-api
+    hostname: cachara-users-api
+    depends_on:
+      cachara.sqlserver:
+        condition: service_healthy
     build:
       context: .
       dockerfile: Cachara.API.Gateway/Dockerfile
     ports:
       - "5100:5100"
       - "5101:5101"
+    networks:
+      - devnet
 
   cachara.content.api:
     image: cachara.content.api
-    container_name: cachara.content.api
+    container_name: cachara-content-api
+    hostname: cachara-content-api
+    depends_on:
+      cachara.sqlserver:
+        condition: service_healthy
     build:
       context: .
       dockerfile: Cachara.API.Gateway/Dockerfile
     ports:
       - "5200:5200"
       - "5201:5201"
+    networks:
+      - devnet
         
   cachara.graphql.api:
     image: cachara.graphql.api
-    container_name: cachara.graphql.api
+    container_name: cachara-graphql-api
+    hostname: cachara-graphql-api
     build:
       context: .
       dockerfile: Cachara.API.Gateway/Dockerfile
     ports:
       - "5300:5300"
       - "5301:5301"
-
-  cachara.sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: cachara.sqlserver
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=admin
-    ports:
-      - "1433:1433"
-    volumes:
-      - ./.containers/cachara-sqlserver:/var/opt/mssql
-      - ./create_users_cacharasqlserver.sql:/docker-entrypoint-initdb.d/create_users_cacharasqlserver.sql
-    command:
-      - /bin/bash -c "/opt/mssql/bin/sqlserver & sleep 30 && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P admin -i /docker-entrypoint-initdb.d/create_users_cacharasqlserver.sql"
+    networks:
+      - devnet
   
-  cachara.logs:
+  cachara.seq:
     image: datalust/seq:latest
-    container_name: cachara.logs
+    container_name: cachara-seq
+    hostname: cachara-seq
+    restart: always
     environment:
       - ACCEPT_EULA=Y
-      - SEQ_FIRSTRUN_ADMINPASSWORDHASH="admin"
     ports:
-      - "5341:80"
-      - "45341:45341"
+      - "5341:5341"
+      - "8081:80"
     volumes:
-      - ./.containers/cachara-logs:/data
-    command:
-      - /bin/bash -c "seq config set -k api.listenUris -v http://cachara.logs,http://cachara.logs:45341 && seq config set -k api.ingestionPort -v 45341 && seq service restart"
+      - ./.containers/cachara-seq:/data
+    #command: >
+    #  bash -c ' 
+    #    seq config set -k api.listenUris -v https://cachara.logs,https://cachara.logs:45341 &&
+    #    seq config set -k api.ingestionPort -v 45341 &&
+    #    seq service restart
+    #  '
     # https://docs.datalust.co/docs/urls#ingestion-port
     # https://docs.datalust.co/docs/getting-started-with-docker
+    networks:
+      - devnet

@@ -7,17 +7,17 @@ services:
         - ASPNETCORE_HTTP_PORTS=5000
         - ASPNETCORE_HTTPS_PORTS=5001
       volumes:
-        - ${APPDATA}/Microsoft/UserSecrets:home:app/.microsoft/usersecrets:ro
-        - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+       # - ${APPDATA}/Microsoft/UserSecrets:home:app/.microsoft/usersecrets:ro
+       # - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
           
   cachara.users.api:
       environment:
         - ASPNETCORE_ENVIRONMENT=Development
         - ASPNETCORE_HTTP_PORTS=5100
         - ASPNETCORE_HTTPS_PORTS=5101
-        - SqlDb=Server=cachara.sqlserver,1433;Database=cachara-users;User Id=cachara;Password=J%Kn%x6-_x~jQ-W(;
-        - JobsSqlDb=Server=cachara.sqlserver,1433;Database=cachara-users;User Id=cachara;Password=J%Kn%x6-_x~jQ-W(;
-        - OpenTelemetry.Otlp.Endpoint=http://cachara.logs:45341/ingest/otlp/v1/logs
+        - SqlDb=Server=cachara-sqlserver,1433;Database=cachara-users;User Id=cachara;Password=J%Kn%x6-_x~jQ-W(;
+        - JobsSqlDb=Server=cachara-sqlserver,1433;Database=cachara-users;User Id=cachara;Password=J%Kn%x6-_x~jQ-W(;
+        - OpenTelemetry.Otlp.Endpoint=http://cachara-seq:5341/ingest/otlp/v1/logs
         - OpenTelemetry.Otlp.ApiKey=n2JACBnF1YlL5ocJZ82k
         - Security.Key=Cy4H3RBCbOSDor+C2UHS7h1JAoj3iMJ3wjG80CiOm8df5xli3zdt4AEc2E8y13wo
           
@@ -31,9 +31,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=5200
       - ASPNETCORE_HTTPS_PORTS=5201
-      - SqlDb=Server=cachara.sqlserver,1433;Database=cachara-content;User Id=cachara;Password=J%Kn%x6-_x~jQ-W(;
-      - JobsSqlDb=Server=cachara.sqlserver,1433;Database=cachara-content;User Id=cachara;Password=J%Kn%x6-_x~jQ-W(;
-      - OpenTelemetry.Otlp.Endpoint=http://cachara.logs:45341/ingest/otlp/v1/logs
+      - SqlDb=Server=cachara-sqlserver,1433;Database=cachara-content;User Id=cachara;Password=J%Kn%x6-_x~jQ-W(;
+      - JobsSqlDb=Server=cachara-sqlserver,1433;Database=cachara-content;User Id=cachara;Password=J%Kn%x6-_x~jQ-W(;
+      - OpenTelemetry.Otlp.Endpoint=http://cachara-seq:5341/ingest/otlp/v1/logs
       - OpenTelemetry.Otlp.ApiKey=n2JACBnF1YlL5ocJZ82k
       - Security.Key=Cy4H3RBCbOSDor+C2UHS7h1JAoj3iMJ3wjG80CiOm8df5xli3zdt4AEc2E8y13wo
 
