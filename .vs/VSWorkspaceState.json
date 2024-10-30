@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\Cachara.API.Gateway",
+    "\\src\\Cachara.Content.API",
+    "\\src\\Cachara.GraphQL"
+  ],
+  "SelectedNode": "\\src\\Cachara.Content.API\\Cachara.Content.API.csproj",
+  "PreviewInSolutionExplorer": false
+}
