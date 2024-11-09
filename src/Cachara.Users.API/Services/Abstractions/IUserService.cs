@@ -1,8 +1,7 @@
 using Cachara.Domain.Commands;
-using Cachara.Domain.Entities;
 using Cachara.Users.API.Domain.Entities;
 
-namespace Cachara.Domain.Interfaces.Services;
+namespace Cachara.Users.API.Services.Abstractions;
 
 public interface IUserService
 {

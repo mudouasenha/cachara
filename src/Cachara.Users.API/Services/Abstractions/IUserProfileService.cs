@@ -2,7 +2,7 @@ using Cachara.Domain.Commands;
 using Cachara.Users.API.Domain.Entities;
 using FluentResults;
 
-namespace Cachara.Users.API.Services;
+namespace Cachara.Users.API.Services.Abstractions;
 
 public interface IUserProfileService
 {

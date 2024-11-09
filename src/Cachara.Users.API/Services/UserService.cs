@@ -3,9 +3,9 @@ using Cachara.Domain.Abstractions.Security;
 using Cachara.Domain.Commands;
 using Cachara.Domain.Entities;
 using Cachara.Domain.Interfaces;
-using Cachara.Domain.Interfaces.Services;
 using Cachara.Services.Security;
 using Cachara.Users.API.Domain.Entities;
+using Cachara.Users.API.Services.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cachara.Users.API.Services;

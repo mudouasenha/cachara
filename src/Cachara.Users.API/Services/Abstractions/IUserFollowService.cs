@@ -1,4 +1,4 @@
-namespace Cachara.Users.API.Services;
+namespace Cachara.Users.API.Services.Abstractions;
 
 public interface IUserFollowService
 {
