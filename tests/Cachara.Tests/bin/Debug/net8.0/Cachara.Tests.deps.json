@@ -1288,6 +1288,14 @@
       "runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
+      "Scalar.AspNetCore/1.2.23": {
+        "runtime": {
+          "lib/net8.0/Scalar.AspNetCore.dll": {
+            "assemblyVersion": "1.2.23.0",
+            "fileVersion": "1.2.23.0"
+          }
+        }
+      },
       "Serilog/4.0.1": {
         "runtime": {
           "lib/net8.0/Serilog.dll": {
@@ -2235,6 +2243,7 @@
           "OpenTelemetry.Exporter.OpenTelemetryProtocol": "1.9.0",
           "OpenTelemetry.Instrumentation.AspNetCore": "1.9.0",
           "RabbitMQ.Client": "6.8.1",
+          "Scalar.AspNetCore": "1.2.23",
           "Serilog": "4.0.1",
           "Serilog.Enrichers.Environment": "3.0.1",
           "Serilog.Extensions.Hosting": "8.0.0",
@@ -3027,6 +3036,13 @@
       "sha512": "sha512-VB5cn/7OzUfzdnC8tqAIMQciVLiq2epm2NrAm1E9OjNRyG4lVhfR61SMcLizejzQP8R8Uf/0l5qOIbUEi+RdEg==",
       "path": "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "hashPath": "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512"
+    },
+    "Scalar.AspNetCore/1.2.23": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rIUvPdUCkjU1H3TCQO6pLqhEIQGfzBSdstW4vzo4Ul/sZlySoV7TEYWuprZuRrgNXjkC2dZ0gQYavYoSapQAJg==",
+      "path": "scalar.aspnetcore/1.2.23",
+      "hashPath": "scalar.aspnetcore.1.2.23.nupkg.sha512"
     },
     "Serilog/4.0.1": {
       "type": "package",

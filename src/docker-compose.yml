@@ -1,12 +1,11 @@
 ﻿version: '0.1'
-  
-# create_users.sql  
-#  CREATE LOGIN custom_user WITH PASSWORD = 'CustomUser@Pass123';  -- Replace with a strong password
-#  CREATE USER custom_user FOR LOGIN custom_user;
-#  ALTER ROLE db_owner ADD MEMBER custom_user;  -- Grants db_owner role to the user  
 
 networks:
   devnet:
+    external: true
+#    driver: bridge
+#   driver_opts:
+#      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
 
 services:
   cachara.sqlserver:
@@ -16,6 +15,7 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=${Sa_Password:-passwordD123}
+      - MSSQL_SA_PASSWORD=${Sa_Password:-passwordD123}
       - MSSQL_PID=Developer
     ports:
       - 1433:1433

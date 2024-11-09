@@ -12,7 +12,7 @@ namespace Cachara.Data.Persistence.Configuration;
                 .HasMaxLength(320)
                 .IsRequired();
             
-            builder.Property(t => t.Name)
+            builder.Property(t => t.FullName)
                 .IsRequired();
 
             builder.Property(t => t.UserName)

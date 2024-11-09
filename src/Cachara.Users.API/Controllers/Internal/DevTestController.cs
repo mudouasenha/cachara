@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cachara.Users.API.Controllers.Internal;
@@ -18,6 +19,15 @@ public class DevTestController
     public async Task<IResult> Ping()
     {
         _logger.LogInformation("Ping ok;");
+        return Results.Ok();
+    }
+    
+    [HttpPost("test-exception-logging")]
+    public async Task<IResult> TestException()
+    {
+        var ex = new ValidationException("TestValidationException");
+        _logger.LogError(ex, "Exception found: {Message} {@Errors} {@Exception};", ex.Message, ex.Errors, ex);
+        _logger.LogError(ex, "Exception occurred: {Message}", ex.Message);
         return Results.Ok();
     }
 }

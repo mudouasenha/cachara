@@ -9,6 +9,8 @@ using Cachara.Domain.Abstractions.Security;
 using Cachara.Domain.Interfaces.Services;
 using Cachara.Services.Security;
 using Cachara.Services.Services;
+using Cachara.Users.API.API.Security;
+using Cachara.Users.API.Controllers.Public;
 using Cachara.Users.API.Infrastructure;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Options;
@@ -19,6 +21,8 @@ using Hangfire.Console;
 using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -61,8 +65,10 @@ namespace Cachara.Users.API
                 new AesGeneralDataProtectionService(Options.Security.Key));
             
             services.AddScoped<IUserService, UserService>();
-            
+            services.AddScoped<IUserProfileService, UserProfileService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<UserSubscriptionProvider>();
+            services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
             
             services.AddHealthChecks()
                 .AddSqlServer(
@@ -70,7 +76,24 @@ namespace Cachara.Users.API
                     healthQuery: "SELECT 1;",
                     name: "database_check",
                     failureStatus: HealthStatus.Degraded);
-            
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("management-user", policy => policy
+                    .RequireAuthenticatedUser()
+                    .RequireClaim(
+                        CustomClaims.Subscription,
+                        allowedValues: [Subscription.Management.ToString()]
+                        ));
+                
+                options.AddPolicy("standard-user", policy => policy
+                    .RequireAuthenticatedUser()
+                    .RequireClaim(
+                        CustomClaims.Subscription,
+                        allowedValues: [Subscription.Management.ToString(), Subscription.Standard.ToString()]
+                    ));
+            });
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             
             services.AddProblemDetails(delegate (Hellang.Middleware.ProblemDetails.ProblemDetailsOptions opts) { });

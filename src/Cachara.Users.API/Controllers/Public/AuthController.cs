@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cachara.Users.API.Controllers.Public;
 
-[ApiExplorerSettings(GroupName = "internal")]
-[Route("public/users")]
-[Tags("Posts")]
-public class UsersController(IUserService userService) : ControllerBase
+[ApiExplorerSettings(GroupName = "public")]
+[Route("public/auth")]
+[Tags("Auth")]
+public class AuthController(IUserService userService) : ControllerBase
 {
     [HttpPost("register")]
         public async Task<User> Register(UserUpsert upsert)

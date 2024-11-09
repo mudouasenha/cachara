@@ -2,6 +2,7 @@ using Cachara.Users.API.Options;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
 using Serilog.Sinks.OpenTelemetry;
 
@@ -92,7 +93,16 @@ public static class LoggingExtensions
                 exporter.Protocol = OtlpExportProtocol.HttpProtobuf;
                 exporter.Headers = $"X-Seq-ApiKey={openTelemetryOptions.Otlp.ApiKey}";
             });
+            
+            
         });
+
+        //builder.Services.AddOpenTelemetry().ConfigureResource().WithTracing(tracing =>
+        //{
+        //    tracing.AddHttpClientInstrumentation()
+        //        .AddAspNetCoreInstrumentation()
+        //        .AddOtlpExporter();
+        //});
 
         return builder;
     }

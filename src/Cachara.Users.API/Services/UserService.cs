@@ -30,7 +30,7 @@ public class UserService : IUserService
             Email = upsert.Email,
             UserName = upsert.UserName,
             Password = upsert.Password,
-            Name = upsert.Name
+            FullName = upsert.Name
         };
 
         user.GenerateId();
@@ -84,7 +84,7 @@ public class UserService : IUserService
         var encryptedPassword = _generalDataProtectionService.EncryptString(upsert.Password);
 
         user.Email = upsert.Email;
-        user.Name = upsert.Name;
+        user.FullName = upsert.Name;
         user.Password = encryptedPassword;
         
         user.ValidateAndThrow();

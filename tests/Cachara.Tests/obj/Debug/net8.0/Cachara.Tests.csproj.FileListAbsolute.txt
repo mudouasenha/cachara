@@ -211,3 +211,4 @@ C:\Users\matheus.gomes\source\repos\mudouasenha\Cachara\tests\Cachara.Tests\bin\
 C:\Users\matheus.gomes\source\repos\mudouasenha\Cachara\tests\Cachara.Tests\bin\Debug\net8.0\Cachara.Users.API.dll
 C:\Users\matheus.gomes\source\repos\mudouasenha\Cachara\tests\Cachara.Tests\bin\Debug\net8.0\Cachara.Users.API.pdb
 C:\Users\matheus.gomes\source\repos\mudouasenha\Cachara\tests\Cachara.Tests\bin\Debug\net8.0\Cachara.Shared.pdb
+C:\Users\matheus.gomes\source\repos\mudouasenha\Cachara\tests\Cachara.Tests\bin\Debug\net8.0\Scalar.AspNetCore.dll
