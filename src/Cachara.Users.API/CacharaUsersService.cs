@@ -85,12 +85,23 @@ namespace Cachara.Users.API
                         CustomClaims.Subscription,
                         allowedValues: [Subscription.Management.ToString()]
                         ));
-                
+
+                options.AddPolicy("premium-user", policy => policy
+                    .RequireAuthenticatedUser()
+                    .RequireClaim(
+                        CustomClaims.Subscription,
+                        allowedValues: [Subscription.Premium.ToString(), Subscription.Management.ToString()]
+                    ));
+
                 options.AddPolicy("standard-user", policy => policy
                     .RequireAuthenticatedUser()
                     .RequireClaim(
                         CustomClaims.Subscription,
-                        allowedValues: [Subscription.Management.ToString(), Subscription.Standard.ToString()]
+                        allowedValues:
+                        [
+                            Subscription.Management.ToString(), Subscription.Premium.ToString(),
+                            Subscription.Standard.ToString()
+                        ]
                     ));
             });
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();

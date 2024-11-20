@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "bLDYUqF95ZLUctiMxfFrdex+PzBUBLH6nzEeqfjnfpvz5ahs+54e5pi/TYT6NyClDq6N2YRODDXKaUct6cpKig==",
+  "dgSpecHash": "XAT5ZjOFv6Y=",
   "success": true,
   "projectFilePath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj",
   "expectedPackageFiles": [
@@ -217,5 +217,24 @@
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\xunit.runner.visualstudio\\2.8.2\\xunit.runner.visualstudio.2.8.2.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\yamldotnet\\15.1.4\\yamldotnet.15.1.4.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://way2.pkgs.visualstudio.com/_packaging/Main%40Local/nuget/v3/index.json."
+    },
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://pkgs.dev.azure.com/way2/_packaging/internal%40Local/nuget/v3/index.json."
+    },
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://pkgs.dev.azure.com/way2/_packaging/internal/nuget/v3/index.json."
+    }
+  ]
 }

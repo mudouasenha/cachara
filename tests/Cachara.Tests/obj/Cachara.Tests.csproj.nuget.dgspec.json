@@ -13,6 +13,7 @@
         "packagesPath": "C:\\Users\\matheus.gomes\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Shared\\obj\\",
         "projectStyle": "PackageReference",
+        "UsingMicrosoftNETSdk": false,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -28,7 +29,10 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://pkgs.dev.azure.com/way2/_packaging/internal%40Local/nuget/v3/index.json": {},
+          "https://pkgs.dev.azure.com/way2/_packaging/internal/nuget/v3/index.json": {},
+          "https://way2.pkgs.visualstudio.com/_packaging/Main%40Local/nuget/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -40,6 +44,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -122,6 +131,7 @@
         "packagesPath": "C:\\Users\\matheus.gomes\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\src\\Cachara.Users.API\\obj\\",
         "projectStyle": "PackageReference",
+        "UsingMicrosoftNETSdk": false,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -137,7 +147,10 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://pkgs.dev.azure.com/way2/_packaging/internal%40Local/nuget/v3/index.json": {},
+          "https://pkgs.dev.azure.com/way2/_packaging/internal/nuget/v3/index.json": {},
+          "https://way2.pkgs.visualstudio.com/_packaging/Main%40Local/nuget/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -153,6 +166,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -334,6 +352,7 @@
         "packagesPath": "C:\\Users\\matheus.gomes\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\tests\\Cachara.Tests\\obj\\",
         "projectStyle": "PackageReference",
+        "UsingMicrosoftNETSdk": false,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -349,7 +368,10 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://pkgs.dev.azure.com/way2/_packaging/internal%40Local/nuget/v3/index.json": {},
+          "https://pkgs.dev.azure.com/way2/_packaging/internal/nuget/v3/index.json": {},
+          "https://way2.pkgs.visualstudio.com/_packaging/Main%40Local/nuget/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -365,6 +387,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
