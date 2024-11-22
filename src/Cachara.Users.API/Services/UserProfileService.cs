@@ -7,6 +7,11 @@ namespace Cachara.Users.API.Services;
 
 public class UserProfileService : IUserProfileService
 {
+    public Task<string> Login()
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<UserProfile> GetProfile()
     {
         throw new NotImplementedException();
