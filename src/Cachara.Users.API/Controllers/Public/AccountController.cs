@@ -14,10 +14,26 @@ namespace Cachara.Users.API.Controllers.Public;
 [Tags("Auth")]
 public class AccountController(IUserProfileService userProfileService) : ControllerBase
 {
+    private readonly IUserProfileService _userProfileService = userProfileService;
+    
         [HttpGet("profile")]
         public async Task<UserProfile> GetProfile()
         {
             return await userProfileService.GetProfile();
+        }
+        
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
+        {
+            var command = new LoginCommand(request.Email);
+            Result<string> tokenResult = await _userProfileService.Login(command);
+
+            if (tokenResult.IsFailed)
+            {
+                return HandleFailure(); // TODO: Implement failed result factory. 400
+            }
+
+            return Ok(tokenResult.Value);
         }
             
         [Authorize("standard-user")]

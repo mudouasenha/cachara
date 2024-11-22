@@ -4,8 +4,11 @@
     "\\src",
     "\\src\\Cachara.API.Gateway",
     "\\src\\Cachara.Content.API",
-    "\\src\\Cachara.GraphQL"
+    "\\src\\Cachara.GraphQL",
+    "\\src\\Cachara.Users.API",
+    "\\src\\Cachara.Users.API\\Domain",
+    "\\src\\Cachara.Users.API\\Services"
   ],
-  "SelectedNode": "\\src\\Cachara.Content.API\\Cachara.Content.API.csproj",
+  "SelectedNode": "\\src\\Cachara.Users.API\\Services\\UserProfileService.cs",
   "PreviewInSolutionExplorer": false
 }
