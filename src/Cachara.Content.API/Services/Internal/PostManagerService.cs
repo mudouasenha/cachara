@@ -1,8 +1,7 @@
-using Cachara.Content.API.Services;
 using Cachara.Shared.Infrastructure.Hangfire;
 using FluentResults;
 
-namespace Cachara.Services.Internal;
+namespace Cachara.Content.API.Services.Internal;
 
 public class PostManagerService : IPostManagerService
 {

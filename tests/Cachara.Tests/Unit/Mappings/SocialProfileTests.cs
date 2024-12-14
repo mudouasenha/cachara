@@ -1,6 +1,6 @@
 using AutoFixture;
 using AutoMapper;
-using Cachara.Domain.Mappings;
+using Cachara.Users.API.Services.Mappings;
 
 namespace Cachara.Tests.Unit.Mappings;
 

@@ -6,7 +6,7 @@ using Serilog.Events;
 using Serilog.Extensions.Hosting;
 using Serilog.Sinks.Elasticsearch;
 
-namespace Cachara.Users.API.Extensions
+namespace Cachara.Users.API.API.Extensions
 {
     public class SerilogOptions
     {

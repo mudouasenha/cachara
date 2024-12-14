@@ -1,10 +1,9 @@
-﻿using System.Reflection;
-using Cachara.Users.API.Infrastructure;
+﻿using Cachara.Users.API.API.Swagger;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Cachara.Users.API.Extensions
+namespace Cachara.Users.API.API.Extensions
 {
     public static class SwaggerExtensions
     {

@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Cachara.Shared.Infrastructure.Data.Interfaces;
+﻿using Cachara.Shared.Infrastructure.Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
-namespace Cachara.Data.EF
+namespace Cachara.Users.API.Infrastructure.Data
 {
     public class CacharaUsersDbContext : DbContext, IUnitOfWork
     {

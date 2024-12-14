@@ -1,9 +1,8 @@
 ﻿using Cachara.Content.API.Domain.Entities;
 using Cachara.Shared.Infrastructure.Data.EF.Configuration;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Cachara.Data.Persistence.Configuration
+namespace Cachara.Content.API.Infrastructure.Data.Configuration
 {
     public class PostEntityTypeConfiguration : BaseEntityTypeConfiguration<Post>
     {

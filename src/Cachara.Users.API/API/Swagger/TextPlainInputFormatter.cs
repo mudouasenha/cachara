@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Formatters;
 
-namespace Cachara.Users.API.Infrastructure
+namespace Cachara.Users.API.API.Swagger
 {
     public class TextPlainInputFormatter : InputFormatter
     {

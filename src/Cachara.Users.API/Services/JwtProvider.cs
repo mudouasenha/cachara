@@ -1,5 +1,5 @@
+using Cachara.Users.API.API.Options;
 using Cachara.Users.API.Domain.Entities;
-using Cachara.Users.API.Options;
 using Cachara.Users.API.Services.Abstractions;
 
 namespace Cachara.Users.API.Services;
@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 public class JwtProvider : IJwtProvider

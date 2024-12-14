@@ -1,6 +1,6 @@
 using AutoMapper;
 
-namespace Cachara.Domain.Mappings;
+namespace Cachara.Users.API.Services.Mappings;
 
 public class UsersMappings : Profile
 {

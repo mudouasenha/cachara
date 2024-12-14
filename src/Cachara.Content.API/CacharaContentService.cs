@@ -1,15 +1,14 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
+using Cachara.Content.API.API.Extensions;
 using Cachara.Content.API.API.Hangfire;
-using Cachara.Content.API.Extensions;
+using Cachara.Content.API.API.Options;
 using Cachara.Content.API.Infrastructure;
 using Cachara.Content.API.Infrastructure.Data;
 using Cachara.Content.API.Infrastructure.Data.Repository;
-using Cachara.Content.API.Options;
 using Cachara.Content.API.Services;
-using Cachara.Data.Interfaces;
-using Cachara.Services;
-using Cachara.Services.Internal;
+using Cachara.Content.API.Services.External;
+using Cachara.Content.API.Services.Internal;
 using Cachara.Shared.Infrastructure.AzureServiceBus;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Hangfire;
@@ -23,7 +22,6 @@ using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Scalar.AspNetCore;
 
 namespace Cachara.Content.API
 {

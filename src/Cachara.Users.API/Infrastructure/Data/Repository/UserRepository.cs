@@ -1,5 +1,3 @@
-using Cachara.Data.EF;
-using Cachara.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Data.EF.Repositories;
 using Cachara.Users.API.Domain.Entities;
 

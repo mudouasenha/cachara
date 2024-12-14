@@ -1,6 +1,6 @@
 using Cachara.Users.API;
-using Cachara.Users.API.Extensions;
-using Cachara.Users.API.Options;
+using Cachara.Users.API.API.Extensions;
+using Cachara.Users.API.API.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 var service = new CacharaUsersService<CacharaOptions>(builder.Environment, builder.Configuration);

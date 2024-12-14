@@ -1,12 +1,11 @@
-using Cachara.Users.API.Options;
+using Cachara.Users.API.API.Options;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
 using Serilog;
 using Serilog.Sinks.OpenTelemetry;
 
-namespace Cachara.Users.API.Extensions;
+namespace Cachara.Users.API.API.Extensions;
 
 public partial class CacharaLogging<TOptions> where TOptions : CacharaOptions, new()
 {

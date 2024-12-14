@@ -1,9 +1,5 @@
 using System.Security.Claims;
-using Cachara.Domain.Commands;
-using Cachara.Users.API.Domain.Entities;
-using Cachara.Users.API.Services;
 using Cachara.Users.API.Services.Abstractions;
-using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

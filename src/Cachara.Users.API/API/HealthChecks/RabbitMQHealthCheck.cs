@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using RabbitMQ.Client;
 
-namespace Cachara.Users.API.HealthChecks;
+namespace Cachara.Users.API.API.HealthChecks;
 
 // TODO: HealthCheck
 public class RabbitMQHealthCheck : IHealthCheck

@@ -2,7 +2,7 @@ using Cachara.Shared.Infrastructure.Data.EF.Configuration;
 using Cachara.Users.API.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Cachara.Data.Persistence.Configuration;
+namespace Cachara.Users.API.Infrastructure.Data.Configuration;
 
     public class UserEntityTypeConfiguration : BaseEntityTypeConfiguration<User>
     {

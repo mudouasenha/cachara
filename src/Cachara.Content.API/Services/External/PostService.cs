@@ -1,12 +1,11 @@
-﻿using Cachara.Content.API.Domain.Entities;
-using Cachara.Content.API.Services;
-using Cachara.Data.Interfaces;
-using Cachara.Domain.Commands;
+﻿using Cachara.Content.API.Domain.Commands;
+using Cachara.Content.API.Domain.Entities;
+using Cachara.Content.API.Infrastructure.Data.Repository;
 using Cachara.Shared.Domain;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Models;
 
-namespace Cachara.Services;
+namespace Cachara.Content.API.Services.External;
 
 public class PostService : IPostService
 {

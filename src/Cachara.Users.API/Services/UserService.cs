@@ -1,10 +1,11 @@
-using Cachara.Data.Interfaces;
-using Cachara.Domain.Commands;
 using Cachara.Shared.Domain;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Security;
 using Cachara.Users.API.Domain.Entities;
+using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Services.Abstractions;
+using Cachara.Users.API.Services.Commands;
+using Cachara.Users.API.Services.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cachara.Users.API.Services;

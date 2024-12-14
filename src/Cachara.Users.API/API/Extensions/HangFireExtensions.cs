@@ -1,9 +1,6 @@
-﻿using Cachara.Users.API.Options;
-using Hangfire;
-using Hangfire.Console;
-using Hangfire.SqlServer;
+﻿using Cachara.Users.API.API.Options;
 
-namespace Cachara.API.Extensions
+namespace Cachara.Users.API.API.Extensions
 {
     public static class HangFireExtensions
     {

@@ -1,6 +1,5 @@
 using Cachara.Shared.Infrastructure.AzureServiceBus;
 using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cachara.Users.API.Controllers.Internal;

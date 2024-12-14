@@ -1,4 +1,4 @@
-namespace Cachara.Domain.Commands;
+namespace Cachara.Content.API.Domain.Commands;
 
 public class PostSearchCommand
 {

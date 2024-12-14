@@ -1,6 +1,6 @@
 using Cachara.Content.API.Controllers.Public;
-using Cachara.Domain.Commands;
-using Cachara.Services.Internal;
+using Cachara.Content.API.Domain.Commands;
+using Cachara.Content.API.Services.Internal;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 

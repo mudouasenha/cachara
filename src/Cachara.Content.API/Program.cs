@@ -1,6 +1,6 @@
 using Cachara.Content.API;
-using Cachara.Content.API.Extensions;
-using Cachara.Content.API.Options;
+using Cachara.Content.API.API.Extensions;
+using Cachara.Content.API.API.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 var service = new CacharaContentService<CacharaContentOptions>(builder.Environment, builder.Configuration);

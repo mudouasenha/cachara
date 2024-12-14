@@ -1,4 +1,4 @@
-namespace Cachara.Domain.Commands;
+namespace Cachara.Users.API.Services.Commands;
 
 public class UserSearchCommand
 {

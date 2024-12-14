@@ -1,7 +1,7 @@
 using Extensions.Hosting.AsyncInitialization;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cachara.Services.Services;
+namespace Cachara.Users.API.API.Hangfire;
 
 public class DbContextInitializer<TDbContext> : IAsyncInitializer where TDbContext : DbContext
 {

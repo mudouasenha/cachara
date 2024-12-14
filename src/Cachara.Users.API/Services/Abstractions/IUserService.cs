@@ -1,5 +1,6 @@
-using Cachara.Domain.Commands;
 using Cachara.Users.API.Domain.Entities;
+using Cachara.Users.API.Services.Commands;
+using Cachara.Users.API.Services.Models;
 
 namespace Cachara.Users.API.Services.Abstractions;
 

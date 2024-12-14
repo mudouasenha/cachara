@@ -1,7 +1,5 @@
-using Cachara.Content.API.Infrastructure;
 using Cachara.Content.API.Services;
 using Cachara.Shared.Infrastructure.AzureServiceBus;
-using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cachara.Content.API.Controllers.Internal;

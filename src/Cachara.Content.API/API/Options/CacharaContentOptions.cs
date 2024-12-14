@@ -1,5 +1,5 @@
 ﻿
-namespace Cachara.Content.API.Options
+namespace Cachara.Content.API.API.Options
 {
     public class CacharaContentOptions
     {
