@@ -1,5 +1,6 @@
 using Cachara.Content.API.Domain.Entities;
 using Cachara.Domain.Commands;
+using Cachara.Shared.Models;
 
 namespace Cachara.Content.API.Services;
 

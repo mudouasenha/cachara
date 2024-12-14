@@ -1,4 +1,4 @@
-namespace Cachara.Core.Models;
+namespace Cachara.Shared.Models;
 
 public class UserBase
 {

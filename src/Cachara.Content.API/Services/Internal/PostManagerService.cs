@@ -1,6 +1,5 @@
-using Cachara.API.Hangfire;
 using Cachara.Content.API.Services;
-using Cachara.Data.Interfaces;
+using Cachara.Shared.Infrastructure.Hangfire;
 using FluentResults;
 
 namespace Cachara.Services.Internal;

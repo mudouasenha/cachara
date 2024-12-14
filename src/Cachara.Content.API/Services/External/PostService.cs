@@ -2,8 +2,9 @@
 using Cachara.Content.API.Services;
 using Cachara.Data.Interfaces;
 using Cachara.Domain.Commands;
-using Cachara.Domain.Entities;
-using Cachara.Domain.Interfaces;
+using Cachara.Shared.Domain;
+using Cachara.Shared.Infrastructure.Data.Interfaces;
+using Cachara.Shared.Models;
 
 namespace Cachara.Services;
 

@@ -7,12 +7,24 @@ namespace Cachara.Users.API.Options
         
         public string SqlDb { get; set; }
         public string JobsSqlDb { get; set; }
-        
-        public CacharaExporterOptions CacharaExporter { get; set; }
-        
-        public OpenTelemetryOptions OpenTelemetry { get; set; }
+
+        public CacharaExporterOptions CacharaExporter { get; set; } = new();
+        public JwtOptions Jwt { get; set; } = new();
+
+        public CacharaContentOptions CacharaContent { get; set; } = new();
+
+        public OpenTelemetryOptions OpenTelemetry { get; set; } = new();
         
         public SecurityOptions Security { get; set; }
+    }
+
+    public class JwtOptions
+    {
+        public string SecretEnvorinmentVariable { get; set; }
+        public string Secret { get; set; }
+        public string Issuer { get; set; }
+        public string Audience { get; set; }
+        public int ExpirationMinutes { get; set; }
     }
 
     public class OpenTelemetryOptions
@@ -34,6 +46,11 @@ namespace Cachara.Users.API.Options
         public string Url { get; set; }
         
         public string Token { get; set; }
+    }
+    
+    public class CacharaContentOptions
+    {
+        public string ServiceBusConn { get; set; }
     }
     
     public class SecurityOptions

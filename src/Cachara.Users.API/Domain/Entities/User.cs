@@ -1,4 +1,4 @@
-using Cachara.Domain.Interfaces;
+using Cachara.Shared.Domain.Entities.Abstractions;
 using FluentValidation.Results;
 
 namespace Cachara.Users.API.Domain.Entities;

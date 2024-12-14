@@ -1,5 +1,5 @@
 ﻿using Cachara.Content.API.Domain.Entities;
-using Cachara.Domain.Entities;
+using Cachara.Shared.Infrastructure.Data.EF.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

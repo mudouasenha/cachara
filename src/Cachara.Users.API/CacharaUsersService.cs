@@ -1,15 +1,14 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
-using Cachara.API.Hangfire;
 using Cachara.Users.API.Extensions;
 using Cachara.Data.EF;
 using Cachara.Data.Interfaces;
-using Cachara.Data.Persistence.Connections;
-using Cachara.Domain.Abstractions.Security;
-using Cachara.Services.Security;
 using Cachara.Services.Services;
+using Cachara.Shared.Infrastructure.AzureServiceBus;
+using Cachara.Shared.Infrastructure.Data.Interfaces;
+using Cachara.Shared.Infrastructure.Hangfire;
+using Cachara.Shared.Infrastructure.Security;
 using Cachara.Users.API.API.Security;
-using Cachara.Users.API.Controllers.Public;
 using Cachara.Users.API.Infrastructure;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Options;
@@ -29,25 +28,25 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Cachara.Users.API
 {
-    public partial class CacharaUsersService<TOptions> where TOptions : CacharaOptions, new()
+    public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOptions, new()
     {
-        private IConfiguration Configuration;
+        private readonly IConfiguration _configuration;
 
-        private IHostEnvironment Environment;
+        private readonly IHostEnvironment _environment;
 
         private TOptions Options { get; set; }
         
         public CacharaUsersService(IHostEnvironment environment, IConfiguration configuration)
         {
-            Environment = environment;
-            Configuration = configuration;
+            _environment = environment;
+            _configuration = configuration;
             Options = new TOptions()
             {
                 Name = GetType().Name
             };
             try
             {
-                Configuration?.Bind(Options);
+                _configuration.Bind(Options);
             }
             catch (Exception)
             {
@@ -59,10 +58,11 @@ namespace Cachara.Users.API
         public void ConfigureServices(IServiceCollection services)
         {
             // Dependency Injection Options
-            OptionsServiceCollectionExtensions.AddOptions<TOptions>(services).Bind(Configuration);
+            services.AddOptions<TOptions>().Bind(_configuration);
 
-            services.AddScoped<IGeneralDataProtectionService, AesGeneralDataProtectionService>(p =>
+            services.AddScoped<IGeneralDataProtectionService, AesGeneralDataProtectionService>(_ =>
                 new AesGeneralDataProtectionService(Options.Security.Key));
+            services.AddSingleton<IJwtProvider, JwtProvider>(_ => new(Options.Jwt));
             
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserProfileService, UserProfileService>();
@@ -72,7 +72,7 @@ namespace Cachara.Users.API
             
             services.AddHealthChecks()
                 .AddSqlServer(
-                    connectionString: Configuration.GetConnectionString(Options.SqlDb),
+                    connectionString: Options.SqlDb,
                     healthQuery: "SELECT 1;",
                     name: "database_check",
                     failureStatus: HealthStatus.Degraded);
@@ -107,7 +107,7 @@ namespace Cachara.Users.API
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             
-            services.AddProblemDetails(delegate (Hellang.Middleware.ProblemDetails.ProblemDetailsOptions opts) { });
+            services.AddProblemDetails(delegate (Hellang.Middleware.ProblemDetails.ProblemDetailsOptions _) { });
             
             services.AddControllers(options =>
             {
@@ -118,7 +118,7 @@ namespace Cachara.Users.API
             }).AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never;
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
             })
             .AddProblemDetailsConventions();
 
@@ -126,20 +126,24 @@ namespace Cachara.Users.API
             services.AddResponseCaching();
             services.AddEndpointsApiExplorer();
             services.AddCustomSwagger();
+
+            services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
+                _ => new ServiceBusQueue(Options.CacharaContent.ServiceBusConn)
+            );
             
             ConfigureHangfire(services);
             ConfigureDataAccess(services);
         }
-        
-        public void ConfigureHangfire(IServiceCollection services)
+
+        private void ConfigureHangfire(IServiceCollection services)
         {
             services.AddScoped<IBackgroundServiceManager, BackgroundServiceManager>();
 
-            services.AddHangfire((provider, config) =>
+            services.AddHangfire((_, config) =>
             {
                 config.UseSimpleAssemblyNameTypeSerializer();
                 config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
-                config.UseRecommendedSerializerSettings(x =>
+                config.UseRecommendedSerializerSettings(_ =>
                 {
                     //x.Converters.Add(new JsonDateOnlyConverter());
                 });
@@ -151,7 +155,7 @@ namespace Cachara.Users.API
                 config.UseConsole();
             });
             
-            int totalWorkerCount = System.Environment.ProcessorCount * 20;
+            int totalWorkerCount = Environment.ProcessorCount * 20;
             services.AddHangfireServer(options =>
             {
                 options.WorkerCount = totalWorkerCount;
@@ -161,16 +165,16 @@ namespace Cachara.Users.API
                 };
             });
         }
-        
-        public void ConfigureDataAccess(IServiceCollection services)
+
+        private void ConfigureDataAccess(IServiceCollection services)
         {
             services.AddDbContext<CacharaUsersDbContext>(options =>
             {
                 options.UseSqlServer(Options.SqlDb);
                 options.UseQueryTrackingBehavior((QueryTrackingBehavior.NoTracking));
-                options.EnableSensitiveDataLogging(Environment.IsDevelopment());
+                options.EnableSensitiveDataLogging(_environment.IsDevelopment());
             }).AddAsyncInitializer<DbContextInitializer<CacharaUsersDbContext>>()
-            .AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<CacharaUsersDbContext>());;
+            .AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<CacharaUsersDbContext>());
         }
         
         public void ConfigureApp(IApplicationBuilder app)
@@ -186,6 +190,8 @@ namespace Cachara.Users.API
                 
                 var swaggerGenOptions = app.ApplicationServices.GetService<SwaggerGeneratorOptions>();
 
+                if (swaggerGenOptions == null) return;
+                
                 foreach (var swaggerDoc in swaggerGenOptions.SwaggerDocs)
                 {
                     var swaggerPathBase = "/swagger";
@@ -214,7 +220,7 @@ namespace Cachara.Users.API
             app.UseHangfireDashboard();
         }
         
-        public virtual void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app)
         {
             ConfigureApp(app);
         }

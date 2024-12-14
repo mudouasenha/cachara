@@ -1,10 +1,12 @@
 using Cachara.Domain.Commands;
+using Cachara.Users.API.Controllers.Base;
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Services;
 using Cachara.Users.API.Services.Abstractions;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using IUserProfileService = Cachara.Users.API.Services.Abstractions.IUserProfileService;
 
 namespace Cachara.Users.API.Controllers.Public;
 
@@ -12,7 +14,7 @@ namespace Cachara.Users.API.Controllers.Public;
 [ApiExplorerSettings(GroupName = "public")]
 [Route("public/account")]
 [Tags("Auth")]
-public class AccountController(IUserProfileService userProfileService) : ControllerBase
+public class AccountController(IUserProfileService userProfileService) : BaseController
 {
     private readonly IUserProfileService _userProfileService = userProfileService;
     

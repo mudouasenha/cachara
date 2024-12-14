@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
-using Cachara.API.Hangfire;
+using Cachara.Shared.Abstractions;
+using Cachara.Shared.Infrastructure.Hangfire;
 using Hangfire;
 
 namespace Cachara.Content.API.API.Hangfire

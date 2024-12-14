@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using AutoFixture;
-using Cachara.Services.Security;
+using Cachara.Shared.Infrastructure.Security;
 
 namespace Cachara.Tests.Integration.Services;
 

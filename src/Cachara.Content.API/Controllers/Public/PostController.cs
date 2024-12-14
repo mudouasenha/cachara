@@ -2,7 +2,7 @@ using Cachara.Content.API.Domain.Entities;
 using Cachara.Content.API.Infrastructure;
 using Cachara.Content.API.Services;
 using Cachara.Domain.Commands;
-using Cachara.Domain.Entities;
+using Cachara.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cachara.Content.API.Controllers.Public;

@@ -1,4 +1,6 @@
+using Cachara.Shared.Infrastructure.AzureServiceBus;
 using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cachara.Users.API.Controllers.Internal;
@@ -9,9 +11,11 @@ namespace Cachara.Users.API.Controllers.Internal;
 public class DevTestController
 {
     private readonly ILogger<DevTestController> _logger;
+    private readonly IServiceBusQueue _queue;
 
-    public DevTestController(ILogger<DevTestController> logger)
+    public DevTestController(ILogger<DevTestController> logger, IServiceBusQueue queue)
     {
+        _queue = queue;
         _logger = logger;
     }
     
@@ -30,4 +34,12 @@ public class DevTestController
         _logger.LogError(ex, "Exception occurred: {Message}", ex.Message);
         return Results.Ok();
     }
+
+    [HttpPost("test-send-message")]
+    public async Task<IResult> TestSendMessage()
+    {
+        await _queue.SendMessage("teste-matheus", "Message from Users API");
+        return Results.Ok("Message Sent");
+    }
+    
 }

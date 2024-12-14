@@ -1,5 +1,4 @@
-
-using Cachara.Domain.Entities;
+using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Users.API.Domain.Entities;
 
 namespace Cachara.Data.Interfaces;

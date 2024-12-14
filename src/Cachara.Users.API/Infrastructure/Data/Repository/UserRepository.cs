@@ -1,6 +1,6 @@
 using Cachara.Data.EF;
 using Cachara.Data.Interfaces;
-using Cachara.Data.Persistence.Repositories;
+using Cachara.Shared.Infrastructure.Data.EF.Repositories;
 using Cachara.Users.API.Domain.Entities;
 
 namespace Cachara.Users.API.Infrastructure.Data.Repository;

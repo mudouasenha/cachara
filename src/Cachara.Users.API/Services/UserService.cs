@@ -1,9 +1,8 @@
 using Cachara.Data.Interfaces;
-using Cachara.Domain.Abstractions.Security;
 using Cachara.Domain.Commands;
-using Cachara.Domain.Entities;
-using Cachara.Domain.Interfaces;
-using Cachara.Services.Security;
+using Cachara.Shared.Domain;
+using Cachara.Shared.Infrastructure.Data.Interfaces;
+using Cachara.Shared.Infrastructure.Security;
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Services.Abstractions;
 using Microsoft.EntityFrameworkCore;

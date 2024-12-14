@@ -1,4 +1,4 @@
-namespace Cachara.Domain.Commands;
+namespace Cachara.Shared.Models;
 
 public class PostUpsert
 {

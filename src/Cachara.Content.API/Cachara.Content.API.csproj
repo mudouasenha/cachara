@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="8.0.2" />
+        <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.18.2" />
         <PackageReference Include="Elastic.Apm.SerilogEnricher" Version="8.11.1" />
         <PackageReference Include="Elasticsearch.Net" Version="7.17.5" />
         <PackageReference Include="Extensions.Hosting.AsyncInitialization" Version="3.0.1" />

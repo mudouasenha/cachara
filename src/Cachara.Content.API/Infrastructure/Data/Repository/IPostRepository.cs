@@ -1,10 +1,5 @@
-﻿using Cachara.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cachara.Content.API.Domain.Entities;
+﻿using Cachara.Content.API.Domain.Entities;
+using Cachara.Shared.Infrastructure.Data.Interfaces;
 
 namespace Cachara.Data.Interfaces
 {

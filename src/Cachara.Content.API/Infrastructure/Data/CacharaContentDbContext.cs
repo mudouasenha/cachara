@@ -1,6 +1,4 @@
-﻿using System.Data;
-using Cachara.Data.Interfaces;
-using Cachara.Domain.Entities;
+﻿using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cachara.Content.API.Infrastructure.Data

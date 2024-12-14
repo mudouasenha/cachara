@@ -1,5 +1,5 @@
 using Cachara.Content.API.Domain.Entities;
-using Cachara.Domain.Abstractions.Specification;
+using Cachara.Shared.Domain.Specification;
 
 namespace Cachara.Content.API.Domain.Specification;
 

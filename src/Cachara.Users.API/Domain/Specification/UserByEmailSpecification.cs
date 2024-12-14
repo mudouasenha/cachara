@@ -1,4 +1,4 @@
-using Cachara.Domain.Abstractions.Specification;
+using Cachara.Shared.Domain.Specification;
 using Cachara.Users.API.Domain.Entities;
 
 namespace Cachara.Users.API.Domain.Specification;

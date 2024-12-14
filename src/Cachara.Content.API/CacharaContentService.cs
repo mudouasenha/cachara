@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
-using Cachara.API.Hangfire;
 using Cachara.Content.API.API.Hangfire;
 using Cachara.Content.API.Extensions;
 using Cachara.Content.API.Infrastructure;
@@ -9,10 +8,12 @@ using Cachara.Content.API.Infrastructure.Data.Repository;
 using Cachara.Content.API.Options;
 using Cachara.Content.API.Services;
 using Cachara.Data.Interfaces;
-using Cachara.Domain.Abstractions.Security;
 using Cachara.Services;
 using Cachara.Services.Internal;
-using Cachara.Services.Security;
+using Cachara.Shared.Infrastructure.AzureServiceBus;
+using Cachara.Shared.Infrastructure.Data.Interfaces;
+using Cachara.Shared.Infrastructure.Hangfire;
+using Cachara.Shared.Infrastructure.Security;
 using Flurl;
 using Hangfire;
 using Hangfire.Console;
@@ -94,6 +95,10 @@ namespace Cachara.Content.API
             services.AddResponseCaching();
             services.AddEndpointsApiExplorer();
             services.AddCustomSwagger();
+            
+            services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
+                x => new ServiceBusQueue(Options.CacharaUsers.ServiceBusConn ?? "")
+            );
             
             ConfigureHangfire(services);
             ConfigureDataAccess(services);
