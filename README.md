@@ -11,7 +11,7 @@ tools for data storage, asynchronous communication and enterprise patterns on to
 * REST Standards;
 * MS SQL;
 * Hangfire;
-* RabbitMQ
+* RabbitMQ;
 
 ---
 
@@ -38,15 +38,17 @@ tools for data storage, asynchronous communication and enterprise patterns on to
 - [X] Onion Architecture for each microservice;
 - [ ] Result Pattern;
 
-## 1. Infrastructure:
 ### 1.1 Data Access:
 - [ ] CQRS Pattern;
 - [ ] Dapper for data extraction queries;
 - [x] EF Core for general use;
 - [x] UnitOfWork Pattern;
+- [ ] Data Caching;
 
 ### 1.2 Asynchronous Communication:
-- [ ] Azure Service Bus;
+- [x] Azure Service Bus;
+  - [x] Queues;
+  - [ ] Events;
 - [ ] RabbitMQ;
 
 ## 2. Presentation:
@@ -67,7 +69,10 @@ tools for data storage, asynchronous communication and enterprise patterns on to
 - [ ] Integration Tests;
 - [ ] Unit Tests;
 
-## 5. Deployment: (WIP)
+## 5. Infrastructure & CI/CD:
+- [x] Terraform IaC Scripts;
+- [x] Docker-compose scripts;
+- [ ] GitHub Actions;
 - [ ] Kubernetes;
 - [ ] Containers:
   - [ ] SqlServer;
