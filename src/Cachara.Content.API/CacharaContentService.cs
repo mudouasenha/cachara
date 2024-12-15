@@ -21,6 +21,7 @@ using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -99,12 +100,29 @@ namespace Cachara.Content.API
                 x => new ServiceBusQueue(Options.CacharaUsers.ServiceBusConn ?? "")
             );
 
-            services.AddHostedService<UserListernerService>();
+            ConfigureExternalServices(services);
+            
+            if (Options.CacharaUsers?.ListenerEnabled == true)
+            {
+                services.AddHostedService<UserListernerService>();
+            }
             
             ConfigureHangfire(services);
             ConfigureDataAccess(services);
         }
-        
+
+        private void ConfigureExternalServices(IServiceCollection services)
+        {
+            services.AddAzureClients(builder =>
+            {
+                if (Options.CacharaUsers?.ListenerEnabled == true)
+                {
+                    builder.AddServiceBusClient(Options.CacharaUsers.ServiceBusConn)
+                        .WithName(UserListernerService.UsersServiceBusKey);
+                }
+            });
+        }
+
         public void ConfigureHangfire(IServiceCollection services)
         {
             services.AddScoped<IBackgroundServiceManager, BackgroundServiceManager>();

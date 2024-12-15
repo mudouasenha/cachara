@@ -10,7 +10,7 @@ namespace Cachara.Content.API.API.BackgroundServices;
 
 public class UserListernerService : IHostedService
 {
-    private const string UsersServiceBusKey = "teste-matheus";
+    public const string UsersServiceBusKey = "teste-matheus";
     private readonly ILogger<UserListernerService> _logger;
     private readonly IServiceProvider _serviceProvider;
     private ServiceBusProcessor _processor;
@@ -19,8 +19,7 @@ public class UserListernerService : IHostedService
         IOptions<CacharaContentOptions> options,
         ILogger<UserListernerService> logger, 
         IAzureClientFactory<ServiceBusClient> azureServiceBusFactory,
-        IServiceProvider serviceProvider, 
-        ServiceBusProcessor processor)
+        IServiceProvider serviceProvider)
     {
         _logger = logger;
         _serviceProvider = serviceProvider;
@@ -31,8 +30,8 @@ public class UserListernerService : IHostedService
 
         if (usersOptions.ListenerEnabled)
         {
-            processor = client.CreateProcessor(
-                usersOptions.ServiceBusConn,
+            _processor = client.CreateProcessor(
+                UsersServiceBusKey,
                 new ServiceBusProcessorOptions()
                 {
                     AutoCompleteMessages = false,
@@ -40,11 +39,9 @@ public class UserListernerService : IHostedService
                 }
             );
 
-            processor.ProcessMessageAsync += Processor_ProcessMessageAsync;
-            processor.ProcessErrorAsync += Processor_ProcessErrorAsync;
+            _processor.ProcessMessageAsync += Processor_ProcessMessageAsync;
+            _processor.ProcessErrorAsync += Processor_ProcessErrorAsync;
         }
-        
-        _processor = processor;
     }
 
     private async Task Processor_ProcessMessageAsync(ProcessMessageEventArgs arg)
