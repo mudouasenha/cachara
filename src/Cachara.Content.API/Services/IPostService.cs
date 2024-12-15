@@ -10,4 +10,6 @@ public interface IPostService
     public Task<IEnumerable<Post>> Search(PostSearchCommand searchCommand);
     public Task<Post> Upsert(PostUpsert upsert);
     public Task Delete(string id);
+
+    public Task ProcessUserCreated(string userId);
 }

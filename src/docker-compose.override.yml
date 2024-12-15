@@ -17,6 +17,7 @@ services:
         - ASPNETCORE_HTTPS_PORTS=5101
         - SqlDb=Server=cachara-sqlserver,1433;Database=cachara-users;User Id=cachara;Password=J%Kn%x6-_x~jQ-W(;
         - JobsSqlDb=Server=cachara-sqlserver,1433;Database=cachara-users;User Id=cachara;Password=J%Kn%x6-_x~jQ-W(;
+        - CacharaContent.ServiceBusConn=Endpoint=sb://ph-service-bus-namespace-dev.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DMVI197cvHA5njw4wdt9QPsRHYISnwG1c2zlgJGVtLQ=;
         - OpenTelemetry.Otlp.Endpoint=http://cachara-seq:5341/ingest/otlp/v1/logs
         - OpenTelemetry.Otlp.ApiKey=n2JACBnF1YlL5ocJZ82k
         - Security.Key=Cy4H3RBCbOSDor+C2UHS7h1JAoj3iMJ3wjG80CiOm8df5xli3zdt4AEc2E8y13wo
@@ -33,6 +34,9 @@ services:
       - ASPNETCORE_HTTPS_PORTS=5201
       - SqlDb=Server=cachara-sqlserver,1433;Database=cachara-content;User Id=cachara;Password=J%Kn%x6-_x~jQ-W(;
       - JobsSqlDb=Server=cachara-sqlserver,1433;Database=cachara-content;User Id=cachara;Password=J%Kn%x6-_x~jQ-W(;
+      - CacharaUsers.ServiceBusConn=Endpoint=sb://ph-service-bus-namespace-dev.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DMVI197cvHA5njw4wdt9QPsRHYISnwG1c2zlgJGVtLQ=;
+      - CacharaUsers.ListenerEnabled=true;
+      - CacharaUsers.MaxConcurrentCalls=10;
       - OpenTelemetry.Otlp.Endpoint=http://cachara-seq:5341/ingest/otlp/v1/logs
       - OpenTelemetry.Otlp.ApiKey=n2JACBnF1YlL5ocJZ82k
       - Security.Key=Cy4H3RBCbOSDor+C2UHS7h1JAoj3iMJ3wjG80CiOm8df5xli3zdt4AEc2E8y13wo

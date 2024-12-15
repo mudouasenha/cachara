@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
+using Cachara.Content.API.API.BackgroundServices;
 using Cachara.Content.API.API.Extensions;
 using Cachara.Content.API.API.Hangfire;
 using Cachara.Content.API.API.Options;
@@ -97,6 +98,8 @@ namespace Cachara.Content.API
             services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
                 x => new ServiceBusQueue(Options.CacharaUsers.ServiceBusConn ?? "")
             );
+
+            services.AddHostedService<UserListernerService>();
             
             ConfigureHangfire(services);
             ConfigureDataAccess(services);

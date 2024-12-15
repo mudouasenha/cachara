@@ -34,7 +34,12 @@ public class PostService : IPostService
         
         await _postRepository.RemoveAsync(post);
     }
-    
+
+    public Task ProcessUserCreated(string userId)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Post> Upsert(PostUpsert upsert)
     {
         var expression = (Post x) => x.Id == upsert.Id;

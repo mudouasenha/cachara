@@ -40,6 +40,8 @@ namespace Cachara.Content.API.API.Options
     public class CacharaUsersOptions
     {
         public string ServiceBusConn { get; set; }
+        public bool ListenerEnabled { get; set; }
+        public int MaxConcurrentCalls { get; set; }
     }
     
     public class SecurityOptions
