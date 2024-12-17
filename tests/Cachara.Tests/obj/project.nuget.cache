@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "c+7Hl7n/z24=",
+  "dgSpecHash": "M78sDrdr7mw=",
   "success": true,
   "projectFilePath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj",
   "expectedPackageFiles": [
@@ -33,6 +33,7 @@
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\hangfire.sqlserver\\1.8.17\\hangfire.sqlserver.1.8.17.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\hellang.middleware.problemdetails\\6.5.1\\hellang.middleware.problemdetails.6.5.1.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\9.0.0\\microsoft.aspnetcore.authentication.jwtbearer.9.0.0.nupkg.sha512",
+    "C:\\Users\\matheus.gomes\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.0\\microsoft.aspnetcore.openapi.9.0.0.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\microsoft.azure.amqp\\2.6.7\\microsoft.azure.amqp.2.6.7.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\microsoft.codecoverage\\17.12.0\\microsoft.codecoverage.17.12.0.nupkg.sha512",

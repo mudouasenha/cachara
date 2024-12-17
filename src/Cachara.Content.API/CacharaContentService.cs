@@ -23,6 +23,7 @@ using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Cachara.Content.API
@@ -91,7 +92,20 @@ namespace Cachara.Content.API
             })
             .AddProblemDetailsConventions();
 
-            services.AddOpenApiDocument();
+            services.AddOpenApi(opt =>
+            {
+                opt.AddDocumentTransformer((document, context, cancellationToken) =>
+                {
+                    document.Info.Title = "Cachara Content API";
+                    document.Info.Contact = new OpenApiContact()
+                    {
+                        Email = "support@cachara.test",
+                        Name = "Cachara Support"
+                    };
+
+                    return Task.CompletedTask;
+                });
+            });
             services.AddResponseCaching();
             services.AddEndpointsApiExplorer();
             services.AddCustomSwagger();
@@ -201,7 +215,9 @@ namespace Cachara.Content.API
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health"); 
                 endpoints.MapSwagger();
+                endpoints.MapOpenApi();
             });
+            
 
             app.UseHangfireDashboard();
         }

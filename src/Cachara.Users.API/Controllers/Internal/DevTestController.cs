@@ -19,6 +19,8 @@ public class DevTestController
     }
     
     [HttpPost("ping")]
+    [EndpointSummary("Ping the application.")]
+    [EndpointDescription("Makes sure that the request is received and returned by only returning an Ok Result.")]
     public async Task<IResult> Ping()
     {
         _logger.LogInformation("Ping ok;");

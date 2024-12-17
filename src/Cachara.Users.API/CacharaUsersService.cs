@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Cachara.Users.API
@@ -121,7 +122,20 @@ namespace Cachara.Users.API
             })
             .AddProblemDetailsConventions();
 
-            services.AddOpenApiDocument();
+            services.AddOpenApi(opt =>
+            {
+                opt.AddDocumentTransformer((document, context, cancellationToken) =>
+                {
+                    document.Info.Title = "Cachara Users API";
+                    document.Info.Contact = new OpenApiContact()
+                    {
+                        Email = "support@cachara.test",
+                        Name = "Cachara Support"
+                    };
+
+                    return Task.CompletedTask;
+                });
+            });
             services.AddResponseCaching();
             services.AddEndpointsApiExplorer();
             services.AddCustomSwagger();
@@ -214,6 +228,7 @@ namespace Cachara.Users.API
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health"); 
                 endpoints.MapSwagger();
+                endpoints.MapOpenApi();
             });
 
             app.UseHangfireDashboard();
