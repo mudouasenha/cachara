@@ -6,7 +6,7 @@ public class UserSubscriptionProvider
 {
     public Subscription GetSubscription(string? userId)
     { // TODO: Use a database for this.
-        if (userId.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(userId))
         {
             return Subscription.Standard;
         }
