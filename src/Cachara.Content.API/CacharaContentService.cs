@@ -24,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using Scalar.AspNetCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Cachara.Content.API
@@ -96,11 +97,19 @@ namespace Cachara.Content.API
             {
                 opt.AddDocumentTransformer((document, context, cancellationToken) =>
                 {
-                    document.Info.Title = "Cachara Content API";
+                    document.Info = new()
+                    {
+                        Title = "Cachara Content API",
+                        Version = "1.2024.12.1",
+                        Description = "This API contains all endpoints for Users Content operations.",
+                        
+                    };
+
                     document.Info.Contact = new OpenApiContact()
                     {
                         Email = "support@cachara.test",
-                        Name = "Cachara Support"
+                        Name = "Cachara Support",
+                        Url = new Uri("https://github.com/mudouasenha/cachara")
                     };
 
                     return Task.CompletedTask;
@@ -182,7 +191,6 @@ namespace Cachara.Content.API
         public void ConfigureApp(IApplicationBuilder app)
         {
             app.UseProblemDetails();
-            app.UseOpenApi();
             app.UseSwaggerUI(opts =>
             {
                 opts.EnableTryItOutByDefault();
@@ -212,6 +220,7 @@ namespace Cachara.Content.API
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapScalarApiReference();
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health"); 
                 endpoints.MapSwagger();

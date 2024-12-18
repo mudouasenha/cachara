@@ -23,6 +23,8 @@ public class UserService : IUserService
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
     }
+    
+
     public async Task<User> CreateUser(UserUpsert upsert)
     {
         var user = new User()
@@ -30,13 +32,15 @@ public class UserService : IUserService
             Email = upsert.Email,
             UserName = upsert.UserName,
             Password = upsert.Password,
-            FullName = upsert.Name
+            FullName = upsert.FullName
         };
 
         user.GenerateId();
         user.UpdateCreatedAt();
 
-        return await _userRepository.AddAsync(user);
+        await _userRepository.AddAsync(user);
+
+        return await GetUserById(user.Id);
     }
 
     public async Task<User> GetByUserName(string userName)
@@ -51,7 +55,12 @@ public class UserService : IUserService
 
     public async Task<User> GetUserById(string id)
     {
-        return await _userRepository.FindByAsync(p => p.Id == id) ?? throw new Exception("User Not Found!");
+        var user = await _userRepository.FindByAsync(p => p.Id == id) 
+                   ?? throw new Exception("User Not Found!");
+
+        user.Password = _generalDataProtectionService.DecryptString(user.Password);
+
+        return user;
     }
 
     public async Task<User> GetWithPostsById(string id)
@@ -84,7 +93,7 @@ public class UserService : IUserService
         var encryptedPassword = _generalDataProtectionService.EncryptString(upsert.Password);
 
         user.Email = upsert.Email;
-        user.FullName = upsert.Name;
+        user.FullName = upsert.FullName;
         user.Password = encryptedPassword;
         
         user.ValidateAndThrow();

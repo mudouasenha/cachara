@@ -38,6 +38,9 @@ public class AccountController(IUserProfileService userProfileService) : BaseCon
             
         [Authorize("standard-user")]
         [HttpGet("hello-standard")]
+        [EndpointDescription("This returns a hello message for a standard user or above.")]
+        [EndpointSummary("Hello for standard users and above.")]
+        [ProducesResponseType<string>(StatusCodes.Status200OK)]
         public async Task<string> HelloStantard()
         {
             return $"Hello Standard {HttpContext.User.Identity?.Name}";

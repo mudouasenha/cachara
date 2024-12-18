@@ -19,7 +19,7 @@ public class JwtProvider : IJwtProvider
     public JwtProvider(JwtOptions jwtOptions)
     {
         _jwtOptions = jwtOptions;
-        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Secret));
+        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
     }
 
     public string Generate(User user)
@@ -44,8 +44,8 @@ public class JwtProvider : IJwtProvider
         }
         
         var token = new JwtSecurityToken(
-            issuer: _jwtOptions.Issuer,
-            audience: _jwtOptions.Audience,
+            issuer: _jwtOptions.Issuers.First(),
+            audience: _jwtOptions.Audiences.First(),
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(_jwtOptions.ExpirationMinutes),
             signingCredentials: new SigningCredentials(_key, SecurityAlgorithms.HmacSha256)

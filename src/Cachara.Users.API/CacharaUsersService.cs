@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text;
 using System.Text.Json.Serialization;
 using Cachara.Shared.Infrastructure.AzureServiceBus;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
@@ -25,6 +26,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http.Json;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
 
 namespace Cachara.Users.API
 {
@@ -55,28 +64,105 @@ namespace Cachara.Users.API
             }
         }
         
+        public void Configure(IApplicationBuilder app)
+        {
+            ConfigureApp(app);
+        }
+        
         public void ConfigureServices(IServiceCollection services)
         {
             // Dependency Injection Options
             services.AddOptions<TOptions>().Bind(_configuration);
 
-            services.AddScoped<IGeneralDataProtectionService, AesGeneralDataProtectionService>(_ =>
-                new AesGeneralDataProtectionService(Options.Security.Key));
-            services.AddSingleton<IJwtProvider, JwtProvider>(_ => new(Options.Jwt));
-            
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUserProfileService, UserProfileService>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<UserSubscriptionProvider>();
-            services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
-            
-            services.AddHealthChecks()
-                .AddSqlServer(
-                    connectionString: Options.SqlDb,
-                    healthQuery: "SELECT 1;",
-                    name: "database_check",
-                    failureStatus: HealthStatus.Degraded);
+            AddServicesAndRepositories(services);
+            ConfigureAzure(services);
 
+            AddHealthChecks(services);
+
+            AddSecurity(services);
+            
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddProblemDetails(delegate (Hellang.Middleware.ProblemDetails.ProblemDetailsOptions _) { });
+            
+            ConfigureEndpoints(services);
+
+            services.AddMemoryCache();
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Options.RedisConnection;
+            });
+            //services.AddDistributedMemoryCache() IMPORTANTE PARA USAR A INTERFACE IDISTRIBUTEDCACHE, MAS SEM PRECISAR
+            // IMPLEMENTAR O REDIS
+            
+#pragma warning disable EXTEXP0018
+            services.AddHybridCache(options =>
+            {
+                options.MaximumPayloadBytes = 1024 * 1024;
+                options.MaximumKeyLength = 1024;
+                options.DefaultEntryOptions = new HybridCacheEntryOptions()
+                {
+                    Expiration = TimeSpan.FromSeconds(30),
+                    LocalCacheExpiration = TimeSpan.FromSeconds(10)
+                };
+            });
+#pragma warning restore EXTEXP0018
+
+            
+            ConfigureHangfire(services);
+            ConfigureDataAccess(services);
+        }
+
+        private static void ConfigureEndpoints(IServiceCollection services)
+        {
+            services.AddControllers(options =>
+                {
+                    options.Conventions.Add(new ApiExplorerGroupPerVersionConvention());
+
+                    options.InputFormatters.Add(new TextPlainInputFormatter());
+                    options.InputFormatters.Add(new StreamInputFormatter());
+                }).AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
+                })
+                .AddProblemDetailsConventions();
+
+            services.AddOpenApi(opt =>
+            {
+                opt.AddDocumentTransformer((document, context, cancellationToken) =>
+                {
+                    document.Info = new()
+                    {
+                        Title = "Cachara Users API",
+                        Version = "1.2024.12.1",
+                        Description = "This API contains all endpoints for users operations.",
+                        
+                    };
+
+                    document.Info.Contact = new OpenApiContact()
+                    {
+                        Email = "support@cachara.test",
+                        Name = "Cachara Support",
+                        Url = new Uri("https://github.com/mudouasenha/cachara")
+                    };
+
+                    return Task.CompletedTask;
+                });
+            });
+            services.AddResponseCaching();
+            services.AddEndpointsApiExplorer();
+            services.AddCustomSwagger();
+        }
+
+        private void ConfigureAzure(IServiceCollection services)
+        {
+            services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
+                _ => new ServiceBusQueue(Options.CacharaContent.ServiceBusConn)
+            );
+        }
+
+        private void AddSecurity(IServiceCollection services)
+        {
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("management-user", policy => policy
@@ -84,7 +170,7 @@ namespace Cachara.Users.API
                     .RequireClaim(
                         CustomClaims.Subscription,
                         allowedValues: [Subscription.Management.ToString()]
-                        ));
+                    ));
 
                 options.AddPolicy("premium-user", policy => policy
                     .RequireAuthenticatedUser()
@@ -104,48 +190,41 @@ namespace Cachara.Users.API
                         ]
                     ));
             });
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            
-            services.AddProblemDetails(delegate (Hellang.Middleware.ProblemDetails.ProblemDetailsOptions _) { });
-            
-            services.AddControllers(options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opts =>
             {
-                options.Conventions.Add(new ApiExplorerGroupPerVersionConvention());
-
-                options.InputFormatters.Add(new TextPlainInputFormatter());
-                options.InputFormatters.Add(new StreamInputFormatter());
-            }).AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
-            })
-            .AddProblemDetailsConventions();
-
-            services.AddOpenApi(opt =>
-            {
-                opt.AddDocumentTransformer((document, context, cancellationToken) =>
+                opts.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    document.Info.Title = "Cachara Users API";
-                    document.Info.Contact = new OpenApiContact()
-                    {
-                        Email = "support@cachara.test",
-                        Name = "Cachara Support"
-                    };
-
-                    return Task.CompletedTask;
-                });
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidAudiences = Options.Jwt.Audiences,
+                    ValidIssuers = Options.Jwt.Issuers,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Options.Jwt.Key))
+                };
             });
-            services.AddResponseCaching();
-            services.AddEndpointsApiExplorer();
-            services.AddCustomSwagger();
+        }
 
-            services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
-                _ => new ServiceBusQueue(Options.CacharaContent.ServiceBusConn)
-            );
+        private void AddHealthChecks(IServiceCollection services)
+        {
+            services.AddHealthChecks()
+                .AddSqlServer(
+                    connectionString: Options.SqlDb,
+                    healthQuery: "SELECT 1;",
+                    name: "database_check",
+                    failureStatus: HealthStatus.Degraded);
+        }
+
+        private void AddServicesAndRepositories(IServiceCollection services)
+        {
+            services.AddScoped<IGeneralDataProtectionService, AesGeneralDataProtectionService>(_ =>
+                new AesGeneralDataProtectionService(Options.Security.Key));
+            services.AddSingleton<IJwtProvider, JwtProvider>(_ => new(Options.Jwt));
             
-            ConfigureHangfire(services);
-            ConfigureDataAccess(services);
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserProfileService, UserProfileService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<UserSubscriptionProvider>();
+            services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
         }
 
         private void ConfigureHangfire(IServiceCollection services)
@@ -193,7 +272,6 @@ namespace Cachara.Users.API
         public void ConfigureApp(IApplicationBuilder app)
         {
             app.UseProblemDetails();
-            app.UseOpenApi();
             app.UseSwaggerUI(opts =>
             {
                 opts.EnableTryItOutByDefault();
@@ -213,7 +291,6 @@ namespace Cachara.Users.API
                         swaggerPathBase.AppendPathSegment($"/{swaggerDoc.Key}/swagger.json"), swaggerDoc.Key);
                 }
             });
-
             
             app.UseHttpsRedirection();
             
@@ -225,18 +302,16 @@ namespace Cachara.Users.API
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapScalarApiReference();
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health"); 
                 endpoints.MapSwagger();
                 endpoints.MapOpenApi();
             });
-
+            
             app.UseHangfireDashboard();
         }
         
-        public void Configure(IApplicationBuilder app)
-        {
-            ConfigureApp(app);
-        }
+        
     }
 }

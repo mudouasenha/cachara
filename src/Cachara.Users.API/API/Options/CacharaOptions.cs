@@ -7,6 +7,7 @@ namespace Cachara.Users.API.API.Options
         
         public string SqlDb { get; set; }
         public string JobsSqlDb { get; set; }
+        public string RedisConnection { get; set; }
 
         public CacharaExporterOptions CacharaExporter { get; set; } = new();
         public JwtOptions Jwt { get; set; } = new();
@@ -20,10 +21,9 @@ namespace Cachara.Users.API.API.Options
 
     public class JwtOptions
     {
-        public string SecretEnvorinmentVariable { get; set; }
-        public string Secret { get; set; }
-        public string Issuer { get; set; }
-        public string Audience { get; set; }
+        public string Key { get; set; }
+        public IEnumerable<string> Issuers { get; set; }  = new List<string>();
+        public IEnumerable<string> Audiences { get; set; } = new List<string>();
         public int ExpirationMinutes { get; set; }
     }
 
