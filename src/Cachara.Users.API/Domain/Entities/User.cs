@@ -1,4 +1,5 @@
 using Cachara.Shared.Domain.Entities.Abstractions;
+using Cachara.Users.API.API.Security;
 using FluentValidation.Results;
 
 namespace Cachara.Users.API.Domain.Entities;
@@ -14,6 +15,7 @@ public class User : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IVa
     public string Email { get; set; }
     public string Password { get; set; }
     public DateTime DateOfBirth { get; set; }
+    // public Subscription Subscription { get; set; } TODO: think about it.
     public string ProfilePictureUrl { get; set; }
      public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }

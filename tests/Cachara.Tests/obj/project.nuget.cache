@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "aNseVzVxXb8=",
+  "dgSpecHash": "WQ0tX8LP34U=",
   "success": true,
   "projectFilePath": "C:\\Users\\matheus.gomes\\source\\repos\\mudouasenha\\Cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\matheus.gomes\\.nuget\\packages\\aspnetcore.authentication.apikey\\8.0.1\\aspnetcore.authentication.apikey.8.0.1.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\aspnetcore.healthchecks.sqlserver\\8.0.2\\aspnetcore.healthchecks.sqlserver.8.0.2.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\autofixture\\4.18.1\\autofixture.4.18.1.nupkg.sha512",
     "C:\\Users\\matheus.gomes\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",

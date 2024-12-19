@@ -33,7 +33,9 @@ public class JwtProvider : IJwtProvider
             new Claim(JwtRegisteredClaimNames.Name, user.FullName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(now).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
+            new Claim("Id", user.Id),
             new Claim("username", user.UserName),
+            new Claim("fullName", user.FullName),
             new Claim("handle", user.Handle),
             new Claim("profile_picture", user.ProfilePictureUrl ?? string.Empty)
         };

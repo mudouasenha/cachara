@@ -45,7 +45,7 @@ public class UserService : IUserService
 
     public async Task<User> GetByUserName(string userName)
     {
-        return await _userRepository.FindByAsync(p => p.UserName == userName) ?? throw new Exception("User Not Found!");
+        return await _userRepository.FindByAsync(p => p.UserName == userName);
     }
 
     public Task<IEnumerable<User>> Search(UserSearchCommand searchCommmand)
@@ -97,6 +97,13 @@ public class UserService : IUserService
         user.Password = encryptedPassword;
         
         user.ValidateAndThrow();
+    }
+
+    internal string DecryptPassword(User user)
+    {
+        var decryptedPassword = _generalDataProtectionService.DecryptString(user.Password);
+
+        return decryptedPassword;
     }
     
     internal async Task<User> InsertInternal(

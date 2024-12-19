@@ -9,6 +9,7 @@ using IUserProfileService = Cachara.Users.API.Services.Abstractions.IUserProfile
 namespace Cachara.Users.API.Controllers.Public;
 
 
+// TODO: Implement Rate Limiting in this API.
 [ApiExplorerSettings(GroupName = "public")]
 [Route("public/account")]
 [Tags("Auth")]

@@ -3,6 +3,7 @@ using Cachara.Shared.Infrastructure.AzureServiceBus;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Cachara.Users.API.Controllers.Internal;
@@ -62,7 +63,7 @@ public class DevTestController
     }
     
     [HttpPost("test-distributed-cache")]
-    public async Task<IResult> TestMemoryCache([FromServices] IDistributedCache distributedCache)
+    public async Task<IResult> TestDistributedCache([FromServices] IDistributedCache distributedCache)
     {
         var userNamesString = await distributedCache.GetStringAsync("teste-distributed-cache");
 
@@ -80,6 +81,51 @@ public class DevTestController
 
         return Results.Ok(userNames);
     }
+    
+    [HttpPost("test-hybrid-cache-getorcreateasync")]
+    public async Task<IResult> GetHybridCache([FromServices] HybridCache hybridCache)
+    {
+        var result = await hybridCache.GetOrCreateAsync("test-hybrid-cache-getorcreateasync",
+            cancellationToken => ValueTask.FromResult(new string[] { "maria", "joão" }),
+            new HybridCacheEntryOptions()
+            {
+                Expiration = TimeSpan.FromSeconds(10),
+                LocalCacheExpiration = TimeSpan.FromSeconds(10),
+                //Flags = HybridCacheEntryFlags.DisableDistributedCache  AND OTHER OPTIONS
+            },
+            new[] { "tag1", "tag2" });
+
+        return Results.Ok(result);
+    }
+    
+    [HttpPost("test-hybrid-cache-set")]
+    public async Task<IResult> SetHybridCache([FromServices] HybridCache hybridCache)
+    {
+        await hybridCache.SetAsync("test-hybrid-cache-set",
+            new string[] { "maria", "joão" },
+            new HybridCacheEntryOptions()
+            {
+                Expiration = TimeSpan.FromSeconds(10),
+                LocalCacheExpiration = TimeSpan.FromSeconds(10),
+                //Flags = HybridCacheEntryFlags.DisableDistributedCache  AND OTHER OPTIONS
+            },
+            new[] { "tag1", "tag2" });
+
+        return Results.Ok();
+    }
+    
+    [HttpPost("test-hybrid-cache-remove")]
+    public async Task<IResult> RemoveHybridCache([FromServices] HybridCache hybridCache)
+    {
+        await hybridCache.RemoveAsync("test-hybrid-cache-getorcreateasync");
+
+        // REMOVE BY TAG
+        // await hybridCache.RemoveByTagAsync("tag1");
+
+        return Results.Ok();
+    }
+    
+    
     
     
 }
