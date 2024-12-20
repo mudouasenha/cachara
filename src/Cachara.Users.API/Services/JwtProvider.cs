@@ -1,3 +1,4 @@
+using System.Globalization;
 using Cachara.Users.API.API.Options;
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Services.Abstractions;
@@ -36,7 +37,7 @@ public class JwtProvider : IJwtProvider
             new Claim("Id", user.Id),
             new Claim("username", user.UserName),
             new Claim("fullName", user.FullName),
-            new Claim("handle", user.Handle),
+            new Claim("dateOfBirth", user.DateOfBirth.ToString(CultureInfo.InvariantCulture)),
             new Claim("profile_picture", user.ProfilePictureUrl ?? string.Empty)
         };
 

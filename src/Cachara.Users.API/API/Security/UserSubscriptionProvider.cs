@@ -14,7 +14,7 @@ namespace Cachara.Users.API.API.Security;
 //     Example Use Cases:
 // Generating an API key when a new client account is created.
 // Retrieving an API key from a database for validation.
-public class UserSubscriptionProvider : IApiKeyProvider
+public class UserSubscriptionProvider // IApiKeyProvider
 {
     public HybridCache hybridCache;
     public Subscription GetSubscription(string? userId)
@@ -27,13 +27,14 @@ public class UserSubscriptionProvider : IApiKeyProvider
         return Subscription.Management;
     }
 
-    public Task<IApiKey> ProvideAsync(string key)
-    {
-        if (string.IsNullOrEmpty(key))
-        {
-            return Subscription.Standard;
-        }
-
-        return Subscription.Management;
-    }
+    // public Task<IApiKey> ProvideAsync(string key)
+    // {
+    //         
+    //     if (string.IsNullOrEmpty(key))
+    //     {
+    //         return Task.FromResult<IApiKey>(Subscription.Standard);
+    //     }
+    //
+    //     return Subscription.Management;
+    // }
 }

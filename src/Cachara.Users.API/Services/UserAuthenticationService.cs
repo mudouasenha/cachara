@@ -1,4 +1,5 @@
 using Cachara.Shared.Infrastructure.Data.Interfaces;
+using Cachara.Users.API.API.Security;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Services.Abstractions;
 using Cachara.Users.API.Services.Models;
@@ -18,7 +19,7 @@ public class UserAuthenticationService : UserService
         _tokenProvider = tokenProvider;
     }
 
-    public async Task<Result<UserRegisterResult>> RegisterUser(UserRegister register)
+    public async Task<Result<UserRegisterResult>> RegisterUser(RegisterCommand register)
     {
         var result = new Result<UserRegisterResult>();
         try
@@ -28,7 +29,9 @@ public class UserAuthenticationService : UserService
                 FullName = register.FullName,
                 UserName = register.UserName,
                 Email = register.Email,
-                Password = register.Password
+                Password = register.Password,
+                DateOfBirth = register.DateOfBirth,
+                Subscription = Subscription.Standard
             };
             
             var user = await base.CreateUser(userUpsert);
@@ -88,19 +91,6 @@ public class UserAuthenticationService : UserService
             return result.WithError(e.Message);
         }
     }
-
-    public async Task<Result<UserProfileResult>> GetUserProfile(string token)
-    {
-        var profile = base.GetUserProfile();
-    }
-}
-
-public class UserRegister
-{
-    public string FullName { get; set; }
-    public string UserName { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
 }
 
 public class UserLoginResult

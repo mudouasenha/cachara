@@ -32,7 +32,8 @@ public class UserService : IUserService
             Email = upsert.Email,
             UserName = upsert.UserName,
             Password = upsert.Password,
-            FullName = upsert.FullName
+            FullName = upsert.FullName,
+            Subscription = upsert.Subscription
         };
 
         user.GenerateId();
@@ -99,7 +100,10 @@ public class UserService : IUserService
 
         user.Email = upsert.Email;
         user.FullName = upsert.FullName;
+        user.DateOfBirth = upsert.DateOfBirth;
+        user.UserName = upsert.UserName;
         user.Password = encryptedPassword;
+        user.Subscription = upsert.Subscription;
         
         user.ValidateAndThrow();
     }

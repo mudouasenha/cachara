@@ -1,9 +1,7 @@
 using Cachara.Users.API.Controllers.Base;
-using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Services;
 using Cachara.Users.API.Services.Abstractions;
 using Cachara.Users.API.Services.Models;
-using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cachara.Users.API.Controllers.Public;
@@ -15,16 +13,24 @@ public class AuthController(IUserService userService, UserAuthenticationService 
 {
     
     [HttpPost("register")]
-        public async Task<User> Register(UserUpsert upsert)
+        public async Task<IActionResult> Register(RegisterRequest request)
         {
-            return await userService.Upsert(upsert);
+            var command = new RegisterCommand(request.UserName, request.Email, request.DateOfBirth, request.FullName, request.Password);
+            var tokenResult = await userAuthService.RegisterUser(command);
+
+            if (tokenResult.IsFailed)
+            {
+                return HandleFailure(); // TODO: Implement failed result factory. 400
+            }
+
+            return Ok(tokenResult.Value);
         }
         
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
-        var command = new LoginCommand(request.Email);
-        Result<string> tokenResult = await userAuthService.LoginUser(request);
+        var command = new LoginCommand(request.Email, request.Password);
+        var tokenResult = await userAuthService.LoginUser(command);
 
         if (tokenResult.IsFailed)
         {
@@ -33,11 +39,4 @@ public class AuthController(IUserService userService, UserAuthenticationService 
 
         return Ok(tokenResult.Value);
     }
-        
-        [HttpPost("search")]
-        public async Task<User> Search(string userName) // TODO: Fix Search for Users
-        {
-            return await userService.GetByUserName(userName);
-        }
-
 }

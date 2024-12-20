@@ -163,23 +163,40 @@ namespace Cachara.Users.API
 
         private void AddSecurity(IServiceCollection services)
         {
+            
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opts =>
+                {
+                    opts.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateAudience = true,
+                        ValidateIssuer = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidAudiences = Options.Jwt.Audiences,
+                        ValidIssuers = Options.Jwt.Issuers,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Options.Jwt.Key))
+                    };
+                });
+            
+            // TODO: Add requirement of "user must own document in order to access"
+            // TODO: Create Minimum Age requirement.
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("management-user", policy => policy
+                options.AddPolicy(Policies.ManagementUser, policy => policy
                     .RequireAuthenticatedUser()
                     .RequireClaim(
                         CustomClaims.Subscription,
                         allowedValues: [Subscription.Management.ToString()]
                     ));
 
-                options.AddPolicy("premium-user", policy => policy
+                options.AddPolicy(Policies.PremiumUser, policy => policy
                     .RequireAuthenticatedUser()
                     .RequireClaim(
                         CustomClaims.Subscription,
                         allowedValues: [Subscription.Premium.ToString(), Subscription.Management.ToString()]
                     ));
 
-                options.AddPolicy("standard-user", policy => policy
+                options.AddPolicy(Policies.StandardUser, policy => policy
                     .RequireAuthenticatedUser()
                     .RequireClaim(
                         CustomClaims.Subscription,
@@ -189,18 +206,6 @@ namespace Cachara.Users.API
                             Subscription.Standard.ToString()
                         ]
                     ));
-            });
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opts =>
-            {
-                opts.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateAudience = true,
-                    ValidateIssuer = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidAudiences = Options.Jwt.Audiences,
-                    ValidIssuers = Options.Jwt.Issuers,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Options.Jwt.Key))
-                };
             });
         }
 
