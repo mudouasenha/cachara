@@ -53,12 +53,12 @@ public class UserAuthenticationService : UserService
         }
     }
     
-    public async Task<Result<UserLoginResult>> LoginUser(string username, string password)
+    public async Task<Result<UserLoginResult>> LoginUser(LoginCommand request)
     {
         var result = new Result<UserLoginResult>();
         try
         {
-            var user = await base.GetByUserName(username);
+            var user = await base.GetByEmail(request.Email);
 
             if (user == default)
             {
@@ -67,7 +67,7 @@ public class UserAuthenticationService : UserService
 
             string decryptedPassword = base.DecryptPassword(user);
 
-            if (!string.Equals(password, decryptedPassword))
+            if (!string.Equals(request.Password, decryptedPassword))
             {
                 result.WithError("Invalid userName or password");
             }

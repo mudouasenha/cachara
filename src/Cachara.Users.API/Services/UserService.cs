@@ -47,6 +47,11 @@ public class UserService : IUserService
     {
         return await _userRepository.FindByAsync(p => p.UserName == userName);
     }
+    
+    public async Task<User> GetByEmail(string email)
+    {
+        return await _userRepository.FindByAsync(p => p.Email == email);
+    }
 
     public Task<IEnumerable<User>> Search(UserSearchCommand searchCommmand)
     {

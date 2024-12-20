@@ -1,11 +1,12 @@
 using System.Security.Claims;
 using Cachara.Users.API.Services.Abstractions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cachara.Users.API.Controllers.Public;
 
-[Authorize()]
+[Authorize("standard-user",  AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [ApiExplorerSettings(GroupName = "public")]
 [Route("public/follow")]
 [Tags("Auth")]

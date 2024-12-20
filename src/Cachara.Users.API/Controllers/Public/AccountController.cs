@@ -2,6 +2,7 @@ using Cachara.Users.API.Controllers.Base;
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Services.Models;
 using FluentResults;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IUserProfileService = Cachara.Users.API.Services.Abstractions.IUserProfileService;
@@ -10,7 +11,9 @@ namespace Cachara.Users.API.Controllers.Public;
 
 
 // TODO: Implement Rate Limiting in this API.
+
 [ApiExplorerSettings(GroupName = "public")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("public/account")]
 [Tags("Auth")]
 public class AccountController(IUserProfileService userProfileService) : BaseController
@@ -23,21 +26,8 @@ public class AccountController(IUserProfileService userProfileService) : BaseCon
             return await userProfileService.GetProfile();
         }
         
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
-        {
-            var command = new LoginCommand(request.Email);
-            Result<string> tokenResult = await _userProfileService.Login(command);
-
-            if (tokenResult.IsFailed)
-            {
-                return HandleFailure(); // TODO: Implement failed result factory. 400
-            }
-
-            return Ok(tokenResult.Value);
-        }
             
-        [Authorize("standard-user")]
+        [Authorize("standard-user", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("hello-standard")]
         [EndpointDescription("This returns a hello message for a standard user or above.")]
         [EndpointSummary("Hello for standard users and above.")]
@@ -47,7 +37,7 @@ public class AccountController(IUserProfileService userProfileService) : BaseCon
             return $"Hello Standard {HttpContext.User.Identity?.Name}";
         }
         
-        [Authorize("management-user")]
+        [Authorize("management-user", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("hello-management")]
         public async Task<string> Hello()
         {
