@@ -7,3 +7,7 @@ docker run -d -p 6379:6379 -v redis-data:/data --name redis redis:latest
 Using Redis Insight:
 https://redis.io/insight/
 
+
+#### Migrations
+dotnet ef migrations add Initial --context CacharaUsersDbContext --startup-project Cachara.Users.API -o Infrastructure/Data/Migrations
+

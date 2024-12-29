@@ -5,6 +5,7 @@ using Cachara.Content.API.API.Extensions;
 using Cachara.Content.API.API.Hangfire;
 using Cachara.Content.API.API.Options;
 using Cachara.Content.API.Infrastructure;
+using Cachara.Content.API.Infrastructure.Clients;
 using Cachara.Content.API.Infrastructure.Data;
 using Cachara.Content.API.Infrastructure.Data.Repository;
 using Cachara.Content.API.Services;
@@ -14,6 +15,7 @@ using Cachara.Shared.Infrastructure.AzureServiceBus;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Hangfire;
 using Cachara.Shared.Infrastructure.Security;
+using Dapper;
 using Flurl;
 using Hangfire;
 using Hangfire.Console;
@@ -132,6 +134,17 @@ namespace Cachara.Content.API
             
             ConfigureHangfire(services);
             ConfigureDataAccess(services);
+            ConfigureHttpClients(services);
+        }
+
+        private void ConfigureHttpClients(IServiceCollection services)
+        {
+            services.AddHttpClient<GitHubService>((serviceProvider, client) =>
+            {
+                // client.DefaultRequestHeaders.Add("Authorization", Options.GitHubToken);
+                // client.DefaultRequestHeaders.Add("User-Agent", Options.UserAgent);
+                // client.BaseAddress = new Uri("");
+            });
         }
 
         private void ConfigureExternalServices(IServiceCollection services)

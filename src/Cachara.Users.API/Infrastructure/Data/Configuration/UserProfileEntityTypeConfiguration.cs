@@ -18,5 +18,7 @@ public class UserProfileEntityTypeConfiguration : BaseEntityTypeConfiguration<Us
         builder.Property(t => t.WebsiteUrl)
             .HasMaxLength(2048)
             .IsRequired();
+
+        builder.HasOne(p => p.User);
     }
 }

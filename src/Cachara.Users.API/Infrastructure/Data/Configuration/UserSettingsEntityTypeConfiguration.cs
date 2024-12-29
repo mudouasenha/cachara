@@ -24,6 +24,7 @@ public class UserSettingsEntityTypeConfiguration : BaseEntityTypeConfiguration<U
 
         builder.HasOne(p => p.User)
             .WithOne(p => p.Settings)
+            .HasForeignKey<UserSettings>(p => p.UserId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
