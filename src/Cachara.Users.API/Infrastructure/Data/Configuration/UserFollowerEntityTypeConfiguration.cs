@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Cachara.Users.API.Infrastructure.Data.Configuration;
 
-public class UserFollowerEntityTypeConfiguration : BaseEntityTypeConfiguration<UserFollower>
+/*public class UserFollowerEntityTypeConfiguration : BaseEntityTypeConfiguration<UserFollower>
 {
     public void Configure(EntityTypeBuilder<UserFollower> builder)
     {
@@ -20,16 +20,16 @@ public class UserFollowerEntityTypeConfiguration : BaseEntityTypeConfiguration<U
         builder.Property(t => t.FollowedAt)
             .IsRequired();
         
-        builder
-            .HasOne(p => p.User)
-            .WithMany(p => p.Followers)
-            .HasForeignKey(p => p.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // builder
+        //     .HasOne(p => p.User)
+        //     .WithMany(p => p.Followers)
+        //     .HasForeignKey(p => p.UserId)
+        //     .OnDelete(DeleteBehavior.Cascade);
         
-        builder
-            .HasOne(p => p.Follower)
-            .WithMany(p => p.Following)
-            .HasForeignKey(p => p.FollowerId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // builder
+        //     .HasOne(p => p.Follower)
+        //     .WithMany(p => p.Following)
+        //     .HasForeignKey(p => p.FollowerId)
+        //     .OnDelete(DeleteBehavior.Cascade);
     }
-}
+}*/

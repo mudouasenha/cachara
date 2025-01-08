@@ -25,8 +25,8 @@ public class User : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IVa
     
     public UserSettings Settings { get; set; }
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
-    public ICollection<UserFollower> Followers { get; set; } = new List<UserFollower>();
-    public ICollection<UserFollower> Following { get; set; } = new List<UserFollower>();
+    //public ICollection<UserFollower> Followers { get; set; } = new List<UserFollower>();
+    //public ICollection<UserFollower> Following { get; set; } = new List<UserFollower>();
     
     public ValidationResult Validate()
     {

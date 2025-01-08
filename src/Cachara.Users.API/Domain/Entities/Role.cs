@@ -9,7 +9,6 @@ public class Role : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IVa
     public string Name { get; set; }
     public string Description { get; set; }
 
-    // Navigation properties
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     
     public DateTimeOffset CreatedAt { get; set; }

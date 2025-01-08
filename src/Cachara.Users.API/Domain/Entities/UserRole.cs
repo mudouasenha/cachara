@@ -6,10 +6,10 @@ namespace Cachara.Users.API.Domain.Entities;
 public class UserRole : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IValidatable
 {
     public string Id { get; set; }
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
     public User User { get; set; }
     
-    public Guid RoleId { get; set; }
+    public string RoleId { get; set; }
     public Role Role { get; set; }
     
     public DateTime AssignedDate { get; set; }

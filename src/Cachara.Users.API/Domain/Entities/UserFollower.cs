@@ -3,7 +3,7 @@ using FluentValidation.Results;
 
 namespace Cachara.Users.API.Domain.Entities;
 
-public class UserFollower : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IValidatable
+/*public class UserFollower : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IValidatable
 {
     public string Id { get; set; }
     public string UserId { get; set; }
@@ -29,4 +29,4 @@ public class UserFollower : IEntity<string>, IModifiable, IVersable, ISoftDeleta
     {
         throw new NotImplementedException();
     }
-}
+}*/

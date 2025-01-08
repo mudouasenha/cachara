@@ -41,14 +41,14 @@ namespace Cachara.Users.API.Infrastructure.Data.Configuration;
                 .WithOwner(p => p.User)
                 .HasForeignKey(p => p.UserId);
 
-            builder.HasMany(p => p.Followers)
-                .WithOne(p => p.User)
-                .HasForeignKey(p => p.UserId);
+            // builder.HasMany(p => p.Followers)
+            //     .WithOne(p => p.User)
+            //     .HasForeignKey(p => p.UserId);
             
-            builder
-                .HasMany(p => p.Following)
-                .WithOne(p => p.Follower)
-                .HasForeignKey(p => p.FollowerId);
+            // builder
+            //     .HasMany(p => p.Following)
+            //     .WithOne(p => p.Follower)
+            //     .HasForeignKey(p => p.FollowerId);
 
             builder
                 .HasMany(p => p.UserRoles)
