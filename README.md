@@ -80,6 +80,7 @@ tools for data storage, asynchronous communication and enterprise patterns on to
 
 ## 5. Infrastructure & CI/CD:
 
+- [x] Consistent coding style with .editorconfig file
 - [x] Terraform IaC Scripts;
 - [x] Docker-compose scripts;
 - [ ] GitHub Actions;
