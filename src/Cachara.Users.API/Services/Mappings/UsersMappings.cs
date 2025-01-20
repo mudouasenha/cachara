@@ -4,7 +4,4 @@ namespace Cachara.Users.API.Services.Mappings;
 
 public class UsersMappings : Profile
 {
-    public UsersMappings()
-    {
-    }
 }

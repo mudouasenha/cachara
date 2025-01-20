@@ -12,10 +12,10 @@ public class RoleEntityTypeConfiguration : BaseEntityTypeConfiguration<Role>
         builder.Property(t => t.Name)
             .HasMaxLength(50)
             .IsRequired();
-            
+
         builder.Property(t => t.Description)
             .IsRequired();
-        
+
         builder.HasMany(p => p.UserRoles)
             .WithOne(p => p.Role)
             .HasForeignKey(p => p.RoleId)

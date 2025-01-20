@@ -14,7 +14,8 @@ public class DevTestController
     private readonly IServiceBusQueue _queue;
 
 
-    public DevTestController(ILogger<DevTestController> logger, IPostManagerService postManagerService, IServiceBusQueue queue)
+    public DevTestController(ILogger<DevTestController> logger, IPostManagerService postManagerService,
+        IServiceBusQueue queue)
     {
         _postManagerService = postManagerService;
         _logger = logger;
@@ -27,7 +28,7 @@ public class DevTestController
         _postManagerService.ExportPosts(Guid.NewGuid().ToString());
         return Results.Ok();
     }
-    
+
     [HttpPost("ping")]
     public async Task<IResult> Ping()
     {
@@ -38,15 +39,14 @@ public class DevTestController
     [HttpPost("test-receive-message")]
     public async Task<IResult> TestConsumeMessage()
     {
-        
         var msg = await _queue.ReceiveMessage("teste-matheus");
 
         if (!string.IsNullOrEmpty(msg))
         {
             return Results.Ok($"Message received: {msg}");
         }
-        
-        
+
+
         return Results.BadRequest("No message was received");
     }
 }

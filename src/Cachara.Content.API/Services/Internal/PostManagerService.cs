@@ -20,7 +20,7 @@ public class PostManagerService : IPostManagerService
         _backgroundServiceManager.Enqueue<IPostManagerService>(x => x.ExportPostsInternal(userId));
         return new Result();
     }
-    
+
     public async Task<Result> ExportPostsInternal(string userId)
     {
         Console.WriteLine($"Exporting Posts for userId {userId}");

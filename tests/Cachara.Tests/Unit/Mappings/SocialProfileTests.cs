@@ -6,8 +6,8 @@ namespace Cachara.Tests.Unit.Mappings;
 
 public class SocialProfileTests
 {
-    private IMapper _sut;
     private readonly Fixture _fixture;
+    private IMapper _sut;
 
     [Trait("Category", "Unit")]
     [Trait("Feature", "Mapper")]

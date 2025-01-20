@@ -23,7 +23,7 @@ services:
       - ./.containers/cachara-sqlserver:/var/opt/mssql/data
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${Sa_Password:-passwordD123} -Q 'SELECT 1' || exit 1"]
+      test: [ "CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${Sa_Password:-passwordD123} -Q 'SELECT 1' || exit 1" ]
       interval: 10s
       retries: 10
       start_period: 10s
@@ -58,7 +58,7 @@ services:
       - "5001:5001"
     networks:
       - devnet
-        
+
   cachara.users.api:
     image: cachara.users.api
     container_name: cachara-users-api
@@ -90,7 +90,7 @@ services:
       - "5201:5201"
     networks:
       - devnet
-        
+
   cachara.graphql.api:
     image: cachara.graphql.api
     container_name: cachara-graphql-api
@@ -103,7 +103,7 @@ services:
       - "5301:5301"
     networks:
       - devnet
-  
+
   cachara.seq:
     image: datalust/seq:latest
     container_name: cachara-seq
@@ -117,7 +117,7 @@ services:
     volumes:
       - ./.containers/cachara-seq:/data
     #command: >
-    #  bash -c ' 
+    #  bash -c '
     #    seq config set -k api.listenUris -v https://cachara.logs,https://cachara.logs:45341 &&
     #    seq config set -k api.ingestionPort -v 45341 &&
     #    seq service restart

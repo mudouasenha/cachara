@@ -11,10 +11,10 @@ public class UserProfileEntityTypeConfiguration : BaseEntityTypeConfiguration<Us
         builder.Property(t => t.UserId)
             .HasMaxLength(36)
             .IsRequired();
-            
+
         builder.Property(t => t.Bio)
             .IsRequired();
-            
+
         builder.Property(t => t.WebsiteUrl)
             .HasMaxLength(2048)
             .IsRequired();

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cachara.Users.API.Controllers.Public;
 
-[Authorize("standard-user",  AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize("standard-user", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [ApiExplorerSettings(GroupName = "public")]
 [Route("public/follow")]
 [Tags("Auth")]
@@ -39,5 +39,4 @@ public class FollowController(IUserFollowService userFollowService, ClaimsPrinci
         await userFollowService.GetFollowing();
         return Ok();
     }
-
 }

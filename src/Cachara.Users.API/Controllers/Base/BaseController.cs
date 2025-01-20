@@ -8,5 +8,4 @@ public abstract class BaseController : ControllerBase
     {
         throw new NotImplementedException("Please implement HandleFailure Controller Method.");
     }
-
 }

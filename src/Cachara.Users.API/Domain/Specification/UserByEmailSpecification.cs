@@ -5,12 +5,13 @@ namespace Cachara.Users.API.Domain.Specification;
 
 public class UserByEmailSpecification : BaseSpecification<User>
 {
-    private string _email;
+    private readonly string _email;
 
     public UserByEmailSpecification(string email)
     {
         _email = email;
     }
+
     public bool IsSatisfied(User u)
     {
         return u.Email == _email;

@@ -12,13 +12,13 @@ public class UserSettingsEntityTypeConfiguration : BaseEntityTypeConfiguration<U
         builder.Property(t => t.UserId)
             .HasMaxLength(36)
             .IsRequired();
-            
+
         builder.Property(t => t.IsPrivate)
             .IsRequired();
-        
+
         builder.Property(t => t.ReceiveNotifications)
             .IsRequired();
-        
+
         builder.Property(t => t.ShowEmail)
             .IsRequired();
 

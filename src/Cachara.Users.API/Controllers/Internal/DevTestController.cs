@@ -21,7 +21,7 @@ public class DevTestController
         _queue = queue;
         _logger = logger;
     }
-    
+
     [HttpPost("ping")]
     [EndpointSummary("Ping the application.")]
     [EndpointDescription("Makes sure that the request is received and returned by only returning an Ok Result.")]
@@ -30,7 +30,7 @@ public class DevTestController
         _logger.LogInformation("Ping ok;");
         return Results.Ok();
     }
-    
+
     [HttpPost("test-exception-logging")]
     public async Task<IResult> TestException()
     {
@@ -46,74 +46,69 @@ public class DevTestController
         await _queue.SendMessage("teste-matheus", "Message from Users API");
         return Results.Ok("Message Sent");
     }
-    
+
     [HttpPost("test-memory-cache")]
     public async Task<IResult> TestMemoryCache([FromServices] IMemoryCache memoryCache)
     {
         if (!memoryCache.TryGetValue("teste-memory-cache", out IEnumerable<string> userNames))
         {
             userNames = new[] { "maria", "joão" };
-            memoryCache.Set("teste-memory-cache", userNames, new MemoryCacheEntryOptions()
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
-            });
+            memoryCache.Set("teste-memory-cache", userNames,
+                new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10) });
         }
 
         return Results.Ok(userNames);
     }
-    
+
     [HttpPost("test-distributed-cache")]
     public async Task<IResult> TestDistributedCache([FromServices] IDistributedCache distributedCache)
     {
         var userNamesString = await distributedCache.GetStringAsync("teste-distributed-cache");
 
         if (!string.IsNullOrWhiteSpace(userNamesString))
+        {
             return Results.Ok(JsonSerializer.Deserialize<IEnumerable<string>>(userNamesString));
-        
+        }
+
         var userNames = new[] { "maria", "joão" };
 
         await distributedCache.SetStringAsync("teste-distributed-cache",
             JsonSerializer.Serialize(userNames),
-            new DistributedCacheEntryOptions()
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
-            });
+            new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10) });
 
         return Results.Ok(userNames);
     }
-    
+
     [HttpPost("test-hybrid-cache-getorcreateasync")]
     public async Task<IResult> GetHybridCache([FromServices] HybridCache hybridCache)
     {
         var result = await hybridCache.GetOrCreateAsync("test-hybrid-cache-getorcreateasync",
-            cancellationToken => ValueTask.FromResult(new string[] { "maria", "joão" }),
-            new HybridCacheEntryOptions()
+            cancellationToken => ValueTask.FromResult(new[] { "maria", "joão" }),
+            new HybridCacheEntryOptions
             {
-                Expiration = TimeSpan.FromSeconds(10),
-                LocalCacheExpiration = TimeSpan.FromSeconds(10),
+                Expiration = TimeSpan.FromSeconds(10), LocalCacheExpiration = TimeSpan.FromSeconds(10)
                 //Flags = HybridCacheEntryFlags.DisableDistributedCache  AND OTHER OPTIONS
             },
             new[] { "tag1", "tag2" });
 
         return Results.Ok(result);
     }
-    
+
     [HttpPost("test-hybrid-cache-set")]
     public async Task<IResult> SetHybridCache([FromServices] HybridCache hybridCache)
     {
         await hybridCache.SetAsync("test-hybrid-cache-set",
-            new string[] { "maria", "joão" },
-            new HybridCacheEntryOptions()
+            new[] { "maria", "joão" },
+            new HybridCacheEntryOptions
             {
-                Expiration = TimeSpan.FromSeconds(10),
-                LocalCacheExpiration = TimeSpan.FromSeconds(10),
+                Expiration = TimeSpan.FromSeconds(10), LocalCacheExpiration = TimeSpan.FromSeconds(10)
                 //Flags = HybridCacheEntryFlags.DisableDistributedCache  AND OTHER OPTIONS
             },
             new[] { "tag1", "tag2" });
 
         return Results.Ok();
     }
-    
+
     [HttpPost("test-hybrid-cache-remove")]
     public async Task<IResult> RemoveHybridCache([FromServices] HybridCache hybridCache)
     {
@@ -124,8 +119,4 @@ public class DevTestController
 
         return Results.Ok();
     }
-    
-    
-    
-    
 }

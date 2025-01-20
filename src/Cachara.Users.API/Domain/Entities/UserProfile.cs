@@ -5,21 +5,20 @@ namespace Cachara.Users.API.Domain.Entities;
 
 public class UserProfile : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IValidatable
 {
-    public string Id { get; set; }
     public string UserId { get; set; }
     public User User { get; set; }
-    
+
     public string Bio { get; set; }
     public string WebsiteUrl { get; set; }
     public string Location { get; set; }
-    
+
     public ICollection<UserInterest> Interests { get; set; } = new List<UserInterest>();
-    
+    public string Id { get; set; }
+
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
-    public byte[] Version { get; set; }
     public bool Deleted { get; set; }
-    
+
     public ValidationResult Validate()
     {
         throw new NotImplementedException();
@@ -29,4 +28,6 @@ public class UserProfile : IEntity<string>, IModifiable, IVersable, ISoftDeletab
     {
         throw new NotImplementedException();
     }
+
+    public byte[] Version { get; set; }
 }

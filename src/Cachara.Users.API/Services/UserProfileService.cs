@@ -10,14 +10,15 @@ namespace Cachara.Users.API.Services;
 
 public class UserProfileService : IUserProfileService
 {
-    private readonly IUserRepository _userRepository;
     private readonly IJwtProvider _jwtProvider;
+    private readonly IUserRepository _userRepository;
 
     public UserProfileService(IUserRepository userRepository, IJwtProvider jwtProvider)
     {
         _userRepository = userRepository;
         _jwtProvider = jwtProvider;
     }
+
     public async Task<Result<string>> Login(LoginCommand command)
     {
         var result = new Result<string>();
@@ -28,9 +29,9 @@ public class UserProfileService : IUserProfileService
             return result.WithError(DomainErrors.User.InvalidCredentials);
         }
 
-        string token = _jwtProvider.Generate(user);
-        
-        
+        var token = _jwtProvider.Generate(user);
+
+
         throw new NotImplementedException();
     }
 

@@ -7,22 +7,17 @@ using Serilog.Sinks.OpenTelemetry;
 
 namespace Cachara.Content.API.API.Extensions;
 
-public partial class CacharaLogging<TOptions> where TOptions : CacharaContentOptions, new()
+public class CacharaLogging<TOptions> where TOptions : CacharaContentOptions, new()
 {
-    private IConfiguration Configuration;
+    private readonly IConfiguration Configuration;
 
     private IHostEnvironment Environment;
 
-    private TOptions Options { get; set; }
-        
     public CacharaLogging(IHostEnvironment environment, IConfiguration configuration)
     {
         Environment = environment;
         Configuration = configuration;
-        Options = new TOptions()
-        {
-            Name = GetType().Name
-        };
+        Options = new TOptions { Name = GetType().Name };
         try
         {
             Configuration?.Bind(Options);
@@ -33,8 +28,8 @@ public partial class CacharaLogging<TOptions> where TOptions : CacharaContentOpt
             throw;
         }
     }
-    
-    
+
+    private TOptions Options { get; }
 }
 
 public static class LoggingExtensions
@@ -44,7 +39,7 @@ public static class LoggingExtensions
     {
         OpenTelemetryOptions openTelemetryOptions = new();
         configuration.GetSection(OpenTelemetryOptions.Name).Bind(openTelemetryOptions);
-        
+
         Log.Logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .WriteTo.Console()
@@ -52,39 +47,33 @@ public static class LoggingExtensions
             {
                 x.Endpoint = openTelemetryOptions.Otlp.Endpoint;
                 x.Protocol = OtlpProtocol.HttpProtobuf;
-                x.Headers = new Dictionary<string, string>
-                {
-                    ["X-Seq-ApiKey"] = openTelemetryOptions.Otlp.ApiKey
-                };
-                x.ResourceAttributes = new Dictionary<string, object>
-                {
-                    ["service.name"] = "CacharaContentService"
-                };
+                x.Headers = new Dictionary<string, string> { ["X-Seq-ApiKey"] = openTelemetryOptions.Otlp.ApiKey };
+                x.ResourceAttributes = new Dictionary<string, object> { ["service.name"] = "CacharaContentService" };
             })
             .CreateLogger();
 
         return builder;
     }
 
-    public static ILoggingBuilder ConfigureOpenTelemetry(this ILoggingBuilder builder, IHostEnvironment environment, 
+    public static ILoggingBuilder ConfigureOpenTelemetry(this ILoggingBuilder builder, IHostEnvironment environment,
         IConfiguration configuration)
     {
         OpenTelemetryOptions openTelemetryOptions = new();
         configuration.GetSection(OpenTelemetryOptions.Name).Bind(openTelemetryOptions);
-        
+
         builder.ClearProviders();
         builder.AddOpenTelemetry(x =>
         {
             x.SetResourceBuilder(ResourceBuilder.CreateEmpty()
                 .AddService("CacharaContentService")
-                .AddAttributes(new Dictionary<string, object>()
+                .AddAttributes(new Dictionary<string, object>
                 {
                     ["deployment.environment"] = environment.EnvironmentName
                 }));
-                
+
             x.IncludeScopes = true;
             x.IncludeFormattedMessage = true;
-            
+
             x.AddConsoleExporter();
             x.AddOtlpExporter(exporter =>
             {

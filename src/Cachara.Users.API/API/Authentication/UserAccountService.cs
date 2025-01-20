@@ -1,5 +1,3 @@
-using Cachara.Users.API.Domain.Entities;
-
 namespace Cachara.Users.API.API.Authentication;
 
 // ApiKeyService
@@ -21,14 +19,15 @@ public class UserAccountService : IAccountService<UserAccount>
         _contextAccessor = contextAccessor;
     }
 
-    public string GetUserId()
-    {
-        return _contextAccessor.HttpContext?.User.FindFirst("userId")?.Value;
-    }
-
     public UserAccount Current { get; }
+
     public Task<bool> SignIn(string provider, string key)
     {
         throw new NotImplementedException();
+    }
+
+    public string GetUserId()
+    {
+        return _contextAccessor.HttpContext?.User.FindFirst("userId")?.Value;
     }
 }

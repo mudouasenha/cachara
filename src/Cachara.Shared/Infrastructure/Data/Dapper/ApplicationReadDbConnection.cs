@@ -1,6 +1,5 @@
-﻿namespace Cachara.Shared.Infrastructure.Data.Dapper
+﻿namespace Cachara.Shared.Infrastructure.Data.Dapper;
+
+internal class ApplicationReadDbConnection
 {
-    internal class ApplicationReadDbConnection
-    {
-    }
 }

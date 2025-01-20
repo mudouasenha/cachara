@@ -1,13 +1,12 @@
-﻿namespace Cachara.Users.API.API.Swagger
-{
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-    public class TagGroup : Attribute
-    {
-        public string Group { get; set; }
+﻿namespace Cachara.Users.API.API.Swagger;
 
-        public TagGroup(string group)
-        {
-            Group = group;
-        }
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+public class TagGroup : Attribute
+{
+    public TagGroup(string group)
+    {
+        Group = group;
     }
+
+    public string Group { get; set; }
 }

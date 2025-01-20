@@ -12,14 +12,14 @@ public class UserRoleEntityTypeConfiguration : BaseEntityTypeConfiguration<UserR
         builder.Property(t => t.UserId)
             .HasMaxLength(36)
             .IsRequired();
-            
+
         builder.Property(t => t.RoleId)
             .HasMaxLength(36)
             .IsRequired();
-            
+
         builder.Property(t => t.AssignedDate)
             .IsRequired();
-        
+
         builder.HasOne(p => p.User)
             .WithMany(p => p.UserRoles)
             .HasForeignKey(p => p.UserId)

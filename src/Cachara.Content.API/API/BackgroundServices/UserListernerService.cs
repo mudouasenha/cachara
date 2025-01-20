@@ -1,8 +1,6 @@
-using Azure.Core.Extensions;
 using Azure.Messaging.ServiceBus;
 using Cachara.Content.API.API.Options;
 using Cachara.Content.API.Services;
-using Cachara.Shared.Infrastructure.AzureServiceBus;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Options;
 
@@ -13,11 +11,11 @@ public class UserListernerService : IHostedService
     public const string UsersServiceBusKey = "teste-matheus";
     private readonly ILogger<UserListernerService> _logger;
     private readonly IServiceProvider _serviceProvider;
-    private ServiceBusProcessor _processor;
+    private readonly ServiceBusProcessor _processor;
 
     public UserListernerService(
         IOptions<CacharaContentOptions> options,
-        ILogger<UserListernerService> logger, 
+        ILogger<UserListernerService> logger,
         IAzureClientFactory<ServiceBusClient> azureServiceBusFactory,
         IServiceProvider serviceProvider)
     {
@@ -32,16 +30,28 @@ public class UserListernerService : IHostedService
         {
             _processor = client.CreateProcessor(
                 UsersServiceBusKey,
-                new ServiceBusProcessorOptions()
+                new ServiceBusProcessorOptions
                 {
-                    AutoCompleteMessages = false,
-                    MaxConcurrentCalls = usersOptions.MaxConcurrentCalls
+                    AutoCompleteMessages = false, MaxConcurrentCalls = usersOptions.MaxConcurrentCalls
                 }
             );
 
             _processor.ProcessMessageAsync += Processor_ProcessMessageAsync;
             _processor.ProcessErrorAsync += Processor_ProcessErrorAsync;
         }
+    }
+
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"Starting {nameof(UserListernerService)}!");
+        await _processor.StartProcessingAsync(cancellationToken);
+    }
+
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"Stopping {nameof(UserListernerService)}!");
+
+        await _processor.StopProcessingAsync(cancellationToken);
     }
 
     private async Task Processor_ProcessMessageAsync(ProcessMessageEventArgs arg)
@@ -74,18 +84,5 @@ public class UserListernerService : IHostedService
     private async Task Processor_ProcessErrorAsync(ProcessErrorEventArgs arg)
     {
         _logger.LogInformation($"Error processing message {arg.Exception.Message}");
-    }
-
-    public async Task StartAsync(CancellationToken cancellationToken)
-    {
-        _logger.LogInformation($"Starting {nameof(UserListernerService)}!");
-        await _processor.StartProcessingAsync(cancellationToken);
-    }
-
-    public async Task StopAsync(CancellationToken cancellationToken)
-    {
-        _logger.LogInformation($"Stopping {nameof(UserListernerService)}!");
-
-        await _processor.StopProcessingAsync(cancellationToken);
     }
 }

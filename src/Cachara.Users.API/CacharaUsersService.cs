@@ -23,300 +23,280 @@ using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Http.Json;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using ProblemDetailsOptions = Hellang.Middleware.ProblemDetails.ProblemDetailsOptions;
 
-namespace Cachara.Users.API
+namespace Cachara.Users.API;
+
+public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOptions, new()
 {
-    public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOptions, new()
+    private readonly IConfiguration _configuration;
+
+    private readonly IHostEnvironment _environment;
+
+    public CacharaUsersService(IHostEnvironment environment, IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
-
-        private readonly IHostEnvironment _environment;
-
-        private TOptions Options { get; set; }
-        
-        public CacharaUsersService(IHostEnvironment environment, IConfiguration configuration)
+        _environment = environment;
+        _configuration = configuration;
+        Options = new TOptions { Name = GetType().Name };
+        try
         {
-            _environment = environment;
-            _configuration = configuration;
-            Options = new TOptions()
-            {
-                Name = GetType().Name
-            };
-            try
-            {
-                _configuration.Bind(Options);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine($"Could not Bind Options for {nameof(CacharaUsersService<TOptions>)}");
-                throw;
-            }
+            _configuration.Bind(Options);
         }
-        
-        public void Configure(IApplicationBuilder app)
+        catch (Exception)
         {
-            ConfigureApp(app);
+            Console.WriteLine($"Could not Bind Options for {nameof(CacharaUsersService<TOptions>)}");
+            throw;
         }
-        
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // Dependency Injection Options
-            services.AddOptions<TOptions>().Bind(_configuration);
+    }
 
-            AddServicesAndRepositories(services);
-            ConfigureAzure(services);
+    private TOptions Options { get; }
 
-            AddHealthChecks(services);
+    public void Configure(IApplicationBuilder app)
+    {
+        ConfigureApp(app);
+    }
 
-            AddSecurity(services);
-            
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddProblemDetails(delegate (Hellang.Middleware.ProblemDetails.ProblemDetailsOptions _) { });
-            
-            ConfigureEndpoints(services);
+    public void ConfigureServices(IServiceCollection services)
+    {
+        // Dependency Injection Options
+        services.AddOptions<TOptions>().Bind(_configuration);
 
-            services.AddMemoryCache();
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = Options.RedisConnection;
-            });
-            //services.AddDistributedMemoryCache() IMPORTANTE PARA USAR A INTERFACE IDISTRIBUTEDCACHE, MAS SEM PRECISAR
-            // IMPLEMENTAR O REDIS
-            
+        AddServicesAndRepositories(services);
+        ConfigureAzure(services);
+
+        AddHealthChecks(services);
+
+        AddSecurity(services);
+
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddProblemDetails(delegate(ProblemDetailsOptions _) { });
+
+        ConfigureEndpoints(services);
+
+        services.AddMemoryCache();
+        services.AddStackExchangeRedisCache(options => { options.Configuration = Options.RedisConnection; });
+        //services.AddDistributedMemoryCache() IMPORTANTE PARA USAR A INTERFACE IDISTRIBUTEDCACHE, MAS SEM PRECISAR
+        // IMPLEMENTAR O REDIS
+
 #pragma warning disable EXTEXP0018
-            services.AddHybridCache(options =>
+        services.AddHybridCache(options =>
+        {
+            options.MaximumPayloadBytes = 1024 * 1024;
+            options.MaximumKeyLength = 1024;
+            options.DefaultEntryOptions = new HybridCacheEntryOptions
             {
-                options.MaximumPayloadBytes = 1024 * 1024;
-                options.MaximumKeyLength = 1024;
-                options.DefaultEntryOptions = new HybridCacheEntryOptions()
-                {
-                    Expiration = TimeSpan.FromSeconds(30),
-                    LocalCacheExpiration = TimeSpan.FromSeconds(10)
-                };
-            });
+                Expiration = TimeSpan.FromSeconds(30), LocalCacheExpiration = TimeSpan.FromSeconds(10)
+            };
+        });
 #pragma warning restore EXTEXP0018
 
-            
-            ConfigureHangfire(services);
-            ConfigureDataAccess(services);
-        }
 
-        private static void ConfigureEndpoints(IServiceCollection services)
-        {
-            services.AddControllers(options =>
-                {
-                    options.Conventions.Add(new ApiExplorerGroupPerVersionConvention());
+        ConfigureHangfire(services);
+        ConfigureDataAccess(services);
+    }
 
-                    options.InputFormatters.Add(new TextPlainInputFormatter());
-                    options.InputFormatters.Add(new StreamInputFormatter());
-                }).AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
-                })
-                .AddProblemDetailsConventions();
-
-            services.AddOpenApi(opt =>
+    private static void ConfigureEndpoints(IServiceCollection services)
+    {
+        services.AddControllers(options =>
             {
-                opt.AddDocumentTransformer((document, context, cancellationToken) =>
+                options.Conventions.Add(new ApiExplorerGroupPerVersionConvention());
+
+                options.InputFormatters.Add(new TextPlainInputFormatter());
+                options.InputFormatters.Add(new StreamInputFormatter());
+            }).AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
+            })
+            .AddProblemDetailsConventions();
+
+        services.AddOpenApi(opt =>
+        {
+            opt.AddDocumentTransformer((document, context, cancellationToken) =>
+            {
+                document.Info = new OpenApiInfo
                 {
-                    document.Info = new()
-                    {
-                        Title = "Cachara Users API",
-                        Version = "1.2024.12.1",
-                        Description = "This API contains all endpoints for users operations.",
-                        
-                    };
+                    Title = "Cachara Users API",
+                    Version = "1.2024.12.1",
+                    Description = "This API contains all endpoints for users operations."
+                };
 
-                    document.Info.Contact = new OpenApiContact()
-                    {
-                        Email = "support@cachara.test",
-                        Name = "Cachara Support",
-                        Url = new Uri("https://github.com/mudouasenha/cachara")
-                    };
+                document.Info.Contact = new OpenApiContact
+                {
+                    Email = "support@cachara.test",
+                    Name = "Cachara Support",
+                    Url = new Uri("https://github.com/mudouasenha/cachara")
+                };
 
-                    return Task.CompletedTask;
-                });
+                return Task.CompletedTask;
             });
-            services.AddResponseCaching();
-            services.AddEndpointsApiExplorer();
-            services.AddCustomSwagger();
-        }
+        });
+        services.AddResponseCaching();
+        services.AddEndpointsApiExplorer();
+        services.AddCustomSwagger();
+    }
 
-        private void ConfigureAzure(IServiceCollection services)
-        {
-            services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
-                _ => new ServiceBusQueue(Options.CacharaContent.ServiceBusConn)
-            );
-        }
+    private void ConfigureAzure(IServiceCollection services)
+    {
+        services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
+            _ => new ServiceBusQueue(Options.CacharaContent.ServiceBusConn)
+        );
+    }
 
-        private void AddSecurity(IServiceCollection services)
-        {
-            
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(opts =>
-                {
-                    opts.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateAudience = true,
-                        ValidateIssuer = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidAudiences = Options.Jwt.Audiences,
-                        ValidIssuers = Options.Jwt.Issuers,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Options.Jwt.Key))
-                    };
-                });
-            
-            // TODO: Add requirement of "user must own document in order to access"
-            // TODO: Create Minimum Age requirement.
-            services.AddAuthorization(options =>
+    private void AddSecurity(IServiceCollection services)
+    {
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(opts =>
             {
-                options.AddPolicy(Policies.ManagementUser, policy => policy
-                    .RequireAuthenticatedUser()
-                    .RequireClaim(
-                        CustomClaims.Subscription,
-                        allowedValues: [Subscription.Management.ToString()]
-                    ));
-
-                options.AddPolicy(Policies.PremiumUser, policy => policy
-                    .RequireAuthenticatedUser()
-                    .RequireClaim(
-                        CustomClaims.Subscription,
-                        allowedValues: [Subscription.Premium.ToString(), Subscription.Management.ToString()]
-                    ));
-
-                options.AddPolicy(Policies.StandardUser, policy => policy
-                    .RequireAuthenticatedUser()
-                    .RequireClaim(
-                        CustomClaims.Subscription,
-                        allowedValues:
-                        [
-                            Subscription.Management.ToString(), Subscription.Premium.ToString(),
-                            Subscription.Standard.ToString()
-                        ]
-                    ));
-            });
-        }
-
-        private void AddHealthChecks(IServiceCollection services)
-        {
-            services.AddHealthChecks()
-                .AddSqlServer(
-                    connectionString: Options.SqlDb,
-                    healthQuery: "SELECT 1;",
-                    name: "database_check",
-                    failureStatus: HealthStatus.Degraded);
-        }
-
-        private void AddServicesAndRepositories(IServiceCollection services)
-        {
-            services.AddScoped<IGeneralDataProtectionService, AesGeneralDataProtectionService>(_ =>
-                new AesGeneralDataProtectionService(Options.Security.Key));
-            services.AddSingleton<IJwtProvider, JwtProvider>(_ => new(Options.Jwt));
-            
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUserProfileService, UserProfileService>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<UserSubscriptionProvider>();
-            services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
-        }
-
-        private void ConfigureHangfire(IServiceCollection services)
-        {
-            services.AddScoped<IBackgroundServiceManager, BackgroundServiceManager>();
-
-            services.AddHangfire((_, config) =>
-            {
-                config.UseSimpleAssemblyNameTypeSerializer();
-                config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
-                config.UseRecommendedSerializerSettings(_ =>
+                opts.TokenValidationParameters = new TokenValidationParameters
                 {
-                    //x.Converters.Add(new JsonDateOnlyConverter());
-                });
-                config.UseSqlServerStorage(Options.JobsSqlDb, new SqlServerStorageOptions()
-                {
-                    SchemaName = "CacharaUsersHangfire",
-                    PrepareSchemaIfNecessary = true
-                });
-                config.UseConsole();
-            });
-            
-            int totalWorkerCount = Environment.ProcessorCount * 20;
-            services.AddHangfireServer(options =>
-            {
-                options.WorkerCount = totalWorkerCount;
-                options.Queues = new string[]
-                {
-                    "default"
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidAudiences = Options.Jwt.Audiences,
+                    ValidIssuers = Options.Jwt.Issuers,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Options.Jwt.Key))
                 };
             });
-        }
 
-        private void ConfigureDataAccess(IServiceCollection services)
+        // TODO: Add requirement of "user must own document in order to access"
+        // TODO: Create Minimum Age requirement.
+        services.AddAuthorization(options =>
         {
-            services.AddDbContext<CacharaUsersDbContext>(options =>
+            options.AddPolicy(Policies.ManagementUser, policy => policy
+                .RequireAuthenticatedUser()
+                .RequireClaim(
+                    CustomClaims.Subscription,
+                    [Subscription.Management.ToString()]
+                ));
+
+            options.AddPolicy(Policies.PremiumUser, policy => policy
+                .RequireAuthenticatedUser()
+                .RequireClaim(
+                    CustomClaims.Subscription,
+                    [Subscription.Premium.ToString(), Subscription.Management.ToString()]
+                ));
+
+            options.AddPolicy(Policies.StandardUser, policy => policy
+                .RequireAuthenticatedUser()
+                .RequireClaim(
+                    CustomClaims.Subscription,
+                    [
+                        Subscription.Management.ToString(), Subscription.Premium.ToString(),
+                        Subscription.Standard.ToString()
+                    ]
+                ));
+        });
+    }
+
+    private void AddHealthChecks(IServiceCollection services)
+    {
+        services.AddHealthChecks()
+            .AddSqlServer(
+                Options.SqlDb,
+                "SELECT 1;",
+                name: "database_check",
+                failureStatus: HealthStatus.Degraded);
+    }
+
+    private void AddServicesAndRepositories(IServiceCollection services)
+    {
+        services.AddScoped<IGeneralDataProtectionService, AesGeneralDataProtectionService>(_ =>
+            new AesGeneralDataProtectionService(Options.Security.Key));
+        services.AddSingleton<IJwtProvider, JwtProvider>(_ => new JwtProvider(Options.Jwt));
+
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserProfileService, UserProfileService>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<UserSubscriptionProvider>();
+        services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
+    }
+
+    private void ConfigureHangfire(IServiceCollection services)
+    {
+        services.AddScoped<IBackgroundServiceManager, BackgroundServiceManager>();
+
+        services.AddHangfire((_, config) =>
+        {
+            config.UseSimpleAssemblyNameTypeSerializer();
+            config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
+            config.UseRecommendedSerializerSettings(_ =>
+            {
+                //x.Converters.Add(new JsonDateOnlyConverter());
+            });
+            config.UseSqlServerStorage(Options.JobsSqlDb,
+                new SqlServerStorageOptions { SchemaName = "CacharaUsersHangfire", PrepareSchemaIfNecessary = true });
+            config.UseConsole();
+        });
+
+        var totalWorkerCount = Environment.ProcessorCount * 20;
+        services.AddHangfireServer(options =>
+        {
+            options.WorkerCount = totalWorkerCount;
+            options.Queues = new[] { "default" };
+        });
+    }
+
+    private void ConfigureDataAccess(IServiceCollection services)
+    {
+        services.AddDbContext<CacharaUsersDbContext>(options =>
             {
                 options.UseSqlServer(Options.SqlDb);
-                options.UseQueryTrackingBehavior((QueryTrackingBehavior.NoTracking));
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 options.EnableSensitiveDataLogging(_environment.IsDevelopment());
             }).AddAsyncInitializer<DbContextInitializer<CacharaUsersDbContext>>()
             .AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<CacharaUsersDbContext>());
-        }
-        
-        public void ConfigureApp(IApplicationBuilder app)
+    }
+
+    public void ConfigureApp(IApplicationBuilder app)
+    {
+        app.UseProblemDetails();
+        app.UseSwaggerUI(opts =>
         {
-            app.UseProblemDetails();
-            app.UseSwaggerUI(opts =>
+            opts.EnableTryItOutByDefault();
+            opts.EnablePersistAuthorization();
+            opts.DisplayRequestDuration();
+            opts.DefaultModelsExpandDepth(-1);
+
+            var swaggerGenOptions = app.ApplicationServices.GetService<SwaggerGeneratorOptions>();
+
+            if (swaggerGenOptions == null)
             {
-                opts.EnableTryItOutByDefault();
-                opts.EnablePersistAuthorization();
-                opts.DisplayRequestDuration();
-                opts.DefaultModelsExpandDepth(-1);
-                
-                var swaggerGenOptions = app.ApplicationServices.GetService<SwaggerGeneratorOptions>();
+                return;
+            }
 
-                if (swaggerGenOptions == null) return;
-                
-                foreach (var swaggerDoc in swaggerGenOptions.SwaggerDocs)
-                {
-                    var swaggerPathBase = "/swagger";
-
-                    opts.SwaggerEndpoint(
-                        swaggerPathBase.AppendPathSegment($"/{swaggerDoc.Key}/swagger.json"), swaggerDoc.Key);
-                }
-            });
-            
-            app.UseHttpsRedirection();
-            
-            app.UseResponseCaching();
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
+            foreach (var swaggerDoc in swaggerGenOptions.SwaggerDocs)
             {
-                endpoints.MapScalarApiReference();
-                endpoints.MapControllers();
-                endpoints.MapHealthChecks("/health"); 
-                endpoints.MapSwagger();
-                endpoints.MapOpenApi();
-            });
-            
-            app.UseHangfireDashboard();
-        }
-        
-        
+                var swaggerPathBase = "/swagger";
+
+                opts.SwaggerEndpoint(
+                    swaggerPathBase.AppendPathSegment($"/{swaggerDoc.Key}/swagger.json"), swaggerDoc.Key);
+            }
+        });
+
+        app.UseHttpsRedirection();
+
+        app.UseResponseCaching();
+        app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapScalarApiReference();
+            endpoints.MapControllers();
+            endpoints.MapHealthChecks("/health");
+            endpoints.MapSwagger();
+            endpoints.MapOpenApi();
+        });
+
+        app.UseHangfireDashboard();
     }
 }

@@ -2,7 +2,7 @@ using System.Security.Claims;
 
 namespace Cachara.Users.API.API.Authentication;
 
-public interface IAccountService<TAccount> where TAccount : class, IAccount 
+public interface IAccountService<TAccount> where TAccount : class, IAccount
 {
     TAccount Current { get; }
 

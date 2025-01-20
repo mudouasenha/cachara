@@ -7,15 +7,15 @@ namespace Cachara.Tests.Integration.Services;
 
 public class AesGeneralDataProtectionServiceTests
 {
-    private readonly IFixture _fixture = new Fixture();
     private readonly AesGeneralDataProtectionService _aes256Encryptor;
+    private readonly IFixture _fixture = new Fixture();
 
     public AesGeneralDataProtectionServiceTests()
     {
         var key = GenerateRandomKey();
         _aes256Encryptor = new AesGeneralDataProtectionService(Convert.ToBase64String(key));
     }
-    
+
     [Trait("Category", "Integration")]
     [Trait("Feature", "Security")]
     [Trait("Algorithm", "AES256")]
@@ -34,7 +34,7 @@ public class AesGeneralDataProtectionServiceTests
         var decryptedText = Encoding.UTF8.GetString(decryptedBytes);
         Assert.Equal(plaintext, decryptedText);
     }
-    
+
     [Trait("Category", "Integration")]
     [Trait("Feature", "Security")]
     [Trait("Algorithm", "AES256")]
@@ -44,7 +44,7 @@ public class AesGeneralDataProtectionServiceTests
         // Arrange
         var plaintext1 = _fixture.Create<string>();
         var plaintext2 = _fixture.Create<string>();
-        
+
         var plaintextBytes1 = Encoding.UTF8.GetBytes(plaintext1);
         var plaintextBytes2 = Encoding.UTF8.GetBytes(plaintext2);
 
@@ -55,7 +55,7 @@ public class AesGeneralDataProtectionServiceTests
         // Assert
         Assert.NotEqual(encryptedBytes1, encryptedBytes2);
     }
-    
+
     private static byte[] GenerateRandomKey(int size = 32)
     {
         using (var rng = new RNGCryptoServiceProvider())

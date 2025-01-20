@@ -13,7 +13,8 @@ public class RabbitMQHealthCheck : IHealthCheck
         _connectionString = connectionString;
     }
 
-    public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
+    public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context,
+        CancellationToken cancellationToken = new())
     {
         try
         {

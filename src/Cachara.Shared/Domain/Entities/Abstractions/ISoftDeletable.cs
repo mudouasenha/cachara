@@ -1,7 +1,6 @@
-﻿namespace Cachara.Shared.Domain.Entities.Abstractions
+﻿namespace Cachara.Shared.Domain.Entities.Abstractions;
+
+public interface ISoftDeletable
 {
-    public interface ISoftDeletable
-    {
-        bool Deleted { get; set; }
-    }
+    bool Deleted { get; set; }
 }

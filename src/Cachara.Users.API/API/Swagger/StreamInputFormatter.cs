@@ -1,34 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc.Formatters;
 
-namespace Cachara.Users.API.API.Swagger
+namespace Cachara.Users.API.API.Swagger;
+
+public class StreamInputFormatter : IInputFormatter
 {
-    public class StreamInputFormatter : IInputFormatter
+    public bool CanRead(InputFormatterContext context)
     {
-        public bool CanRead(InputFormatterContext context)
+        if (context == null)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-            var contentType = context.HttpContext.Request.ContentType;
-            if (contentType == "application/octet-stream")
-            {
-                return true;
-            }
-            return false;
+            throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<InputFormatterResult> ReadAsync(InputFormatterContext context)
+        var contentType = context.HttpContext.Request.ContentType;
+        if (contentType == "application/octet-stream")
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            var memoryStream = new MemoryStream();
-            await context.HttpContext.Request.Body.CopyToAsync(memoryStream);
-
-            return await InputFormatterResult.SuccessAsync(memoryStream);
+            return true;
         }
+
+        return false;
+    }
+
+    public async Task<InputFormatterResult> ReadAsync(InputFormatterContext context)
+    {
+        if (context == null)
+        {
+            throw new ArgumentNullException(nameof(context));
+        }
+
+        var memoryStream = new MemoryStream();
+        await context.HttpContext.Request.Body.CopyToAsync(memoryStream);
+
+        return await InputFormatterResult.SuccessAsync(memoryStream);
     }
 }

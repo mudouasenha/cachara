@@ -10,24 +10,66 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cachara.Users.API.Services;
 
-
-
 public class UserService : IUserService
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IGeneralDataProtectionService _generalDataProtectionService;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserRepository _userRepository;
 
     public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
     }
-    
+
+    public async Task<User> GetByUserName(string userName)
+    {
+        return await _userRepository.FindByAsync(p => p.UserName == userName);
+    }
+
+    public Task<IEnumerable<User>> Search(UserSearchCommand searchCommmand)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<User> GetUserById(string id)
+    {
+        var user = await _userRepository.FindByAsync(p => p.Id == id)
+                   ?? throw new Exception("User Not Found!");
+
+        user.Password = _generalDataProtectionService.DecryptString(user.Password);
+
+        return user;
+    }
+
+    public async Task<User> GetWithPostsById(string id)
+    {
+        return await _userRepository
+            .GetEntities()
+            .FirstOrDefaultAsync(p => p.Id == id) ?? throw new Exception("User Not Found!");
+    }
+
+    public async Task<User> Upsert(UserUpsert upsert)
+    {
+        var expression = (User x) => x.Id == upsert.Id;
+        var entityUser = await _userRepository.FindByAsync(x => x.Id == upsert.Id);
+        if (entityUser is null && upsert.Id is not null)
+        {
+            throw new Exception("User not found");
+        }
+
+        entityUser = entityUser == null
+            ? await InsertInternal(new User(), user => UpdateFromInternal(user, upsert))
+            : await UpdateInternal(entityUser, user => UpdateFromInternal(user, upsert));
+
+        await _unitOfWork.Commit();
+        return entityUser;
+    }
+
 
     public async Task<User> CreateUser(UserUpsert upsert)
     {
-        var user = new User()
+        var user = new User
         {
             Email = upsert.Email,
             UserName = upsert.UserName,
@@ -44,54 +86,9 @@ public class UserService : IUserService
         return await GetUserById(user.Id);
     }
 
-    public async Task<User> GetByUserName(string userName)
-    {
-        return await _userRepository.FindByAsync(p => p.UserName == userName);
-    }
-    
     public async Task<User> GetByEmail(string email)
     {
         return await _userRepository.FindByAsync(p => p.Email == email);
-    }
-
-    public Task<IEnumerable<User>> Search(UserSearchCommand searchCommmand)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<User> GetUserById(string id)
-    {
-        var user = await _userRepository.FindByAsync(p => p.Id == id) 
-                   ?? throw new Exception("User Not Found!");
-
-        user.Password = _generalDataProtectionService.DecryptString(user.Password);
-
-        return user;
-    }
-
-    public async Task<User> GetWithPostsById(string id)
-    {
-        return await _userRepository
-            .GetEntities()
-            .FirstOrDefaultAsync(p => p.Id == id) ?? throw new Exception("User Not Found!");
-    }
-    
-    public async Task<User> Upsert(UserUpsert upsert)
-    {
-        var expression = (User x) => x.Id == upsert.Id;
-        var entityUser = await _userRepository.FindByAsync(x => x.Id == upsert.Id);
-        if (entityUser is null && upsert.Id is not null)
-        {
-            throw new Exception("User not found");
-        }
-
-        entityUser = entityUser == null ?
-            await InsertInternal(new User(), (user) => UpdateFromInternal(user, upsert))
-            :
-            await UpdateInternal(entityUser, (user) => UpdateFromInternal(user, upsert));
-
-        await _unitOfWork.Commit();
-        return entityUser;
     }
 
     private void UpdateFromInternal(User user, UserUpsert upsert)
@@ -104,7 +101,7 @@ public class UserService : IUserService
         user.UserName = upsert.UserName;
         user.Password = encryptedPassword;
         user.Subscription = upsert.Subscription;
-        
+
         user.ValidateAndThrow();
     }
 
@@ -114,7 +111,7 @@ public class UserService : IUserService
 
         return decryptedPassword;
     }
-    
+
     internal async Task<User> InsertInternal(
         User user,
         Action<User> entityUpdate = null
@@ -122,7 +119,7 @@ public class UserService : IUserService
     {
         user.GenerateId();
         user.UpdateCreatedAt();
-        
+
         entityUpdate?.Invoke(user);
 
         await _userRepository.AddAsync(user);

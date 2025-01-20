@@ -17,7 +17,7 @@ public class PostService : IPostService
         _postRepository = postRepository;
         _unitOfWork = unitOfWork;
     }
-    
+
     public async Task<Post> GetById(string id)
     {
         return await _postRepository.FindByAsync(x => x.Id == id) ?? throw new Exception("Post Not Found!");
@@ -31,7 +31,7 @@ public class PostService : IPostService
     public async Task Delete(string id)
     {
         var post = await _postRepository.FindByAsync(x => x.Id == id) ?? throw new Exception("Post Not Found");
-        
+
         await _postRepository.RemoveAsync(post);
     }
 
@@ -49,10 +49,9 @@ public class PostService : IPostService
             throw new Exception("Post not found");
         }
 
-        entityPost = entityPost == null ?
-            await InsertInternal(new Post(), (user) => UpdateFromInternal(user, upsert))
-            :
-            await UpdateInternal(entityPost, (user) => UpdateFromInternal(user, upsert));
+        entityPost = entityPost == null
+            ? await InsertInternal(new Post(), user => UpdateFromInternal(user, upsert))
+            : await UpdateInternal(entityPost, user => UpdateFromInternal(user, upsert));
 
         await _unitOfWork.Commit();
         return entityPost;
@@ -63,11 +62,11 @@ public class PostService : IPostService
         post.Title = upsert.Title;
         post.Body = upsert.Body;
         //TODO: Set Author
-        
-        
+
+
         post.ValidateAndThrow();
     }
-    
+
     internal async Task<Post> InsertInternal(
         Post post,
         Action<Post> entityUpdate = null
@@ -75,7 +74,7 @@ public class PostService : IPostService
     {
         post.GenerateId();
         post.UpdateCreatedAt();
-        
+
         entityUpdate?.Invoke(post);
 
         await _postRepository.AddAsync(post);

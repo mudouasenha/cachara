@@ -1,32 +1,32 @@
 ﻿using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cachara.Content.API.Infrastructure.Data
+namespace Cachara.Content.API.Infrastructure.Data;
+
+public class CacharaContentDbContext : DbContext, IUnitOfWork
 {
-    public class CacharaContentDbContext : DbContext, IUnitOfWork
+    private const string Schema = "Content";
+
+    public CacharaContentDbContext(DbContextOptions<CacharaContentDbContext> options) : base(options)
     {
-        private const string Schema = "Content";
-        public CacharaContentDbContext(DbContextOptions<CacharaContentDbContext> options) : base(options)
-        {
-        }
+    }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+    public Task<int> Commit()
+    {
+        return SaveChangesAsync();
+    }
 
-            modelBuilder.HasDefaultSchema(Schema);
-            modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
-        }
+    public Task Discard()
+    {
+        ChangeTracker.Clear();
+        return Task.CompletedTask;
+    }
 
-        public Task<int> Commit()
-        {
-            return SaveChangesAsync();
-        }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
 
-        public Task Discard()
-        {
-            ChangeTracker.Clear();
-            return Task.CompletedTask;
-        }
+        modelBuilder.HasDefaultSchema(Schema);
+        modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
     }
 }

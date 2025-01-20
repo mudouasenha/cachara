@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cachara.Content.API.Controllers.Internal;
 
-
 [ApiExplorerSettings(GroupName = "internal")]
 [Route("internal/devtest")]
 [Tags("Posts")]

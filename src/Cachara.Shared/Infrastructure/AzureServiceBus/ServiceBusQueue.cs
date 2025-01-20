@@ -11,15 +11,13 @@ public class ServiceBusQueue : IServiceBusQueue
     {
         _conn = conn;
     }
-    
+
     public async Task SendMessage(string queueName, string message)
     {
         try
         {
-            var sbClient = new ServiceBusClient(_conn, new ServiceBusClientOptions()
-            {
-                TransportType = ServiceBusTransportType.AmqpWebSockets
-            });
+            var sbClient = new ServiceBusClient(_conn,
+                new ServiceBusClientOptions { TransportType = ServiceBusTransportType.AmqpWebSockets });
 
             var sbSender = sbClient.CreateSender(queueName);
 
@@ -36,10 +34,8 @@ public class ServiceBusQueue : IServiceBusQueue
     {
         try
         {
-            var sbClient = new ServiceBusClient(_conn, new ServiceBusClientOptions()
-            {
-                TransportType = ServiceBusTransportType.AmqpWebSockets
-            });
+            var sbClient = new ServiceBusClient(_conn,
+                new ServiceBusClientOptions { TransportType = ServiceBusTransportType.AmqpWebSockets });
 
             var sbReceiver = sbClient.CreateReceiver(queueName);
             var msg = await sbReceiver.ReceiveMessageAsync();

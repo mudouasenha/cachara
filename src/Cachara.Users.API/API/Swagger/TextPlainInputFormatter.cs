@@ -1,30 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc.Formatters;
 
-namespace Cachara.Users.API.API.Swagger
+namespace Cachara.Users.API.API.Swagger;
+
+public class TextPlainInputFormatter : InputFormatter
 {
-    public class TextPlainInputFormatter : InputFormatter
+    private const string ContentType = "text/plain";
+
+    public TextPlainInputFormatter()
     {
-        private const string ContentType = "text/plain";
+        SupportedMediaTypes.Add(ContentType);
+    }
 
-        public TextPlainInputFormatter()
+    public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context)
+    {
+        var request = context.HttpContext.Request;
+        using (var reader = new StreamReader(request.Body))
         {
-            SupportedMediaTypes.Add(ContentType);
+            var content = await reader.ReadToEndAsync();
+            return await InputFormatterResult.SuccessAsync(content);
         }
+    }
 
-        public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context)
-        {
-            var request = context.HttpContext.Request;
-            using (var reader = new StreamReader(request.Body))
-            {
-                var content = await reader.ReadToEndAsync();
-                return await InputFormatterResult.SuccessAsync(content);
-            }
-        }
-
-        public override bool CanRead(InputFormatterContext context)
-        {
-            var contentType = context.HttpContext.Request.ContentType;
-            return contentType.StartsWith(ContentType);
-        }
+    public override bool CanRead(InputFormatterContext context)
+    {
+        var contentType = context.HttpContext.Request.ContentType;
+        return contentType.StartsWith(ContentType);
     }
 }

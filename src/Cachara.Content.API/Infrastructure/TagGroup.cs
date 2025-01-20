@@ -1,13 +1,12 @@
-﻿namespace Cachara.Content.API.Infrastructure
-{
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-    public class TagGroup : Attribute
-    {
-        public string Group { get; set; }
+﻿namespace Cachara.Content.API.Infrastructure;
 
-        public TagGroup(string group)
-        {
-            Group = group;
-        }
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+public class TagGroup : Attribute
+{
+    public TagGroup(string group)
+    {
+        Group = group;
     }
+
+    public string Group { get; set; }
 }

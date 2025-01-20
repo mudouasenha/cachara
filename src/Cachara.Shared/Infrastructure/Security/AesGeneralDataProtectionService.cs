@@ -6,11 +6,12 @@ namespace Cachara.Shared.Infrastructure.Security;
 public class AesGeneralDataProtectionService : IGeneralDataProtectionService
 {
     private readonly byte[] _key;
-    
+
     public AesGeneralDataProtectionService(string key)
     {
-        this._key =  Convert.FromBase64String(key);
+        _key = Convert.FromBase64String(key);
     }
+
     public byte[] Encrypt(byte[] bytes)
     {
         using var aes = Aes.Create();

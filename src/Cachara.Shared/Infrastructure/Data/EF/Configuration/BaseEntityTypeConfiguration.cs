@@ -20,6 +20,5 @@ public class BaseEntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEn
             .ValueGeneratedOnAdd();
 
         builder.Property(p => p.Version).IsRowVersion();
-
     }
 }

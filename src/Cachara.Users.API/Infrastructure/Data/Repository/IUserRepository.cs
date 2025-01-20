@@ -5,5 +5,4 @@ namespace Cachara.Users.API.Infrastructure.Data.Repository;
 
 public interface IUserRepository : IRepository<User>
 {
-    
 }

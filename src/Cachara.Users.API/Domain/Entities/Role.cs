@@ -5,17 +5,16 @@ namespace Cachara.Users.API.Domain.Entities;
 
 public class Role : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IValidatable
 {
-    public string Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
 
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
-    
+    public string Id { get; set; }
+
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
-    public byte[] Version { get; set; }
     public bool Deleted { get; set; }
-    
+
     public ValidationResult Validate()
     {
         throw new NotImplementedException();
@@ -25,4 +24,6 @@ public class Role : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IVa
     {
         throw new NotImplementedException();
     }
+
+    public byte[] Version { get; set; }
 }

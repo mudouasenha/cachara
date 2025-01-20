@@ -1,6 +1,4 @@
-using AspNetCore.Authentication.ApiKey;
 using Microsoft.Extensions.Caching.Hybrid;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Cachara.Users.API.API.Security;
 
@@ -17,8 +15,10 @@ namespace Cachara.Users.API.API.Security;
 public class UserSubscriptionProvider // IApiKeyProvider
 {
     public HybridCache hybridCache;
+
     public Subscription GetSubscription(string? userId)
-    { // TODO: Use a database for this.
+    {
+        // TODO: Use a database for this.
         if (string.IsNullOrEmpty(userId))
         {
             return Subscription.Standard;

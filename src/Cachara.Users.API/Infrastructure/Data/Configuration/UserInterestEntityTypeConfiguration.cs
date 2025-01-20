@@ -12,7 +12,7 @@ public class UserInterestEntityTypeConfiguration : BaseEntityTypeConfiguration<U
         builder.Property(t => t.UserProfileId)
             .HasMaxLength(36)
             .IsRequired();
-            
+
         builder.Property(t => t.Interest)
             .HasMaxLength(200)
             .IsRequired();

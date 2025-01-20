@@ -11,42 +11,42 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoFixture" Version="4.18.1" />
-        <PackageReference Include="AutoMapper" Version="13.0.1" />
+        <PackageReference Include="AutoFixture" Version="4.18.1"/>
+        <PackageReference Include="AutoMapper" Version="13.0.1"/>
         <PackageReference Include="coverlet.collector" Version="6.0.2">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-        <PackageReference Include="xunit" Version="2.9.2" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0"/>
+        <PackageReference Include="xunit" Version="2.9.2"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="3.0.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Xunit" />
+        <Using Include="Xunit"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Cachara.Users.API\Cachara.Users.API.csproj" />
+        <ProjectReference Include="..\..\src\Cachara.Users.API\Cachara.Users.API.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Acceptance\" />
-      <Folder Include="Builders\Entities\" />
-      <Folder Include="Builders\Models\" />
-      <Folder Include="Contract\" />
-      <Folder Include="E2E\" />
-      <Folder Include="Integration\" />
-      <Folder Include="Unit\" />
+        <Folder Include="Acceptance\"/>
+        <Folder Include="Builders\Entities\"/>
+        <Folder Include="Builders\Models\"/>
+        <Folder Include="Contract\"/>
+        <Folder Include="E2E\"/>
+        <Folder Include="Integration\"/>
+        <Folder Include="Unit\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\src\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\..\src\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
 </Project>
