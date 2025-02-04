@@ -94,6 +94,7 @@ public class CacharaContentService<TOptions> where TOptions : CacharaContentOpti
 
         services.AddOpenApi(opt =>
         {
+            // TODO: Split/group controllers https://stackoverflow.com/questions/79220015/how-to-group-controller-using-openapi-and-scalar-api-documentations
             opt.AddDocumentTransformer((document, context, cancellationToken) =>
             {
                 document.Info = new OpenApiInfo

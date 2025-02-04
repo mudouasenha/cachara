@@ -11584,7 +11584,11 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Users\\matheus.gomes\\Desktop\\Local Nugets": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://pkgs.dev.azure.com/way2/_packaging/internal%40Local/nuget/v3/index.json": {},
+        "https://pkgs.dev.azure.com/way2/_packaging/internal/nuget/v3/index.json": {},
+        "https://way2.pkgs.visualstudio.com/_packaging/Main%40Local/nuget/v3/index.json": {}
       },
       "frameworks": {
         "net9.0": {
@@ -11660,5 +11664,25 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://way2.pkgs.visualstudio.com/_packaging/Main%40Local/nuget/v3/index.json."
+    },
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://pkgs.dev.azure.com/way2/_packaging/internal%40Local/nuget/v3/index.json."
+    },
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://pkgs.dev.azure.com/way2/_packaging/internal/nuget/v3/index.json."
+    }
+  ]
 }
