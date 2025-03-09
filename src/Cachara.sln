@@ -24,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{EFCBB95A-A
 		..\docs\USER-DOCUMENTATION.md = ..\docs\USER-DOCUMENTATION.md
 		..\docs\WORK-IN-PROGRESS.md = ..\docs\WORK-IN-PROGRESS.md
 		..\README.md = ..\README.md
+		..\README_OLD.md = ..\README_OLD.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cachara.GraphQL", "Cachara.GraphQL\Cachara.GraphQL.csproj", "{E7B54F88-7D58-4C7C-9FC1-1AF31754FC83}"
