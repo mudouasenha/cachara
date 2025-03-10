@@ -16,7 +16,7 @@ namespace Cachara.Users.API.Controllers.Public;
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("public/account")]
 [Tags("Auth")]
-public class AccountController(IUserProfileService userProfileService) : BaseController
+public class PublicAccountController(IUserProfileService userProfileService) : BaseController
 {
     private readonly IUserProfileService _userProfileService = userProfileService;
 

@@ -19,21 +19,6 @@ public class UserProfileService : IUserProfileService
         _jwtProvider = jwtProvider;
     }
 
-    public async Task<Result<string>> Login(LoginCommand command)
-    {
-        var result = new Result<string>();
-        var specification = new UserByEmailSpecification(command.Email);
-        var user = await _userRepository.FindByAsync(specification.ToExpression());
-        if (user is null)
-        {
-            return result.WithError(DomainErrors.User.InvalidCredentials);
-        }
-
-        var token = _jwtProvider.Generate(user);
-
-
-        throw new NotImplementedException();
-    }
 
     public Task<UserProfile> GetProfile()
     {

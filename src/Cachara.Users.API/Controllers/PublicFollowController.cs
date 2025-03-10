@@ -10,7 +10,7 @@ namespace Cachara.Users.API.Controllers.Public;
 [ApiExplorerSettings(GroupName = "public")]
 [Route("public/follow")]
 [Tags("Auth")]
-public class FollowController(IUserFollowService userFollowService, ClaimsPrincipal user) : ControllerBase
+public class PublicFollowController(IUserFollowService userFollowService, ClaimsPrincipal user) : ControllerBase
 {
     [HttpPost("{userId}")]
     public async Task<IActionResult> FollowUser(Guid userId)

@@ -1,9 +1,9 @@
 using Cachara.Users.API.Domain.Entities;
+using Cachara.Users.API.Services.Models.Internal;
 
 namespace Cachara.Users.API.Services.Abstractions;
 
 public interface IJwtProvider
 {
-    string Generate(User user);
-    string GenerateRefreshToken();
+    TokenResult Generate(User user);
 }

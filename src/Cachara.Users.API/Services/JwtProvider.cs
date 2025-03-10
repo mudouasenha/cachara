@@ -6,6 +6,7 @@ using System.Text;
 using Cachara.Users.API.API.Options;
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Services.Abstractions;
+using Cachara.Users.API.Services.Models.Internal;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Cachara.Users.API.Services;
@@ -21,7 +22,7 @@ public class JwtProvider : IJwtProvider
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
     }
 
-    public string Generate(User user)
+    public TokenResult Generate(User user)
     {
         var now = DateTime.UtcNow;
 
@@ -31,8 +32,7 @@ public class JwtProvider : IJwtProvider
             new(JwtRegisteredClaimNames.Email, user.Email),
             new(JwtRegisteredClaimNames.Name, user.FullName),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(JwtRegisteredClaimNames.Iat, new DateTimeOffset(now).ToUnixTimeSeconds().ToString(),
-                ClaimValueTypes.Integer64),
+            new(JwtRegisteredClaimNames.Iat, now.ToString("o"), ClaimValueTypes.String),
             new("Id", user.Id),
             new("username", user.UserName),
             new("fullName", user.FullName),
@@ -45,7 +45,7 @@ public class JwtProvider : IJwtProvider
             claims.Add(new Claim(ClaimTypes.Role, role.Role.Name));
         }
 
-        var token = new JwtSecurityToken(
+        var jwtToken = new JwtSecurityToken(
             _jwtOptions.Issuers.First(),
             _jwtOptions.Audiences.First(),
             claims,
@@ -53,10 +53,17 @@ public class JwtProvider : IJwtProvider
             signingCredentials: new SigningCredentials(_key, SecurityAlgorithms.HmacSha256)
         );
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        var refreshToken = GenerateRefreshToken();
+
+        return new TokenResult()
+        {
+            ExpiresAt = jwtToken.ValidTo,
+            RefreshToken = refreshToken,
+            Token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
+        };
     }
 
-    public string GenerateRefreshToken()
+    private static string GenerateRefreshToken()
     {
         var randomNumber = new byte[32];
         using (var rng = RandomNumberGenerator.Create())

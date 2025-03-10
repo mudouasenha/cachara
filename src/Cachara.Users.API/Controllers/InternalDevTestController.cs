@@ -11,12 +11,12 @@ namespace Cachara.Users.API.Controllers.Internal;
 [ApiExplorerSettings(GroupName = "internal")]
 [Route("internal/devtest")]
 [Tags("Dev")]
-public class DevTestController
+public class InternalDevTestController
 {
-    private readonly ILogger<DevTestController> _logger;
+    private readonly ILogger<InternalDevTestController> _logger;
     private readonly IServiceBusQueue _queue;
 
-    public DevTestController(ILogger<DevTestController> logger, IServiceBusQueue queue)
+    public InternalDevTestController(ILogger<InternalDevTestController> logger, IServiceBusQueue queue)
     {
         _queue = queue;
         _logger = logger;
