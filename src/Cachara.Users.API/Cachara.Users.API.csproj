@@ -57,10 +57,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Validations\"/>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Cachara.Shared\Cachara.Shared.csproj"/>
   </ItemGroup>
 

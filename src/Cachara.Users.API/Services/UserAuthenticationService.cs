@@ -4,6 +4,7 @@ using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Domain.Errors;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Services.Abstractions;
+using Cachara.Users.API.Services.Errors;
 using Cachara.Users.API.Services.Models;
 using Cachara.Users.API.Services.Models.Internal;
 using FluentResults;
@@ -68,14 +69,14 @@ public class UserAuthenticationService : UserService
 
             if (user == default)
             {
-                result.WithError(DomainErrors.UserAuthentication.InvalidCredentials);
+                result.WithError(ApplicationErrors.UserAuthentication.InvalidCredentials);
             }
 
             var decryptedPassword = DecryptPassword(user);
 
             if (!string.Equals(request.Password, decryptedPassword))
             {
-                result.WithError(DomainErrors.UserAuthentication.InvalidCredentials);
+                result.WithError(ApplicationErrors.UserAuthentication.InvalidCredentials);
             }
 
             var token = _tokenProvider.Generate(user);
@@ -103,26 +104,26 @@ public class UserAuthenticationService : UserService
         var user = await GetUserFromTokenAsync();
         if (user == null)
         {
-            return result.WithError(DomainErrors.UserAuthentication.UserNotFound);
+            return result.WithError(ApplicationErrors.UserAuthentication.UserNotFound);
         }
 
         // Step 2: Verify old password
         var isOldPasswordValid = _passwordHasher.Verify(user.HashedPassword, oldPassword);
         if (!isOldPasswordValid)
         {
-            return result.WithError(DomainErrors.UserAuthentication.InvalidCredentials);
+            return result.WithError(ApplicationErrors.UserAuthentication.InvalidCredentials);
         }
 
         // Step 3: Ensure the new password meets security requirements
         if (!IsValidPassword(newPassword))
         {
-            return result.WithError(DomainErrors.UserAuthentication.UnsafePassword);
+            return result.WithError(ApplicationErrors.UserAuthentication.UnsafePassword);
         }
 
         // Step 4: Prevent reusing the old password
         if (_passwordHasher.Verify(user.HashedPassword, newPassword))
         {
-            return result.WithError(DomainErrors.UserAuthentication.SamePassword);
+            return result.WithError(ApplicationErrors.UserAuthentication.SamePassword);
         }
 
         // Step 5: Hash and update the password

@@ -6,6 +6,7 @@ namespace Cachara.Users.API.Domain.Entities;
 
 public class User : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IValidatable
 {
+    public string Id { get; set; }
     public string FullName { get; set; }
     public string UserName { get; set; }
     public string Email { get; set; }
@@ -13,12 +14,12 @@ public class User : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IVa
     public DateTime DateOfBirth { get; set; }
 
     public Subscription Subscription { get; set; }
+    // TODO: Use a storage functionality to store the data, and change
+    // it to a file reference
     public string ProfilePictureUrl { get; set; }
-
 
     public UserSettings Settings { get; set; }
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
-    public string Id { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
 
