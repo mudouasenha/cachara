@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -26,7 +27,16 @@ public class RequestResponseLoggingMiddleware
         var method = context.Request.Method;
         var path = context.Request.Path;
 
-        using (_logger.BeginScope(new { CorrelationId = correlationId, Method = method, Path = path }))
+        var userId = context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "Anonymous";
+        var tenantId = context.Request.Headers["X-Tenant-ID"].FirstOrDefault() ?? "Unknown";
+
+        using (_logger.BeginScope(new
+               {
+                   CorrelationId = correlationId,
+                   UserId = userId,
+                   TenantId = tenantId,
+                   RequestPath = context.Request.Path
+               }))
         {
             _logger.LogInformation("Request started: {Method} {Path}", method, path);
 
