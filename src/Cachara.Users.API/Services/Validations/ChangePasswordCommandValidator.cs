@@ -8,6 +8,10 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
 {
     public ChangePasswordCommandValidator()
     {
+        RuleFor(x => x)
+            .Must(BeDifferentPasswords)
+            .WithMessage(ApplicationErrors.UserAuthentication.SamePassword.Message)
+            .WithErrorCode(nameof(ApplicationErrors.UserAuthentication.SamePassword));
         RuleFor(x => x.NewPassword)
             .NotEmpty().WithMessage(ApplicationErrors.Password.Required.Message)
             .WithErrorCode(nameof(ApplicationErrors.Password.Required))
@@ -23,5 +27,10 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
             .WithErrorCode(nameof(ApplicationErrors.Password.NumberRequired))
             .Matches("[^a-zA-Z0-9]").WithMessage(ApplicationErrors.Password.SpecialCharacterRequired.Message)
             .WithErrorCode(nameof(ApplicationErrors.Password.SpecialCharacterRequired));
+    }
+
+    private static bool BeDifferentPasswords(ChangePasswordCommand command)
+    {
+        return command.NewPassword != command.Password;
     }
 }

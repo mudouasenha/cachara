@@ -2,16 +2,17 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry.Trace;
 
 namespace Cachara.Shared.Infrastructure.Middlewares;
 
-public class RequestResponseLoggingMiddleware
+public class RequestTracingMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly ILogger<RequestResponseLoggingMiddleware> _logger;
+    private readonly ILogger<RequestTracingMiddleware> _logger;
     private const string CorrelationIdHeader = "X-Correlation-ID";
 
-    public RequestResponseLoggingMiddleware(RequestDelegate next, ILogger<RequestResponseLoggingMiddleware> logger)
+    public RequestTracingMiddleware(RequestDelegate next, ILogger<RequestTracingMiddleware> logger)
     {
         _next = next;
         _logger = logger;
@@ -30,12 +31,20 @@ public class RequestResponseLoggingMiddleware
         var userId = context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "Anonymous";
         var tenantId = context.Request.Headers["X-Tenant-ID"].FirstOrDefault() ?? "Unknown";
 
+        // Ensure correlation ID and key data are tagged in the trace context before anything else
+        var activity = Activity.Current;
+        if (activity is not null)
+        {
+            activity.SetTag("correlation_id", correlationId);
+            activity.SetTag("user.id", userId);
+            activity.SetTag("tenant.id", tenantId);
+        }
+
         using (_logger.BeginScope(new
                {
                    CorrelationId = correlationId,
                    UserId = userId,
-                   TenantId = tenantId,
-                   RequestPath = context.Request.Path
+                   TenantId = tenantId
                }))
         {
             _logger.LogInformation("Request started: {Method} {Path}", method, path);
@@ -48,17 +57,31 @@ public class RequestResponseLoggingMiddleware
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Request failed: {Method} {Path}", method, path);
+                activity?.AddException(ex);
+
+                _logger.LogError(
+                    ex,
+                    "Unhandled exception occurred. CorrelationId: {CorrelationId}, Method: {Method} - Path: {Path}",
+                    correlationId,
+                    method,
+                    path);
                 throw;
             }
             finally
             {
                 stopwatch.Stop();
-                _logger.LogInformation("Request completed: {Method} {Path} - StatusCode: {StatusCode} - ElapsedMs: {ElapsedMs}",
+                if (context.Response.StatusCode >= 400)
+                {
+                    _logger.LogWarning("Client error: {Method} {Path} - StatusCode: {StatusCode}",
+                        method, path, context.Response.StatusCode);
+                }
+                _logger.LogInformation(
+                    "Request finished: {Method} {Path} - StatusCode: {StatusCode} - ElapsedMs: {ElapsedMs}",
                     method, path, context.Response.StatusCode, stopwatch.ElapsedMilliseconds);
             }
         }
     }
+
 
 
 

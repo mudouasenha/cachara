@@ -1,6 +1,7 @@
 using Cachara.Users.API.Controllers.Base;
 using Cachara.Users.API.Services;
 using Cachara.Users.API.Services.Abstractions;
+using Cachara.Users.API.Services.Commands;
 using Cachara.Users.API.Services.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,5 +39,19 @@ public class PublicAuthController(IUserService userService, UserAuthenticationSe
         }
 
         return Ok(tokenResult.Value);
+    }
+
+    [HttpPut("change-password")]
+    public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword)
+    {
+        var command = new ChangePasswordCommand() { Password = oldPassword, NewPassword = newPassword, };
+        var changePasswordResult = await userAuthService.ChangePassword(command);
+
+        if (changePasswordResult.IsFailed)
+        {
+            return HandleFailure(); // TODO: Implement failed result factory. 400
+        }
+
+        return Ok(changePasswordResult.Value);
     }
 }

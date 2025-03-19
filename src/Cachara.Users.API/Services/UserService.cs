@@ -112,6 +112,13 @@ public class UserService : IUserService
         return decryptedPassword;
     }
 
+    internal bool VerifyPassword(User user, string password)
+    {
+        var encryptedPassword = _generalDataProtectionService.EncryptString(password);
+
+        return user.Password == encryptedPassword;
+    }
+
     internal async Task<User> InsertInternal(
         User user,
         Action<User> entityUpdate = null

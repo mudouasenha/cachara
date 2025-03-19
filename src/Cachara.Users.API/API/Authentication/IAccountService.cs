@@ -6,7 +6,7 @@ public interface IAccountService<TAccount> where TAccount : class, IAccount
 {
     TAccount Current { get; }
 
-    Task<bool> SignIn(string provider, string key);
+    //Task<bool> SignIn(string provider, string key);
 }
 
 public interface IAccount

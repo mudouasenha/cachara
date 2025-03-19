@@ -1,3 +1,5 @@
+using System.Security.Claims;
+
 namespace Cachara.Users.API.API.Authentication;
 
 // ApiKeyService
@@ -19,15 +21,49 @@ public class UserAccountService : IAccountService<UserAccount>
         _contextAccessor = contextAccessor;
     }
 
-    public UserAccount Current { get; }
+    // Current user account
+    public UserAccount Current { get; protected set; }
 
-    public Task<bool> SignIn(string provider, string key)
+    public void SignIn()
     {
-        throw new NotImplementedException();
+        var token = GetAuthorizationToken();
+
+        if (string.IsNullOrEmpty(token))
+            throw new UnauthorizedAccessException("Authorization token is missing.");
+
+        var claimsPrincipal = JwtTokenHelper.DecodeToken(token);
+
+        if (claimsPrincipal == null)
+            throw new UnauthorizedAccessException("Invalid token.");
+
+        Current = new UserAccount
+        {
+            Id = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "Unknown",
+            UserName = claimsPrincipal.FindFirst(ClaimTypes.Name)?.Value ?? "Unknown",
+            FullName = claimsPrincipal.FindFirst("full_name")?.Value ?? "Unknown",
+            Handle = claimsPrincipal.FindFirst("handle")?.Value ?? "Unknown",
+            Claims = claimsPrincipal.Claims
+        };
     }
 
-    public string GetUserId()
+    // Helper method to get the token from Authorization header
+    private string GetAuthorizationToken()
     {
-        return _contextAccessor.HttpContext?.User.FindFirst("userId")?.Value;
+        var token = _contextAccessor.HttpContext?.Request
+            .Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+        return token;
+    }
+
+    // Get specific claim from the current user
+    public string GetClaimValue(string claimType)
+    {
+        var token = GetAuthorizationToken();
+        var claimsPrincipal = JwtTokenHelper.DecodeToken(token);
+
+        if (claimsPrincipal == null) throw new UnauthorizedAccessException("Invalid token.");
+
+        return claimsPrincipal.FindFirst(claimType)?.Value;
     }
 }
+

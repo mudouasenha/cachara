@@ -1,12 +1,15 @@
+using Cachara.Shared.Domain;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Users.API.API.Security;
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Domain.Errors;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Services.Abstractions;
+using Cachara.Users.API.Services.Commands;
 using Cachara.Users.API.Services.Errors;
 using Cachara.Users.API.Services.Models;
 using Cachara.Users.API.Services.Models.Internal;
+using Cachara.Users.API.Services.Validations;
 using FluentResults;
 
 namespace Cachara.Users.API.Services;
@@ -96,7 +99,7 @@ public class UserAuthenticationService : UserService
         }
     }
 
-    public async Task<Result<ChangePasswordResult>> ChangePassword(string oldPassword, string newPassword)
+    public async Task<Result<ChangePasswordResult>> ChangePassword(ChangePasswordCommand command)
     {
         var result = new Result<ChangePasswordResult>();
 
@@ -107,70 +110,32 @@ public class UserAuthenticationService : UserService
             return result.WithError(ApplicationErrors.UserAuthentication.UserNotFound);
         }
 
-        // Step 2: Verify old password
-        var isOldPasswordValid = _passwordHasher.Verify(user.HashedPassword, oldPassword);
+        var isOldPasswordValid = VerifyPassword(user, command.Password);
         if (!isOldPasswordValid)
         {
             return result.WithError(ApplicationErrors.UserAuthentication.InvalidCredentials);
         }
 
-        // Step 3: Ensure the new password meets security requirements
-        if (!IsValidPassword(newPassword))
+        var passwordValidationResult = new ChangePasswordCommandValidator().Validate(command);
+        if (!passwordValidationResult.IsValid)
         {
-            return result.WithError(ApplicationErrors.UserAuthentication.UnsafePassword);
+            return result.WithErrorsFromValidationResult(passwordValidationResult);
         }
 
-        // Step 4: Prevent reusing the old password
-        if (_passwordHasher.Verify(user.HashedPassword, newPassword))
+        if (VerifyPassword(user, command.NewPassword))
         {
             return result.WithError(ApplicationErrors.UserAuthentication.SamePassword);
         }
 
         // Step 5: Hash and update the password
-        user.HashedPassword = _passwordHasher.Hash(newPassword);
-
-        // Step 6: Update user data in the database
-        await _userRepository.UpdateAsync(user);
+        await UpdateInternal(user, userUpdate => userUpdate.Password = command.NewPassword);
 
         // Step 7: Revoke active sessions or refresh tokens (recommended)
         await _sessionService.RevokeUserSessionsAsync(user.Id);
-
 
         return new ChangePasswordResult
         {
             Message = "Password changed successfully", LastChanged = DateTimeOffset.UtcNow
         };
     }
-
-    // Example password validation logic
-    private bool IsValidPassword(string password)
-    {
-        return password.Length >= 8
-               && password.Any(char.IsUpper)
-               && password.Any(char.IsLower)
-               && password.Any(char.IsDigit)
-               && password.Any(ch => !char.IsLetterOrDigit(ch)); // Symbol check
-    }
-}
-
-public class ChangePasswordResult
-{
-    public string Message { get; set; }
-    public DateTimeOffset LastChanged { get; set; } // TODO: Consider offset on result
-}
-
-public class UserLoginResult
-{
-    public TokenResult Token { get; set; }
-    public string Name { get; set; }
-    public string UserName { get; set; }
-}
-
-public class UserRegisterResult
-{
-    public TokenResult Token { get; set; }
-    public string Name { get; set; }
-    public string UserName { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
 }

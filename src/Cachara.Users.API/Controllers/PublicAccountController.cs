@@ -49,10 +49,4 @@ public class PublicAccountController(IUserProfileService userProfileService) : B
     {
         return await userProfileService.UpdateProfile(update);
     }
-
-    [HttpPut("change-password")]
-    public async Task<Result> ChangePassword(string oldPassword, string newPassword)
-    {
-        return await userProfileService.ChangePassword(oldPassword, newPassword);
-    }
 }

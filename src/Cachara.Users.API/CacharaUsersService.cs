@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using Cachara.Shared.Infrastructure.AzureServiceBus;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Hangfire;
+using Cachara.Shared.Infrastructure.Middlewares;
 using Cachara.Shared.Infrastructure.Security;
 using Cachara.Users.API.API.Extensions;
 using Cachara.Users.API.API.Hangfire;
@@ -29,7 +30,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using static Cachara.Users.API.API.Security.CustomClaims;
 using ProblemDetailsOptions = Hellang.Middleware.ProblemDetails.ProblemDetailsOptions;
+using Subscription = Cachara.Users.API.API.Security.Subscription;
 
 namespace Cachara.Users.API;
 
@@ -95,7 +98,6 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
             };
         });
 #pragma warning restore EXTEXP0018
-
 
         ConfigureHangfire(services);
         ConfigureDataAccess(services);
@@ -169,29 +171,33 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
         // TODO: Create Minimum Age requirement.
         services.AddAuthorization(options =>
         {
-            options.AddPolicy(Policies.ManagementUser, policy => policy
-                .RequireAuthenticatedUser()
-                .RequireClaim(
-                    CustomClaims.Subscription,
-                    [Subscription.Management.ToString()]
-                ));
+            options.AddPolicy(Policies.ManagementUser, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim(
+                        CustomClaims.Subscription,
+                        Subscription.Management.ToString()
+                    );
+            });
 
-            options.AddPolicy(Policies.PremiumUser, policy => policy
-                .RequireAuthenticatedUser()
-                .RequireClaim(
-                    CustomClaims.Subscription,
-                    [Subscription.Premium.ToString(), Subscription.Management.ToString()]
-                ));
+            options.AddPolicy(Policies.PremiumUser, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim(
+                        CustomClaims.Subscription,
+                        Subscription.Premium.ToString(), Subscription.Management.ToString()
+                    );
+            });
 
-            options.AddPolicy(Policies.StandardUser, policy => policy
-                .RequireAuthenticatedUser()
-                .RequireClaim(
-                    CustomClaims.Subscription,
-                    [
-                        Subscription.Management.ToString(), Subscription.Premium.ToString(),
-                        Subscription.Standard.ToString()
-                    ]
-                ));
+            options.AddPolicy(Policies.StandardUser, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim(
+                        CustomClaims.Subscription,
+                            Subscription.Management.ToString(), Subscription.Premium.ToString(),
+                            Subscription.Standard.ToString()
+                    );
+            });
         });
     }
 
@@ -296,6 +302,8 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
             endpoints.MapSwagger();
             endpoints.MapOpenApi();
         });
+
+        app.UseMiddleware<RequestTracingMiddleware>();
 
         app.UseHangfireDashboard();
     }
