@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Cachara.Users.API.API.Authentication;
 using Cachara.Users.API.API.Options;
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Services.Abstractions;
@@ -62,6 +63,36 @@ public class JwtProvider : IJwtProvider
             Token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
         };
     }
+
+    public UserAccount Decode(string token)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static ClaimsPrincipal? DecodeToken(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+
+        if (!handler.CanReadToken(token))
+            return null;
+
+        var jwtToken = handler.ReadJwtToken(token);
+
+        var identity = new ClaimsIdentity(jwtToken.Claims);
+        return new ClaimsPrincipal(identity);
+    }
+
+    private static string? GetClaimValue(string token, string claimType)
+    {
+        var claimsPrincipal = DecodeToken(token);
+        return claimsPrincipal?.FindFirst(claimType)?.Value;
+    }
+
+    public static string? GetUserId(string token)
+        => GetClaimValue(token, ClaimTypes.NameIdentifier);
+
+    public static string? GetTenantId(string token)
+        => GetClaimValue(token, "tenant_id");
 
     private static string GenerateRefreshToken()
     {

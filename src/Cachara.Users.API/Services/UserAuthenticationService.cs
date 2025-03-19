@@ -11,20 +11,24 @@ using Cachara.Users.API.Services.Models;
 using Cachara.Users.API.Services.Models.Internal;
 using Cachara.Users.API.Services.Validations;
 using FluentResults;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Cachara.Users.API.Services;
 
 public class UserAuthenticationService : UserService
 {
     private readonly IJwtProvider _tokenProvider;
+    private readonly IDistributedCache _cache;
 
     public UserAuthenticationService(
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
-        IJwtProvider tokenProvider)
+        IJwtProvider tokenProvider,
+        IDistributedCache cache)
         : base(userRepository, unitOfWork)
     {
         _tokenProvider = tokenProvider;
+        _cache = cache;
     }
 
     public async Task<Result<UserRegisterResult>> RegisterUser(RegisterCommand register)
@@ -131,7 +135,7 @@ public class UserAuthenticationService : UserService
         await UpdateInternal(user, userUpdate => userUpdate.Password = command.NewPassword);
 
         // Step 7: Revoke active sessions or refresh tokens (recommended)
-        await _sessionService.RevokeUserSessionsAsync(user.Id);
+        //await _sessionService.RevokeUserSessionsAsync(user.Id);
 
         return new ChangePasswordResult
         {
