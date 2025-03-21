@@ -4,12 +4,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cachara.Users.API.Controllers.Public;
+namespace Cachara.Users.API.Controllers;
 
+[ApiController]
 [Authorize("standard-user", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[ApiExplorerSettings(GroupName = "public")]
-[Route("public/follow")]
-[Tags("Auth")]
+//[ApiExplorerSettings(GroupName = "public")]
+[Route("public/[controller]")]
+[Tags("Follow")]
 public class PublicFollowController(IUserFollowService userFollowService, ClaimsPrincipal user) : ControllerBase
 {
     [HttpPost("{userId}")]

@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cachara.Users.API.Controllers.Base;
+namespace Cachara.Users.API.Controllers;
 
+[ApiController]
 public abstract class BaseController : ControllerBase
 {
     public IActionResult HandleFailure()

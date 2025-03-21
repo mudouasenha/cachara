@@ -1,16 +1,16 @@
-using Cachara.Users.API.Controllers.Base;
 using Cachara.Users.API.Services;
 using Cachara.Users.API.Services.Abstractions;
 using Cachara.Users.API.Services.Commands;
 using Cachara.Users.API.Services.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cachara.Users.API.Controllers.Public;
+namespace Cachara.Users.API.Controllers;
 
-[ApiExplorerSettings(GroupName = "public")]
-[Route("public/auth")]
+[ApiController]
+//[ApiExplorerSettings(GroupName = "public")]
+[Route("public/[controller]")]
 [Tags("Auth")]
-public class PublicAuthController(IUserService userService, UserAuthenticationService userAuthService) : BaseController
+public class PublicAuthController(IUserService userService, UserAuthenticationService userAuthService) : ControllerBase
 {
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request)
@@ -19,10 +19,10 @@ public class PublicAuthController(IUserService userService, UserAuthenticationSe
             request.Password);
         var tokenResult = await userAuthService.RegisterUser(command);
 
-        if (tokenResult.IsFailed)
-        {
-            return HandleFailure(); // TODO: Implement failed result factory. 400
-        }
+        // if (tokenResult.IsFailed)
+        // {
+        //     return HandleFailure(); // TODO: Implement failed result factory. 400
+        // }
 
         return Ok(tokenResult.Value);
     }
@@ -33,10 +33,10 @@ public class PublicAuthController(IUserService userService, UserAuthenticationSe
         var command = new LoginCommand(request.Email, request.Password);
         var tokenResult = await userAuthService.LoginUser(command);
 
-        if (tokenResult.IsFailed)
-        {
-            return HandleFailure(); // TODO: Implement failed result factory. 400
-        }
+        // if (tokenResult.IsFailed)
+        // {
+        //     return HandleFailure(); // TODO: Implement failed result factory. 400
+        // }
 
         return Ok(tokenResult.Value);
     }
@@ -47,10 +47,10 @@ public class PublicAuthController(IUserService userService, UserAuthenticationSe
         var command = new ChangePasswordCommand() { Password = oldPassword, NewPassword = newPassword, };
         var changePasswordResult = await userAuthService.ChangePassword(command);
 
-        if (changePasswordResult.IsFailed)
-        {
-            return HandleFailure(); // TODO: Implement failed result factory. 400
-        }
+        // if (changePasswordResult.IsFailed)
+        // {
+        //     return HandleFailure(); // TODO: Implement failed result factory. 400
+        // }
 
         return Ok(changePasswordResult.Value);
     }

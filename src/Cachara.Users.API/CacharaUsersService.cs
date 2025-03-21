@@ -6,16 +6,15 @@ using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Hangfire;
 using Cachara.Shared.Infrastructure.Middlewares;
 using Cachara.Shared.Infrastructure.Security;
-using Cachara.Users.API.API.Extensions;
 using Cachara.Users.API.API.Hangfire;
 using Cachara.Users.API.API.Options;
 using Cachara.Users.API.API.Security;
 using Cachara.Users.API.API.Swagger;
+using Cachara.Users.API.Controllers;
 using Cachara.Users.API.Infrastructure.Data;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Services;
 using Cachara.Users.API.Services.Abstractions;
-using Flurl;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.SqlServer;
@@ -29,8 +28,6 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using static Cachara.Users.API.API.Security.CustomClaims;
 using ProblemDetailsOptions = Hellang.Middleware.ProblemDetails.ProblemDetailsOptions;
 using Subscription = Cachara.Users.API.API.Security.Subscription;
 
@@ -78,7 +75,6 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
         AddSecurity(services);
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddProblemDetails(delegate(ProblemDetailsOptions _) { });
 
         ConfigureEndpoints(services);
 
@@ -105,10 +101,10 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
 
     private static void ConfigureEndpoints(IServiceCollection services)
     {
+        services.AddProblemDetails(delegate(ProblemDetailsOptions _) { });
+
         services.AddControllers(options =>
             {
-                options.Conventions.Add(new ApiExplorerGroupPerVersionConvention());
-
                 options.InputFormatters.Add(new TextPlainInputFormatter());
                 options.InputFormatters.Add(new StreamInputFormatter());
             }).AddJsonOptions(options =>
@@ -117,6 +113,8 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
             })
             .AddProblemDetailsConventions();
+
+        services.AddEndpointsApiExplorer();
 
         services.AddOpenApi(opt =>
         {
@@ -139,9 +137,8 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
                 return Task.CompletedTask;
             });
         });
+
         services.AddResponseCaching();
-        services.AddEndpointsApiExplorer();
-        services.AddCustomSwagger();
     }
 
     private void ConfigureAzure(IServiceCollection services)
@@ -262,33 +259,6 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
 
     public void ConfigureApp(IApplicationBuilder app)
     {
-        app.UseProblemDetails();
-        app.UseSwaggerUI(opts =>
-        {
-            opts.EnableTryItOutByDefault();
-            opts.EnablePersistAuthorization();
-            opts.DisplayRequestDuration();
-            opts.DefaultModelsExpandDepth(-1);
-
-            var swaggerGenOptions = app.ApplicationServices.GetService<SwaggerGeneratorOptions>();
-
-            if (swaggerGenOptions == null)
-            {
-                return;
-            }
-
-            foreach (var swaggerDoc in swaggerGenOptions.SwaggerDocs)
-            {
-                var swaggerPathBase = "/swagger";
-
-                opts.SwaggerEndpoint(
-                    swaggerPathBase.AppendPathSegment($"/{swaggerDoc.Key}/swagger.json"), swaggerDoc.Key);
-            }
-        });
-
-        app.UseHttpsRedirection();
-
-        app.UseResponseCaching();
         app.UseRouting();
 
         app.UseAuthentication();
@@ -296,11 +266,20 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapScalarApiReference();
             endpoints.MapControllers();
-            endpoints.MapHealthChecks("/health");
-            endpoints.MapSwagger();
+
             endpoints.MapOpenApi();
+            endpoints.MapScalarApiReference(options =>
+            {
+                options
+                    .WithPreferredScheme("Bearer")
+                    .WithHttpBearerAuthentication(bearer =>
+                    {
+                        bearer.Token = "your-bearer-token";
+                    });
+            });
+
+            endpoints.MapHealthChecks("/health");
         });
 
         app.UseMiddleware<RequestTracingMiddleware>();

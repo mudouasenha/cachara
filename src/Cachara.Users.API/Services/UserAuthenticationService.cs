@@ -108,7 +108,7 @@ public class UserAuthenticationService : UserService
         var result = new Result<ChangePasswordResult>();
 
         // Step 1: Retrieve the user from the token
-        var user = await GetUserFromTokenAsync();
+        var user = await GetUserById(command.UserId);
         if (user == null)
         {
             return result.WithError(ApplicationErrors.UserAuthentication.UserNotFound);

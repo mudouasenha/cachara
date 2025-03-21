@@ -1,22 +1,22 @@
 using Cachara.Users.API.API.Security;
-using Cachara.Users.API.Controllers.Base;
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Services.Models;
-using FluentResults;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IUserProfileService = Cachara.Users.API.Services.Abstractions.IUserProfileService;
 
-namespace Cachara.Users.API.Controllers.Public;
+namespace Cachara.Users.API.Controllers;
 
 // TODO: Implement Rate Limiting in this API.
 
-[ApiExplorerSettings(GroupName = "public")]
+
+[ApiController]
+//[ApiExplorerSettings(GroupName = "public")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("public/account")]
-[Tags("Auth")]
-public class PublicAccountController(IUserProfileService userProfileService) : BaseController
+[Route("public/[controller]")]
+[Tags("Account")]
+public class PublicAccountController(IUserProfileService userProfileService) : ControllerBase
 {
     private readonly IUserProfileService _userProfileService = userProfileService;
 

@@ -22,10 +22,11 @@ public class SessionService : ISessionService
         _logger = logger;
     }
 
+    // TODO: manage session accordingly
     public async Task CreateSessionAsync(UserAccount user, string token)
     {
         var tokenData = _tokenProvider.Decode(token); // Incorrect
-        await _cacheProvider.SetAsync($"token:{token}", user, tokenData.ExpiresAt - DateTimeOffset.UtcNow);
+        //await _cacheProvider.SetAsync($"token:{token}", user, tokenData.ExpiresAt - DateTimeOffset.UtcNow);
 
         var sessions = await _cacheProvider.GetAsync<List<string>>($"user-sessions:{user.Id}") ?? new List<string>();
         sessions.Add($"token:{token}");

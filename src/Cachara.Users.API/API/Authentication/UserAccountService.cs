@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Cachara.Users.API.Services.Abstractions;
 
 namespace Cachara.Users.API.API.Authentication;
 
@@ -15,10 +16,12 @@ namespace Cachara.Users.API.API.Authentication;
 public class UserAccountService : IAccountService<UserAccount>
 {
     private readonly IHttpContextAccessor _contextAccessor;
+    private readonly IJwtProvider _jwtProvider;
 
-    public UserAccountService(IHttpContextAccessor contextAccessor)
+    public UserAccountService(IHttpContextAccessor contextAccessor, IJwtProvider jwtProvider)
     {
         _contextAccessor = contextAccessor;
+        _jwtProvider = jwtProvider;
     }
 
     // Current user account
@@ -31,17 +34,18 @@ public class UserAccountService : IAccountService<UserAccount>
         if (string.IsNullOrEmpty(token))
             throw new UnauthorizedAccessException("Authorization token is missing.");
 
-        var claimsPrincipal = JwtTokenHelper.DecodeToken(token);
+        var claimsPrincipal = _jwtProvider.Decode(token);
 
         if (claimsPrincipal == null)
             throw new UnauthorizedAccessException("Invalid token.");
 
         Current = new UserAccount
         {
-            Id = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "Unknown",
-            UserName = claimsPrincipal.FindFirst(ClaimTypes.Name)?.Value ?? "Unknown",
-            FullName = claimsPrincipal.FindFirst("full_name")?.Value ?? "Unknown",
-            Handle = claimsPrincipal.FindFirst("handle")?.Value ?? "Unknown",
+            Id = claimsPrincipal.Claims.FirstOrDefault(p  => p.Type == ClaimTypes.NameIdentifier)?.Value
+                 ?? throw new ArgumentException("Unable to retrieve user id from token."),
+            UserName = claimsPrincipal.Claims.FirstOrDefault(p  => p.Type == ClaimTypes.Name)?.Value ?? "Unknown",
+            FullName = claimsPrincipal.Claims.FirstOrDefault(p  => p.Type == "full_name")?.Value ?? "Unknown",
+            Handle = claimsPrincipal.Claims.FirstOrDefault(p  => p.Type == "handle")?.Value ?? "Unknown",
             Claims = claimsPrincipal.Claims
         };
     }
@@ -59,11 +63,11 @@ public class UserAccountService : IAccountService<UserAccount>
     public string GetClaimValue(string claimType)
     {
         var token = GetAuthorizationToken();
-        var claimsPrincipal = JwtTokenHelper.DecodeToken(token);
+        var claimsPrincipal = _jwtProvider.Decode(token);
 
         if (claimsPrincipal == null) throw new UnauthorizedAccessException("Invalid token.");
 
-        return claimsPrincipal.FindFirst(claimType)?.Value;
+        return claimsPrincipal.Claims.FirstOrDefault(p => p.Type == claimType)?.Value;
     }
 }
 

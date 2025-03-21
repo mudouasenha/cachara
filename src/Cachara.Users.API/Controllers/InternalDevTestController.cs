@@ -6,12 +6,13 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Cachara.Users.API.Controllers.Internal;
+namespace Cachara.Users.API.Controllers;
 
-[ApiExplorerSettings(GroupName = "internal")]
-[Route("internal/devtest")]
+[ApiController]
+//[ApiExplorerSettings(GroupName = "internal")]
+[Route("internal/[controller]")]
 [Tags("Dev")]
-public class InternalDevTestController
+public class InternalDevTestController : ControllerBase
 {
     private readonly ILogger<InternalDevTestController> _logger;
     private readonly IServiceBusQueue _queue;
