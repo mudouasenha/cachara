@@ -24,8 +24,8 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,8 +48,8 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                     ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,8 +69,8 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,33 +91,32 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId1 = table.Column<string>(type: "nvarchar(36)", nullable: true),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId1 = table.Column<string>(type: "nvarchar(36)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(36)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(36)", nullable: false),
                     AssignedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserRole", x => x.Id)
                         .Annotation("SqlServer:Clustered", false);
                     table.ForeignKey(
-                        name: "FK_UserRole_Role_RoleId1",
-                        column: x => x.RoleId1,
+                        name: "FK_UserRole_Role_RoleId",
+                        column: x => x.RoleId,
                         principalSchema: "Users",
                         principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserRole_User_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_UserRole_User_UserId",
+                        column: x => x.UserId,
                         principalSchema: "Users",
                         principalTable: "User",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -132,8 +131,8 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                     ShowEmail = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -158,8 +157,8 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                     Interest = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -187,16 +186,16 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_RoleId1",
+                name: "IX_UserRole_RoleId",
                 schema: "Users",
                 table: "UserRole",
-                column: "RoleId1");
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_UserId1",
+                name: "IX_UserRole_UserId",
                 schema: "Users",
                 table: "UserRole",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserSettings_UserId",
