@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Cachara.Users.API.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
@@ -20,9 +22,9 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
@@ -45,8 +47,7 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Subscription = table.Column<int>(type: "int", nullable: false),
-                    ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
@@ -67,7 +68,7 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     WebsiteUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
@@ -92,9 +93,10 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(36)", nullable: false),
+                    AssignedRole = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<string>(type: "nvarchar(36)", nullable: false),
                     AssignedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
@@ -129,7 +131,7 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                     IsPrivate = table.Column<bool>(type: "bit", nullable: false),
                     ReceiveNotifications = table.Column<bool>(type: "bit", nullable: false),
                     ShowEmail = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
@@ -155,7 +157,7 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                     Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
                     UserProfileId = table.Column<string>(type: "nvarchar(36)", nullable: false),
                     Interest = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
@@ -171,6 +173,16 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                         principalTable: "UserProfile",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Users",
+                table: "Role",
+                columns: new[] { "Id", "Description", "Name", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { "0195bc08-3824-7836-8ae7-b9342b9f8444", "User", 1, null },
+                    { "0195bc08-632d-7af8-88f5-568b043e5aeb", "Administrator", 2, null }
                 });
 
             migrationBuilder.CreateIndex(

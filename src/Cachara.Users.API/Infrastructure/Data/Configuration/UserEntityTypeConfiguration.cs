@@ -32,10 +32,6 @@ public class UserEntityTypeConfiguration : BaseEntityTypeConfiguration<User>
             .HasMaxLength(50)
             .IsRequired();
 
-        builder.Property(t => t.ProfilePictureUrl)
-            .HasMaxLength(2048)
-            .IsRequired();
-
         builder.OwnsOne(p => p.Settings)
             .WithOwner(p => p.User)
             .HasForeignKey(p => p.UserId);

@@ -30,7 +30,9 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -41,9 +43,8 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Name")
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
@@ -59,6 +60,24 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                     SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
 
                     b.ToTable("Role", "Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "0195bc08-3824-7836-8ae7-b9342b9f8444",
+                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Deleted = false,
+                            Description = "User",
+                            Name = 1
+                        },
+                        new
+                        {
+                            Id = "0195bc08-632d-7af8-88f5-568b043e5aeb",
+                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Deleted = false,
+                            Description = "Administrator",
+                            Name = 2
+                        });
                 });
 
             modelBuilder.Entity("Cachara.Users.API.Domain.Entities.User", b =>
@@ -68,7 +87,9 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -87,10 +108,6 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProfilePictureUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -124,7 +141,9 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -168,7 +187,9 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -214,8 +235,13 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                     b.Property<DateTime>("AssignedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("AssignedRole")
+                        .HasColumnType("int");
+
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -257,7 +283,9 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()

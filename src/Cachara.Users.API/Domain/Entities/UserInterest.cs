@@ -16,12 +16,12 @@ public class UserInterest : IEntity<string>, IModifiable, IVersable, ISoftDeleta
     public bool Deleted { get; set; }
 
 
-    public ValidationResult Validate()
+    public Task<ValidationResult> Validate()
     {
         throw new NotImplementedException();
     }
 
-    public void ValidateAndThrow()
+    public Task ValidateAndThrow()
     {
         throw new NotImplementedException();
     }

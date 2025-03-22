@@ -8,7 +8,7 @@ public class UserRole : IEntity<string>, IModifiable, IVersable, ISoftDeletable,
     public string UserId { get; set; }
     public User User { get; set; }
 
-    public string RoleId { get; set; }
+    public RoleType AssignedRole { get; set; }
     public Role Role { get; set; }
 
     public DateTime AssignedDate { get; set; }
@@ -18,12 +18,12 @@ public class UserRole : IEntity<string>, IModifiable, IVersable, ISoftDeletable,
     public DateTimeOffset? UpdatedAt { get; set; }
     public bool Deleted { get; set; }
 
-    public ValidationResult Validate()
+    public Task<ValidationResult> Validate()
     {
         throw new NotImplementedException();
     }
 
-    public void ValidateAndThrow()
+    public Task ValidateAndThrow()
     {
         throw new NotImplementedException();
     }

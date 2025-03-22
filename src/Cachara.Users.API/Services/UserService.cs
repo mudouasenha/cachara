@@ -75,15 +75,21 @@ public class UserService : IUserService
             Email = upsert.Email,
             UserName = upsert.UserName,
             FullName = upsert.FullName,
-            Subscription = upsert.Subscription
+            Subscription = upsert.Subscription,
+            Settings = new UserSettings()
         };
 
+        user.AssignRole(RoleType.User);
         user.Password = _generalDataProtectionService.EncryptString(upsert.Password);
 
         user.GenerateId();
         user.UpdateCreatedAt();
+        user.Settings.UpdateCreatedAt();
+        user.Settings.GenerateId();
 
         await _userRepository.AddAsync(user);
+
+        await _unitOfWork.Commit();
 
         return await GetUserById(user.Id);
     }

@@ -13,7 +13,8 @@ public class UserRoleEntityTypeConfiguration : BaseEntityTypeConfiguration<UserR
             .HasMaxLength(36)
             .IsRequired();
 
-        builder.Property(t => t.RoleId)
+        builder.Property(t => t.AssignedRole)
+            .HasConversion<string>()
             .HasMaxLength(36)
             .IsRequired();
 

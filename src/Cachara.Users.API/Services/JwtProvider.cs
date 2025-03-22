@@ -38,12 +38,11 @@ public class JwtProvider : IJwtProvider
             new("username", user.UserName),
             new("fullName", user.FullName),
             new("dateOfBirth", user.DateOfBirth.ToString(CultureInfo.InvariantCulture)),
-            new("profile_picture", user.ProfilePictureUrl ?? string.Empty)
         };
 
         foreach (var role in user.UserRoles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, role.Role.Name));
+            claims.Add(new Claim(ClaimTypes.Role, role.Role.Name.ToString()));
         }
 
         var jwtToken = new JwtSecurityToken(

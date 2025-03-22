@@ -6,9 +6,6 @@ namespace Cachara.Tests.Unit.Mappings;
 
 public class SocialProfileTests
 {
-    private readonly Fixture _fixture;
-    private IMapper _sut;
-
     [Trait("Category", "Unit")]
     [Trait("Feature", "Mapper")]
     [Trait("Profile", "Social")]
@@ -17,6 +14,6 @@ public class SocialProfileTests
     {
         var mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(new UsersMappings()));
         mapperConfiguration.AssertConfigurationIsValid();
-        _sut = mapperConfiguration.CreateMapper();
+        mapperConfiguration.CreateMapper();
     }
 }

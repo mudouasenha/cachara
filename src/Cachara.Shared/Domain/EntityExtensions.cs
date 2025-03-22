@@ -14,7 +14,7 @@ public static class IEntityExtensions
 
         if (string.IsNullOrEmpty(entity.Id) || force)
         {
-            entity.Id = Guid.NewGuid().ToString("D").ToLowerInvariant();
+            entity.Id = Guid.CreateVersion7().ToString("D").ToLowerInvariant();
         }
 
         return entity.Id;

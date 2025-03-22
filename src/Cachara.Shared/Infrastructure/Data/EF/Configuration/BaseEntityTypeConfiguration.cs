@@ -12,7 +12,8 @@ public class BaseEntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEn
         builder.HasKey(t => t.Id).IsClustered(false);
         builder.Property(p => p.Id).HasMaxLength(36);
 
-        builder.Property(p => p.CreatedAt);
+        builder.Property(p => p.CreatedAt)
+            .HasDefaultValueSql("GETUTCDATE()");
         builder.Property(p => p.UpdatedAt);
 
         builder.Property(p => p.Deleted)

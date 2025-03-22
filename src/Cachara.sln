@@ -5,7 +5,7 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cachara.Users.API", "Cachara.Users.API\Cachara.Users.API.csproj", "{17E66292-ABB4-4270-8FBF-5402CC57E291}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B2261560-4113-4EFB-97FA-273F24D61B6A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{B2261560-4113-4EFB-97FA-273F24D61B6A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D6535720-5BB5-4962-88A6-55E9C97E1880}"
 EndProject

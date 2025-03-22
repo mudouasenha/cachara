@@ -9,11 +9,12 @@ tools for data storage, asynchronous communication and enterprise patterns on to
 
 ## Technologies
 
-* .NET Core 8;
+* .NET Core 9;
 * REST Standards;
 * MS SQL;
 * Hangfire;
 * RabbitMQ;
+* Redis Cache
 
 ---
 
@@ -62,8 +63,7 @@ tools for data storage, asynchronous communication and enterprise patterns on to
 - [ ] GraphQL for UI/UX use;
 - [X] RESTFul APIs;
 - [x] API Versioning;
-- [ ] Scalar with OpenAPI 3.0 schema; (WIP)
-- [ ] Swagger option;
+- [x] Scalar with OpenAPI 3.0 schema;
 - [ ] Exception Handling Middleware;
 
 ## 3. Security:

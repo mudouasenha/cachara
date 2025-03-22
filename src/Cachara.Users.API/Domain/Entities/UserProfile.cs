@@ -19,12 +19,12 @@ public class UserProfile : IEntity<string>, IModifiable, IVersable, ISoftDeletab
     public DateTimeOffset? UpdatedAt { get; set; }
     public bool Deleted { get; set; }
 
-    public ValidationResult Validate()
+    public Task<ValidationResult> Validate()
     {
         throw new NotImplementedException();
     }
 
-    public void ValidateAndThrow()
+    public Task ValidateAndThrow()
     {
         throw new NotImplementedException();
     }

@@ -14,3 +14,5 @@ https://redis.io/insight/
 dotnet ef migrations add Initial --context CacharaUsersDbContext --startup-project Cachara.Users.API -o
 Infrastructure/Data/Migrations
 
+dotnet ef database update --context CacharaUsersDbContext --startup-project Cachara.Users.API  
+

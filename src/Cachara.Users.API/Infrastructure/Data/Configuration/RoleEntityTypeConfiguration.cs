@@ -9,6 +9,9 @@ public class RoleEntityTypeConfiguration : BaseEntityTypeConfiguration<Role>
 {
     public void Configure(EntityTypeBuilder<Role> builder)
     {
+        builder.HasIndex(t => t.Name)
+            .IsUnique();
+
         builder.Property(t => t.Name)
             .HasMaxLength(50)
             .IsRequired();
@@ -18,7 +21,7 @@ public class RoleEntityTypeConfiguration : BaseEntityTypeConfiguration<Role>
 
         builder.HasMany(p => p.UserRoles)
             .WithOne(p => p.Role)
-            .HasForeignKey(p => p.RoleId)
+            .HasForeignKey(p => p.AssignedRole)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
