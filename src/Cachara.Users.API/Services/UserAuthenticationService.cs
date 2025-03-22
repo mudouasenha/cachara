@@ -1,5 +1,6 @@
 using Cachara.Shared.Domain;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
+using Cachara.Shared.Infrastructure.Security;
 using Cachara.Users.API.API.Security;
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Domain.Errors;
@@ -24,8 +25,9 @@ public class UserAuthenticationService : UserService
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
         IJwtProvider tokenProvider,
+        IGeneralDataProtectionService generalDataProtectionService,
         IDistributedCache cache)
-        : base(userRepository, unitOfWork)
+        : base(userRepository, generalDataProtectionService, unitOfWork)
     {
         _tokenProvider = tokenProvider;
         _cache = cache;

@@ -16,9 +16,10 @@ public class UserService : IUserService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
 
-    public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public UserService(IUserRepository userRepository, IGeneralDataProtectionService generalDataProtectionService, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
+        _generalDataProtectionService = generalDataProtectionService;
         _unitOfWork = unitOfWork;
     }
 
@@ -73,10 +74,11 @@ public class UserService : IUserService
         {
             Email = upsert.Email,
             UserName = upsert.UserName,
-            Password = upsert.Password,
             FullName = upsert.FullName,
             Subscription = upsert.Subscription
         };
+
+        user.Password = _generalDataProtectionService.EncryptString(upsert.Password);
 
         user.GenerateId();
         user.UpdateCreatedAt();

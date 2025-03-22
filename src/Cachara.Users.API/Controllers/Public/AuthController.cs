@@ -13,7 +13,7 @@ namespace Cachara.Users.API.Controllers;
 public class AuthController(IUserService userService, UserAuthenticationService userAuthService) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterRequest request)
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         var command = new RegisterCommand(request.UserName, request.Email, request.DateOfBirth, request.FullName,
             request.Password);

@@ -1,23 +1,15 @@
-@BaseUrl = https://example.com
+@BaseUrl = http://localhost:5100
 
 @AccessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im1hdGhldXMuZ29tZXMiLCJzdWIiOiJtYXRoZXVzLmdvbWVzIiwianRpIjoiZjRkNjNhNDMiLCJhdWQiOlsiaHR0cDovL2xvY2FsaG9zdDoyNDQzMiIsImh0dHBzOi8vbG9jYWxob3N0OjQ0MzAxIiwiaHR0cHM6Ly9sb2NhbGhvc3Q6NTEwMSIsImh0dHA6Ly9sb2NhbGhvc3Q6NTEwMCJdLCJuYmYiOjE3MzExMjE3NTUsImV4cCI6MTczOTA3MDU1NSwiaWF0IjoxNzMxMTIxNzU2LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.9BMdeKxajkQScSnicgEfyQiBESpkKuRlUGotD7mBlP0
 
-#### GET request to example server
-#GET https://examples.http-client.intellij.net/get
-#    ?generated-in=JetBrains Rider
-#
-####
-#GET http://localhost:5100/public/account/hello
-#Authorization: Bearer {{AccessToken}}
-#
-####
-#POST {{BaseUrl}}/public/auth/register
-#Content-Type: application/json
-#Authorization: Bearer {{AccessToken}}
-#{
-#  "UserName": "Jhon",
-#  "Email": "jhon@doe.com",
-#  "DateOfBirth": "10-01-1999T00:00:00",
-#  "FullName": "Jhon Doe",
-#  "Password": "JhonDoe.com"
-#}
+
+POST http://localhost:5100/public/auth/register
+Content-Type: application/json
+
+{
+  "UserName": "Jhon",
+  "Email": "jhon@doe.com",
+  "DateOfBirth": "1999-10-01T00:00:00",
+  "FullName": "Jhon Doe",
+  "Password": "JhonDoe.com"
+}

@@ -12,9 +12,12 @@ public class DbContextInitializer<TDbContext> : IAsyncInitializer where TDbConte
         this.dbContext = dbContext;
     }
 
+    // TODO: Fix Migrations not being applied on startup
     public async Task InitializeAsync(CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        Console.WriteLine("Applying migrations...\n\n\n\n\n\n\n\n");
         await dbContext.Database.MigrateAsync();
+        Console.WriteLine("Migrations applied successfully.");
     }
 }

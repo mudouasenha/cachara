@@ -27,6 +27,7 @@ using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using NSwag;
+using NSwag.Generation.Processors.Security;
 using Scalar.AspNetCore;
 using ProblemDetailsOptions = Hellang.Middleware.ProblemDetails.ProblemDetailsOptions;
 using Subscription = Cachara.Users.API.API.Security.Subscription;
@@ -139,9 +140,19 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
                 options.ApiGroupNames = new[] { "management" };
             });
 
-            services.AddOpenApiDocument(options =>
+        services.AddOpenApiDocument(options =>
             {
                 options.DocumentName = "public";
+                options.AddSecurity("Bearer", new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.Http,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                    BearerFormat = "JWT",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Description = "Enter 'Bearer {token}' in the Authorization header."
+                });
+                options.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor(JwtBearerDefaults.AuthenticationScheme));
+
                 options.PostProcess = document =>
                 {
                     document.DocumentPath = "/openapi/{documentName}.json";
@@ -162,7 +173,7 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
                 options.ApiGroupNames = new[] { "public" };
             });
 
-            services.AddOpenApiDocument(options =>
+        services.AddOpenApiDocument(options =>
             {
                 options.DocumentName = "internal";
                 options.PostProcess = document =>
@@ -262,6 +273,7 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
         services.AddSingleton<IJwtProvider, JwtProvider>(_ => new JwtProvider(Options.Jwt));
 
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<UserAuthenticationService>();
         services.AddScoped<IUserProfileService, UserProfileService>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<UserSubscriptionProvider>();
@@ -281,7 +293,7 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
                 //x.Converters.Add(new JsonDateOnlyConverter());
             });
             config.UseSqlServerStorage(Options.JobsSqlDb,
-                new SqlServerStorageOptions { SchemaName = "CacharaUsersHangfire", PrepareSchemaIfNecessary = true });
+                new SqlServerStorageOptions { SchemaName = "UsersHangfire", PrepareSchemaIfNecessary = true });
             config.UseConsole();
         });
 
@@ -329,6 +341,13 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
             });
             endpoints.MapScalarApiReference("scalar", options =>
             {
+                options
+                    .WithPreferredScheme("Bearer")
+                    .WithHttpBearerAuthentication(bearer =>
+                    {
+                        bearer.Token = "your-bearer-token";
+                    });
+
                 options.AddDocument("internal");
                 options.AddDocument("management");
                 options.AddDocument("public");

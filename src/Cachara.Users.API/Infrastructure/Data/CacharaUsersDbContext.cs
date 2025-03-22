@@ -1,5 +1,6 @@
 ﻿using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Cachara.Users.API.Infrastructure.Data;
 
@@ -28,5 +29,10 @@ public class CacharaUsersDbContext : DbContext, IUnitOfWork
 
         modelBuilder.HasDefaultSchema(Schema);
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+    }
+
+    public static void ConfigureDBContext(SqlServerDbContextOptionsBuilder obj)
+    {
+        obj.MigrationsHistoryTable("__EFMigrationsHistory", Schema);
     }
 }

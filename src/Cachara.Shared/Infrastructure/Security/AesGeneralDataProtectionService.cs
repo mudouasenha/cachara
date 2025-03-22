@@ -14,6 +14,11 @@ public class AesGeneralDataProtectionService : IGeneralDataProtectionService
 
     public byte[] Encrypt(byte[] bytes)
     {
+        if (_key.Length != 32)  // AES-256 requires a 32-byte key
+        {
+            throw new ArgumentException("Invalid key size. Key must be 32 bytes for AES-256.");
+        }
+
         using var aes = Aes.Create();
         aes.Key = _key;
         aes.Mode = CipherMode.CBC;
