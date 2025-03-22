@@ -13,3 +13,24 @@ Content-Type: application/json
   "FullName": "Jhon Doe",
   "Password": "JhonDoe.com"
 }
+
+###
+
+POST http://localhost:5100/public/auth/login
+Content-Type: application/json
+
+{
+"Email": "jhon@doe.com",
+"Password": "JhonDoe.com"
+}
+
+###
+
+PUT http://localhost:5100/public/auth/change-password
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+
+{
+  "Password": "JhonDoe.com",
+  "NewPassword": "IdrisElba.com"
+}

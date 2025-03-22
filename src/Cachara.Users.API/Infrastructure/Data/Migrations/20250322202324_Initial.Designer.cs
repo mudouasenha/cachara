@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cachara.Users.API.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CacharaUsersDbContext))]
-    [Migration("20250322042916_Initial")]
+    [Migration("20250322202324_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -29,8 +29,8 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
             modelBuilder.Entity("Cachara.Users.API.Domain.Entities.Role", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -46,9 +46,6 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Name")
-                        .HasColumnType("int");
-
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
@@ -60,26 +57,25 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("Role", "Users");
 
                     b.HasData(
                         new
                         {
-                            Id = "0195bc08-3824-7836-8ae7-b9342b9f8444",
+                            Id = "User",
                             CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Deleted = false,
-                            Description = "User",
-                            Name = 1
+                            Description = "User"
                         },
                         new
                         {
-                            Id = "0195bc08-632d-7af8-88f5-568b043e5aeb",
+                            Id = "Admin",
                             CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Deleted = false,
-                            Description = "Administrator",
-                            Name = 2
+                            Description = "Administrator"
                         });
                 });
 
@@ -238,9 +234,6 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                     b.Property<DateTime>("AssignedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("AssignedRole")
-                        .HasColumnType("int");
-
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetimeoffset")
@@ -253,7 +246,7 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(36)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetimeoffset");

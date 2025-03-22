@@ -13,13 +13,18 @@ public class UserRoleEntityTypeConfiguration : BaseEntityTypeConfiguration<UserR
             .HasMaxLength(36)
             .IsRequired();
 
-        builder.Property(t => t.AssignedRole)
+        builder.Property(t => t.RoleId)
             .HasConversion<string>()
             .HasMaxLength(36)
             .IsRequired();
 
         builder.Property(t => t.AssignedDate)
             .IsRequired();
+
+        builder.HasOne(p => p.Role)
+            .WithMany(p => p.UserRoles)
+            .HasForeignKey(p => p.RoleId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(p => p.User)
             .WithMany(p => p.UserRoles)

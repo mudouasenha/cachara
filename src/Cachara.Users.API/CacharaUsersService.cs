@@ -1,11 +1,13 @@
 ﻿using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+using Cachara.Shared.Infrastructure;
 using Cachara.Shared.Infrastructure.AzureServiceBus;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Hangfire;
 using Cachara.Shared.Infrastructure.Middlewares;
 using Cachara.Shared.Infrastructure.Security;
+using Cachara.Users.API.API.Authentication;
 using Cachara.Users.API.API.Hangfire;
 using Cachara.Users.API.API.Options;
 using Cachara.Users.API.API.Security;
@@ -13,15 +15,18 @@ using Cachara.Users.API.API.Swagger;
 using Cachara.Users.API.Controllers;
 using Cachara.Users.API.Infrastructure.Data;
 using Cachara.Users.API.Infrastructure.Data.Repository;
+using Cachara.Users.API.Infrastructure.SessionManagement;
 using Cachara.Users.API.Services;
 using Cachara.Users.API.Services.Abstractions;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.SqlServer;
+using HealthChecks.UI.Client;
 using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -262,7 +267,10 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
             .AddSqlServer(
                 Options.SqlDb,
                 "SELECT 1;",
-                name: "database_check",
+                name: "Sql Server",
+                tags: new[] { "relational", "database" },
+                failureStatus: HealthStatus.Degraded)
+            .AddRedis(Options.RedisConnection, name: "Redis", tags: new[] { "cache", "database" },
                 failureStatus: HealthStatus.Degraded);
     }
 
@@ -278,6 +286,9 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<UserSubscriptionProvider>();
         services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
+        
+        services.AddSingleton<ISessionStoreService<UserAccount>, SessionStoreService>();
+        services.AddSingleton<IAccountService<UserAccount>, UserAccountService>();
     }
 
     private void ConfigureHangfire(IServiceCollection services)
@@ -353,7 +364,10 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
                 options.AddDocument("public");
             });
 
-            endpoints.MapHealthChecks("/health");
+            endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+            {
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
         });
 
         app.UseMiddleware<RequestTracingMiddleware>();

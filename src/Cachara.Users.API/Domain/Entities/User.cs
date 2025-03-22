@@ -28,7 +28,7 @@ public class User : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IVa
 
     public void AssignRole(RoleType role)
     {
-        if (UserRoles.Any(p => p.AssignedRole == role))
+        if (UserRoles.Any(p => p.RoleId == role))
         {
             throw new("User has already assigned role");
         }
@@ -37,7 +37,7 @@ public class User : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IVa
         {
             UserId = Id,
             AssignedDate = DateTime.UtcNow,
-            AssignedRole = role
+            RoleId = role
         };
         newRole.GenerateId();
         newRole.UpdateCreatedAt();

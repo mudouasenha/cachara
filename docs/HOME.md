@@ -16,3 +16,14 @@ Infrastructure/Data/Migrations
 
 dotnet ef database update --context CacharaUsersDbContext --startup-project Cachara.Users.API  
 
+
+### TODO: 
+MANAGE:
+- UserAccountService;
+- SessionStoreService;
+- SessionValidationMiddleware;
+- UserAuthenticationService;
+- Controller Authentication;
+- Redis healthCheck;
+- Cache Provider;
+- Login and Logout;

@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Cachara.Users.API.Services.Abstractions;
+using Elastic.Apm.Api;
 
 namespace Cachara.Users.API.API.Authentication;
 
@@ -17,19 +18,41 @@ public class UserAccountService : IAccountService<UserAccount>
 {
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly IJwtProvider _jwtProvider;
+    private UserAccount? _current;
 
     public UserAccountService(IHttpContextAccessor contextAccessor, IJwtProvider jwtProvider)
     {
-        _contextAccessor = contextAccessor;
-        _jwtProvider = jwtProvider;
+        _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
+        _jwtProvider = jwtProvider ?? throw new ArgumentNullException(nameof(jwtProvider));
     }
 
-    // Current user account
-    public UserAccount Current { get; protected set; }
+    public UserAccount Current => _current ??= GetUserAccount();
 
-    public void SignIn()
+    private UserAccount GetUserAccount()
     {
-        var token = GetAuthorizationToken();
+        var token = _contextAccessor.HttpContext?.Request
+            .Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            throw new UnauthorizedAccessException("Token is missing or invalid.");
+        }
+
+        var account = _jwtProvider.Decode(token);
+        return new UserAccount
+        {
+            Id = account.Claims.FirstOrDefault(p => p.Type == ClaimTypes.NameIdentifier)?.Value
+                 ?? throw new ArgumentException("Unable to retrieve user id from token."),
+            UserName = account.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "Unknown",
+            FullName = account.Claims.FirstOrDefault(p => p.Type == "full_name")?.Value ?? "Unknown",
+            Handle = account.Claims.FirstOrDefault(p => p.Type == "handle")?.Value ?? "Unknown",
+            Claims = account.Claims
+        };
+    }
+
+    public UserAccount SignIn(string token)
+    {
+        //var token = GetAuthorizationToken();
 
         if (string.IsNullOrEmpty(token))
             throw new UnauthorizedAccessException("Authorization token is missing.");
@@ -39,7 +62,7 @@ public class UserAccountService : IAccountService<UserAccount>
         if (claimsPrincipal == null)
             throw new UnauthorizedAccessException("Invalid token.");
 
-        Current = new UserAccount
+        return new UserAccount
         {
             Id = claimsPrincipal.Claims.FirstOrDefault(p  => p.Type == ClaimTypes.NameIdentifier)?.Value
                  ?? throw new ArgumentException("Unable to retrieve user id from token."),

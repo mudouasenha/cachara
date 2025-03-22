@@ -41,10 +41,24 @@ public class AuthController(IUserService userService, UserAuthenticationService 
         return Ok(tokenResult.Value);
     }
 
-    [HttpPut("change-password")]
-    public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword)
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
     {
-        var command = new ChangePasswordCommand() { Password = oldPassword, NewPassword = newPassword, };
+        // TODO: session??
+        var result = await userAuthService.Logout("");
+
+        // if (result.IsFailed)
+        // {
+        //     return HandleFailure(); // TODO: Implement failed result factory. 400
+        // }
+
+        return Ok(result);
+    }
+
+    [HttpPut("change-password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+    {
+        var command = new ChangePasswordCommand() { Password = request.Password, NewPassword = request.NewPassword };
         var changePasswordResult = await userAuthService.ChangePassword(command);
 
         // if (changePasswordResult.IsFailed)

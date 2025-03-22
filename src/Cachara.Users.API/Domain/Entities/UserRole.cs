@@ -8,7 +8,7 @@ public class UserRole : IEntity<string>, IModifiable, IVersable, ISoftDeletable,
     public string UserId { get; set; }
     public User User { get; set; }
 
-    public RoleType AssignedRole { get; set; }
+    public RoleType RoleId { get; set; }
     public Role Role { get; set; }
 
     public DateTime AssignedDate { get; set; }

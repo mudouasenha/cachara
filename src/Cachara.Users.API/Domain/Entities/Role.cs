@@ -3,13 +3,12 @@ using FluentValidation.Results;
 
 namespace Cachara.Users.API.Domain.Entities;
 
-public class Role : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IValidatable
+public class Role : IEntity<RoleType>, IModifiable, IVersable, ISoftDeletable, IValidatable
 {
-    public RoleType Name { get; set; }
+    public RoleType Id { get; set; }
     public string Description { get; set; }
 
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
-    public string Id { get; set; }
 
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }

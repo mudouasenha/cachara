@@ -21,8 +21,7 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                 schema: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    Name = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -31,8 +30,7 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.Id)
-                        .Annotation("SqlServer:Clustered", false);
+                    table.PrimaryKey("PK_Role", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,8 +91,7 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(36)", nullable: false),
-                    AssignedRole = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(36)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     AssignedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -178,12 +175,19 @@ namespace Cachara.Users.API.Infrastructure.Data.Migrations
             migrationBuilder.InsertData(
                 schema: "Users",
                 table: "Role",
-                columns: new[] { "Id", "Description", "Name", "UpdatedAt" },
+                columns: new[] { "Id", "Description", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { "0195bc08-3824-7836-8ae7-b9342b9f8444", "User", 1, null },
-                    { "0195bc08-632d-7af8-88f5-568b043e5aeb", "Administrator", 2, null }
+                    { "Admin", "Administrator", null },
+                    { "User", "User", null }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Role_Id",
+                schema: "Users",
+                table: "Role",
+                column: "Id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserInterest_UserProfileId",

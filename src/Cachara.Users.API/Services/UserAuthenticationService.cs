@@ -1,6 +1,7 @@
 using Cachara.Shared.Domain;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Security;
+using Cachara.Users.API.API.Authentication;
 using Cachara.Users.API.API.Security;
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Domain.Errors;
@@ -20,16 +21,20 @@ public class UserAuthenticationService : UserService
 {
     private readonly IJwtProvider _tokenProvider;
     private readonly IDistributedCache _cache;
+    private readonly IAccountService<UserAccount> _userAccountService;
+
 
     public UserAuthenticationService(
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
         IJwtProvider tokenProvider,
         IGeneralDataProtectionService generalDataProtectionService,
+        IAccountService<UserAccount> userAccountService,
         IDistributedCache cache)
         : base(userRepository, generalDataProtectionService, unitOfWork)
     {
         _tokenProvider = tokenProvider;
+        _userAccountService = userAccountService;
         _cache = cache;
     }
 
@@ -52,10 +57,12 @@ public class UserAuthenticationService : UserService
 
             var token = _tokenProvider.Generate(user);
 
+
+            var sessionId = await _userAccountService.CreateSession(user);
+
             var userCreatedResult = new UserRegisterResult
             {
                 UserName = user.UserName,
-                Password = user.Password,
                 Email = user.Email,
                 Name = user.FullName,
                 Token = token,
@@ -90,11 +97,14 @@ public class UserAuthenticationService : UserService
 
             var token = _tokenProvider.Generate(user);
 
+            var sessionId = await _userAccountService.CreateSession(user);
+
             var userLoginResult = new UserLoginResult
             {
                 UserName = user.UserName,
                 Name = user.FullName,
                 Token = token,
+                SessionId = sessionId
             };
 
             return result.WithValue(userLoginResult);
@@ -105,12 +115,20 @@ public class UserAuthenticationService : UserService
         }
     }
 
+    public async Task<Result> Logout(string sessionId)
+    {
+        throw new NotImplementedException();
+        //await _userAccountService.InvalidateSession(sessionId);
+        //return Result.Success();
+    }
+
     public async Task<Result<ChangePasswordResult>> ChangePassword(ChangePasswordCommand command)
     {
         var result = new Result<ChangePasswordResult>();
 
         // Step 1: Retrieve the user from the token
-        var user = await GetUserById(command.UserId);
+        var userAccount = _userAccountService.Current;
+        var user = await GetUserById(userAccount.Id);
         if (user == null)
         {
             return result.WithError(ApplicationErrors.UserAuthentication.UserNotFound);

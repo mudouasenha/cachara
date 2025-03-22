@@ -76,6 +76,7 @@ public class UserService : IUserService
             UserName = upsert.UserName,
             FullName = upsert.FullName,
             Subscription = upsert.Subscription,
+            DateOfBirth = upsert.DateOfBirth,
             Settings = new UserSettings()
         };
 

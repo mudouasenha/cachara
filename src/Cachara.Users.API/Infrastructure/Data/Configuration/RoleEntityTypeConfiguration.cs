@@ -1,3 +1,4 @@
+using Cachara.Shared.Domain.Entities.Abstractions;
 using Cachara.Shared.Infrastructure.Data.EF.Configuration;
 using Cachara.Users.API.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -5,14 +6,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Cachara.Users.API.Infrastructure.Data.Configuration;
 
-public class RoleEntityTypeConfiguration : BaseEntityTypeConfiguration<Role>
+public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
 {
     public void Configure(EntityTypeBuilder<Role> builder)
     {
-        builder.HasIndex(t => t.Name)
+        builder.HasIndex(t => t.Id)
             .IsUnique();
 
-        builder.Property(t => t.Name)
+        builder.Property(t => t.Id)
+            .HasConversion<string>()
             .HasMaxLength(50)
             .IsRequired();
 
@@ -21,7 +23,17 @@ public class RoleEntityTypeConfiguration : BaseEntityTypeConfiguration<Role>
 
         builder.HasMany(p => p.UserRoles)
             .WithOne(p => p.Role)
-            .HasForeignKey(p => p.AssignedRole)
+            .HasForeignKey(p => p.RoleId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(p => p.CreatedAt)
+            .HasDefaultValueSql("GETUTCDATE()");
+        builder.Property(p => p.UpdatedAt);
+
+        builder.Property(p => p.Deleted)
+            .HasDefaultValue(false)
+            .ValueGeneratedOnAdd();
+
+        builder.Property(p => p.Version).IsRowVersion();
     }
 }
