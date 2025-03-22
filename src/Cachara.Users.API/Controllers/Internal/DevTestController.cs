@@ -9,15 +9,15 @@ using Microsoft.Extensions.Caching.Memory;
 namespace Cachara.Users.API.Controllers;
 
 [ApiController]
-//[ApiExplorerSettings(GroupName = "internal")]
 [Route("internal/[controller]")]
+[ApiExplorerSettings(GroupName = "internal")]
 [Tags("Dev")]
-public class InternalDevTestController : ControllerBase
+public class DevTestController : ControllerBase
 {
-    private readonly ILogger<InternalDevTestController> _logger;
+    private readonly ILogger<DevTestController> _logger;
     private readonly IServiceBusQueue _queue;
 
-    public InternalDevTestController(ILogger<InternalDevTestController> logger, IServiceBusQueue queue)
+    public DevTestController(ILogger<DevTestController> logger, IServiceBusQueue queue)
     {
         _queue = queue;
         _logger = logger;

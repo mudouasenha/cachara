@@ -207,6 +207,14 @@
               "target": "Package",
               "version": "[3.0.1, )"
             },
+            "FluentResults.Extensions.AspNetCore": {
+              "target": "Package",
+              "version": "[0.1.0, )"
+            },
+            "FluentResults.Extensions.FluentAssertions": {
+              "target": "Package",
+              "version": "[2.1.2, )"
+            },
             "FluentValidation": {
               "target": "Package",
               "version": "[11.11.0, )"
@@ -268,6 +276,10 @@
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
               "version": "[1.21.2, )"
+            },
+            "NSwag.AspNetCore": {
+              "target": "Package",
+              "version": "[14.2.0, )"
             },
             "OpenTelemetry.Exporter.Console": {
               "target": "Package",

@@ -3,7 +3,7 @@
     "Cachara.Users.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "scalar/v1",
+      "launchUrl": "scalar",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

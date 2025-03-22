@@ -26,7 +26,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using NSwag;
 using Scalar.AspNetCore;
 using ProblemDetailsOptions = Hellang.Middleware.ProblemDetails.ProblemDetailsOptions;
 using Subscription = Cachara.Users.API.API.Security.Subscription;
@@ -116,27 +116,74 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
 
         services.AddEndpointsApiExplorer();
 
-        services.AddOpenApi(opt =>
-        {
-            opt.AddDocumentTransformer((document, context, cancellationToken) =>
+        services.AddOpenApiDocument(options =>
             {
-                document.Info = new OpenApiInfo
+                options.DocumentName = "management";
+                options.PostProcess = document =>
                 {
-                    Title = "Cachara Users API",
-                    Version = "1.2024.12.1",
-                    Description = "This API contains all endpoints for users operations."
-                };
+                    document.DocumentPath = "/openapi/{documentName}.json";
+                    document.Info = new OpenApiInfo
+                    {
+                        Title = "Cachara Users API - Management API",
+                        Version = "1.2024.12.1",
+                        Description = "This API contains all endpoints for users operations."
+                    };
 
-                document.Info.Contact = new OpenApiContact
-                {
-                    Email = "support@cachara.test",
-                    Name = "Cachara Support",
-                    Url = new Uri("https://github.com/mudouasenha/cachara")
+                    document.Info.Contact = new OpenApiContact
+                    {
+                        Email = "support@cachara.test",
+                        Name = "Cachara Support",
+                        Url = "https://github.com/mudouasenha/cachara"
+                    };
                 };
-
-                return Task.CompletedTask;
+                options.ApiGroupNames = new[] { "management" };
             });
-        });
+
+            services.AddOpenApiDocument(options =>
+            {
+                options.DocumentName = "public";
+                options.PostProcess = document =>
+                {
+                    document.DocumentPath = "/openapi/{documentName}.json";
+                    document.Info = new OpenApiInfo
+                    {
+                        Title = "Cachara Users API - Public API",
+                        Version = "1.2024.12.1",
+                        Description = "This API contains all endpoints for users operations."
+                    };
+
+                    document.Info.Contact = new OpenApiContact
+                    {
+                        Email = "support@cachara.test",
+                        Name = "Cachara Support",
+                        Url = "https://github.com/mudouasenha/cachara"
+                    };
+                };
+                options.ApiGroupNames = new[] { "public" };
+            });
+
+            services.AddOpenApiDocument(options =>
+            {
+                options.DocumentName = "internal";
+                options.PostProcess = document =>
+                {
+                    document.DocumentPath = "/openapi/{documentName}.json";
+                    document.Info = new OpenApiInfo
+                    {
+                        Title = "Cachara Users API - Internal API",
+                        Version = "1.2024.12.1",
+                        Description = "This API contains all endpoints for users operations."
+                    };
+
+                    document.Info.Contact = new OpenApiContact
+                    {
+                        Email = "support@cachara.test",
+                        Name = "Cachara Support",
+                        Url = "https://github.com/mudouasenha/cachara"
+                    };
+                };
+                options.ApiGroupNames = new[] { "internal" };
+            });
 
         services.AddResponseCaching();
     }
@@ -268,15 +315,23 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
         {
             endpoints.MapControllers();
 
-            endpoints.MapOpenApi();
-            endpoints.MapScalarApiReference(options =>
+            app.UseOpenApi(options =>
             {
-                options
-                    .WithPreferredScheme("Bearer")
-                    .WithHttpBearerAuthentication(bearer =>
+                options.Path = "/openapi/{documentName}.json";
+                options.PostProcess = (document, request) =>
+                {
+                    document.BasePath = "";
+                    if (request.Headers.TryGetValue("X-Forwarded-Host", out var hosts))
                     {
-                        bearer.Token = "your-bearer-token";
-                    });
+                        document.Host = hosts.FirstOrDefault();
+                    }
+                };
+            });
+            endpoints.MapScalarApiReference("scalar", options =>
+            {
+                options.AddDocument("internal");
+                options.AddDocument("management");
+                options.AddDocument("public");
             });
 
             endpoints.MapHealthChecks("/health");

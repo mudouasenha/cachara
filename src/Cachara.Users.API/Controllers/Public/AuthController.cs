@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cachara.Users.API.Controllers;
 
 [ApiController]
-//[ApiExplorerSettings(GroupName = "public")]
 [Route("public/[controller]")]
+[ApiExplorerSettings(GroupName = "public")]
 [Tags("Auth")]
-public class PublicAuthController(IUserService userService, UserAuthenticationService userAuthService) : ControllerBase
+public class AuthController(IUserService userService, UserAuthenticationService userAuthService) : ControllerBase
 {
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request)

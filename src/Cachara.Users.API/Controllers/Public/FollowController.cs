@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cachara.Users.API.Controllers;
 
 [ApiController]
-[Authorize("standard-user", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-//[ApiExplorerSettings(GroupName = "public")]
 [Route("public/[controller]")]
+//[Authorize("standard-user", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[ApiExplorerSettings(GroupName = "public")]
 [Tags("Follow")]
-public class PublicFollowController(IUserFollowService userFollowService, ClaimsPrincipal user) : ControllerBase
+public class FollowController(IUserFollowService userFollowService, ClaimsPrincipal user) : ControllerBase
 {
     [HttpPost("{userId}")]
     public async Task<IActionResult> FollowUser(Guid userId)

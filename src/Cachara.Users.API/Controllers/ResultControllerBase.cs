@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cachara.Users.API.Controllers;
 
 [ApiController]
-public abstract class BaseController : ControllerBase
+public abstract class ResultControllerBase : ControllerBase
 {
     public IActionResult HandleFailure()
     {
