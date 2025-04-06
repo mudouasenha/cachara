@@ -1,10 +1,12 @@
 using Cachara.Shared.Domain;
+using Cachara.Shared.Infrastructure;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Security;
 using Cachara.Users.API.API.Authentication;
 using Cachara.Users.API.API.Security;
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Domain.Errors;
+using Cachara.Users.API.Infrastructure.Cache;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Services.Abstractions;
 using Cachara.Users.API.Services.Commands;
@@ -20,7 +22,8 @@ namespace Cachara.Users.API.Services;
 public class UserAuthenticationService : UserService
 {
     private readonly IJwtProvider _tokenProvider;
-    private readonly IDistributedCache _cache;
+    private readonly ICacheService _cache;
+    private readonly ISessionStoreService<UserAccount> _sessionStore;
     private readonly IAccountService<UserAccount> _userAccountService;
 
 
@@ -30,7 +33,7 @@ public class UserAuthenticationService : UserService
         IJwtProvider tokenProvider,
         IGeneralDataProtectionService generalDataProtectionService,
         IAccountService<UserAccount> userAccountService,
-        IDistributedCache cache)
+        ICacheService cache)
         : base(userRepository, generalDataProtectionService, unitOfWork)
     {
         _tokenProvider = tokenProvider;
@@ -57,8 +60,9 @@ public class UserAuthenticationService : UserService
 
             var token = _tokenProvider.Generate(user);
 
+            var account = _tokenProvider.Decode(token.Token);
 
-            var sessionId = await _userAccountService.CreateSession(user);
+            var session = await _sessionStore.CreateSession(account);
 
             var userCreatedResult = new UserRegisterResult
             {
@@ -66,6 +70,7 @@ public class UserAuthenticationService : UserService
                 Email = user.Email,
                 Name = user.FullName,
                 Token = token,
+                SessionId = session.Id
             };
 
             return result.WithValue(userCreatedResult);
@@ -97,14 +102,16 @@ public class UserAuthenticationService : UserService
 
             var token = _tokenProvider.Generate(user);
 
-            var sessionId = await _userAccountService.CreateSession(user);
+            var account = _tokenProvider.Decode(token.Token);
+
+            var session = await _sessionStore.CreateSession(account);
 
             var userLoginResult = new UserLoginResult
             {
                 UserName = user.UserName,
                 Name = user.FullName,
                 Token = token,
-                SessionId = sessionId
+                SessionId = session.Id
             };
 
             return result.WithValue(userLoginResult);
