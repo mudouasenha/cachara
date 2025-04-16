@@ -20,6 +20,7 @@ using Cachara.Users.API.Services;
 using Cachara.Users.API.Services.Abstractions;
 using Hangfire;
 using Hangfire.Console;
+using Hangfire.PostgreSql;
 using Hangfire.SqlServer;
 using HealthChecks.UI.Client;
 using Hellang.Middleware.ProblemDetails;
@@ -286,7 +287,7 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<UserSubscriptionProvider>();
         services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
-        
+
         services.AddSingleton<ISessionStoreService<UserAccount>, SessionStoreService>();
         services.AddSingleton<IAccountService<UserAccount>, UserAccountService>();
     }
@@ -299,12 +300,12 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
         {
             config.UseSimpleAssemblyNameTypeSerializer();
             config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
-            config.UseRecommendedSerializerSettings(_ =>
-            {
-                //x.Converters.Add(new JsonDateOnlyConverter());
-            });
-            config.UseSqlServerStorage(Options.JobsSqlDb,
-                new SqlServerStorageOptions { SchemaName = "UsersHangfire", PrepareSchemaIfNecessary = true });
+            config.UseRecommendedSerializerSettings();
+            config.UsePostgreSqlStorage(p =>
+                {
+                    p.UseNpgsqlConnection(Options.JobsSqlDb);
+                },
+                new PostgreSqlStorageOptions() { SchemaName = "UsersHangfire", PrepareSchemaIfNecessary = true });
             config.UseConsole();
         });
 
@@ -320,7 +321,7 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
     {
         services.AddDbContext<CacharaUsersDbContext>(options =>
             {
-                options.UseSqlServer(Options.SqlDb);
+                options.UseNpgsql(Options.SqlDb);
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 options.EnableSensitiveDataLogging(_environment.IsDevelopment());
             }).AddAsyncInitializer<DbContextInitializer<CacharaUsersDbContext>>()
