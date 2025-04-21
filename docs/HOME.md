@@ -27,3 +27,6 @@ MANAGE:
 - Redis healthCheck;
 - Cache Provider;
 - Login and Logout;
+
+- Use CloudEvents
+  https://cloudevents.io/

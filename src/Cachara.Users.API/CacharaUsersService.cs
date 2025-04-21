@@ -13,6 +13,7 @@ using Cachara.Users.API.API.Options;
 using Cachara.Users.API.API.Security;
 using Cachara.Users.API.API.Swagger;
 using Cachara.Users.API.Controllers;
+using Cachara.Users.API.Infrastructure.Cache;
 using Cachara.Users.API.Infrastructure.Data;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Infrastructure.SessionManagement;
@@ -108,6 +109,7 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
 
     private static void ConfigureEndpoints(IServiceCollection services)
     {
+        services.AddHttpContextAccessor();
         services.AddProblemDetails(delegate(ProblemDetailsOptions _) { });
 
         services.AddControllers(options =>
@@ -288,8 +290,9 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
         services.AddScoped<UserSubscriptionProvider>();
         services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
 
-        services.AddSingleton<ISessionStoreService<UserAccount>, SessionStoreService>();
+        services.AddScoped<ICacheService, CacheService>();
         services.AddSingleton<IAccountService<UserAccount>, UserAccountService>();
+        services.AddScoped<ISessionStoreService<UserAccount>, SessionStoreService>();
     }
 
     private void ConfigureHangfire(IServiceCollection services)

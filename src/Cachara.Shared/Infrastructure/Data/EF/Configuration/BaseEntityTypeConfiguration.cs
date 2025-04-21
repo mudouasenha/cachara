@@ -13,13 +13,15 @@ public class BaseEntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEn
         builder.Property(p => p.Id).HasMaxLength(36);
 
         builder.Property(p => p.CreatedAt)
-            .HasDefaultValueSql("GETUTCDATE()");
+            .HasDefaultValueSql("timezone('UTC', now())");
         builder.Property(p => p.UpdatedAt);
 
         builder.Property(p => p.Deleted)
             .HasDefaultValue(false)
             .ValueGeneratedOnAdd();
 
-        builder.Property(p => p.Version).IsRowVersion();
+        builder.Property(p => p.Version)
+            .HasDefaultValueSql("gen_random_bytes(8)")
+            .IsRowVersion();
     }
 }

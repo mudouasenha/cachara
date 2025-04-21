@@ -27,13 +27,15 @@ public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(p => p.CreatedAt)
-            .HasDefaultValueSql("GETUTCDATE()");
+            .HasDefaultValueSql("timezone('UTC', now())");
         builder.Property(p => p.UpdatedAt);
 
         builder.Property(p => p.Deleted)
             .HasDefaultValue(false)
             .ValueGeneratedOnAdd();
 
-        builder.Property(p => p.Version).IsRowVersion();
+        builder.Property(p => p.Version)
+            .HasDefaultValueSql("gen_random_bytes(8)")
+            .IsRowVersion();
     }
 }
