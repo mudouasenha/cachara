@@ -1,0 +1,31 @@
+<Solution>
+  <Folder Name="/Core/">
+    <Project Path="Cachara.Shared/Cachara.Shared.csproj" />
+  </Folder>
+  <Folder Name="/Docs/">
+    <File Path="../docs/HOME.md" />
+    <File Path="../docs/MAINTENANCE-AND-SUPPORT.md" />
+    <File Path="../docs/RELEASE-NOTES.md" />
+    <File Path="../docs/ROADMAP.md" />
+    <File Path="../docs/USER-DOCUMENTATION.md" />
+    <File Path="../docs/WORK-IN-PROGRESS.md" />
+    <File Path="../README.md" />
+    <File Path="../README_OLD.md" />
+  </Folder>
+  <Folder Name="/Playground/">
+    <Project Path="Cachara.Playground/Cachara.Playground.csproj" />
+  </Folder>
+  <Folder Name="/Services/">
+    <Project Path="Cachara.API.Gateway/Cachara.API.Gateway.csproj" />
+    <Project Path="Cachara.Content.API/Cachara.Content.API.csproj" />
+    <Project Path="Cachara.GraphQL/Cachara.GraphQL.csproj" />
+    <Project Path="Cachara.Users.API/Cachara.Users.API.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="docker-compose.yml" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="../tests/Cachara.Tests/Cachara.Tests.csproj" />
+  </Folder>
+</Solution>
