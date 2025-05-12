@@ -8,6 +8,6 @@ namespace Cachara.Users.API.Services.Abstractions;
 public interface IJwtProvider
 {
     TokenResult Generate(User user);
-    UserAccount Decode(string token);
+    UserAccount GetAccount(string token);
     ClaimsPrincipal? DecodeToken(string token);
 }

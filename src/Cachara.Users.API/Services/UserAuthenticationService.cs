@@ -1,3 +1,5 @@
+using Cachara.Shared.Application;
+using Cachara.Shared.Application.Errors;
 using Cachara.Shared.Domain;
 using Cachara.Shared.Infrastructure;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
@@ -21,13 +23,17 @@ namespace Cachara.Users.API.Services;
 
 public class UserAuthenticationService : UserService
 {
+    private readonly ILogger<UserAuthenticationService> _logger;
     private readonly IJwtProvider _tokenProvider;
     private readonly ICacheService _cache;
     private readonly ISessionStoreService<UserAccount> _sessionStore;
     private readonly IAccountService<UserAccount> _userAccountService;
+    private readonly IAggregateExceptionHandler _aggregateExceptionHandler;
 
 
     public UserAuthenticationService(
+        ILogger<UserAuthenticationService> logger,
+        IAggregateExceptionHandler aggregateExceptionHandler,
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
         IJwtProvider tokenProvider,
@@ -36,6 +42,8 @@ public class UserAuthenticationService : UserService
         ICacheService cache)
         : base(userRepository, generalDataProtectionService, unitOfWork)
     {
+        _logger = logger;
+        _aggregateExceptionHandler = aggregateExceptionHandler;
         _tokenProvider = tokenProvider;
         _userAccountService = userAccountService;
         _cache = cache;
@@ -43,6 +51,7 @@ public class UserAuthenticationService : UserService
 
     public async Task<Result<UserRegisterResult>> RegisterUser(RegisterCommand register)
     {
+        _logger.LogInformation("Register started — Seq test log");
         var result = new Result<UserRegisterResult>();
         try
         {
@@ -60,7 +69,7 @@ public class UserAuthenticationService : UserService
 
             var token = _tokenProvider.Generate(user);
 
-            var account = _tokenProvider.Decode(token.Token);
+            var account = _tokenProvider.GetAccount(token.Token);
 
             var session = await _sessionStore.CreateSession(account);
 
@@ -75,9 +84,9 @@ public class UserAuthenticationService : UserService
 
             return result.WithValue(userCreatedResult);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            return result.WithError(e.Message);
+            return _aggregateExceptionHandler.Handle(ex);
         }
     }
 
@@ -102,7 +111,7 @@ public class UserAuthenticationService : UserService
 
             var token = _tokenProvider.Generate(user);
 
-            var account = _tokenProvider.Decode(token.Token);
+            var account = _tokenProvider.GetAccount(token.Token);
 
             var session = await _sessionStore.CreateSession(account);
 
@@ -116,9 +125,9 @@ public class UserAuthenticationService : UserService
 
             return result.WithValue(userLoginResult);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            return result.WithError(e.Message);
+            return _aggregateExceptionHandler.Handle(ex);
         }
     }
 

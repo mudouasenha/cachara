@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+using Cachara.Shared.Application;
+using Cachara.Shared.Application.Errors;
 using Cachara.Shared.Infrastructure;
 using Cachara.Shared.Infrastructure.AzureServiceBus;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
@@ -19,6 +21,7 @@ using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Infrastructure.SessionManagement;
 using Cachara.Users.API.Services;
 using Cachara.Users.API.Services.Abstractions;
+using Google.Protobuf.WellKnownTypes;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.PostgreSql;
@@ -28,6 +31,7 @@ using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
@@ -85,6 +89,10 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         ConfigureEndpoints(services);
+
+        // Exception Handlers
+        services.AddScoped<IAggregateExceptionHandler, AggregateExceptionHandler>();
+        services.AddScoped<IErrorExceptionHandler<Exception>, ExceptionHandler>();
 
         services.AddMemoryCache();
         services.AddStackExchangeRedisCache(options => { options.Configuration = Options.RedisConnection; });
@@ -267,14 +275,26 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
     private void AddHealthChecks(IServiceCollection services)
     {
         services.AddHealthChecks()
-            .AddSqlServer(
+            .AddNpgSql(
                 Options.SqlDb,
                 "SELECT 1;",
-                name: "Sql Server",
+                name: "PostgreSQL",
                 tags: new[] { "relational", "database" },
                 failureStatus: HealthStatus.Degraded)
-            .AddRedis(Options.RedisConnection, name: "Redis", tags: new[] { "cache", "database" },
+            .AddRedis(
+                Options.RedisConnection,
+                name: "Redis",
+                tags: new[] { "cache", "database" },
+                failureStatus: HealthStatus.Degraded)
+            .AddKafka(
+                setup =>
+                {
+                    setup.BootstrapServers = Options.KafkaConnection;
+                },
+                name: "kafka",
+                tags: new[] { "messaging", "event-streaming", "distributed", "integration" },
                 failureStatus: HealthStatus.Degraded);
+
     }
 
     private void AddServicesAndRepositories(IServiceCollection services)
@@ -312,10 +332,9 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
             config.UseConsole();
         });
 
-        var totalWorkerCount = Environment.ProcessorCount * 20;
         services.AddHangfireServer(options =>
         {
-            options.WorkerCount = totalWorkerCount;
+            options.WorkerCount = 5;
             options.Queues = new[] { "default" };
         });
     }

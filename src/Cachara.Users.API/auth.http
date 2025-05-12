@@ -9,7 +9,7 @@ Content-Type: application/json
 {
   "UserName": "Jhon",
   "Email": "jhon@doe.com",
-  "DateOfBirth": "1999-10-01T00:00:00",
+  "DateOfBirth": "1999-10-01",
   "FullName": "Jhon Doe",
   "Password": "JhonDoe.com"
 }

@@ -10,10 +10,13 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.Authentication.ApiKey" Version="8.0.1"/>
+    <PackageReference Include="AspNetCore.HealthChecks.Kafka" Version="9.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0" />
     <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.18.4" />
+    <PackageReference Include="Confluent.Kafka" Version="2.10.0" />
     <PackageReference Include="Elastic.Apm.SerilogEnricher" Version="8.12.3"/>
     <PackageReference Include="Elasticsearch.Net" Version="7.17.5"/>
     <PackageReference Include="Extensions.Hosting.AsyncInitialization" Version="3.0.1"/>
@@ -55,6 +58,7 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="10.0.0"/>
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.1.1"/>
+    <PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>

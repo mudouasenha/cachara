@@ -63,10 +63,18 @@ public class JwtProvider : IJwtProvider
         };
     }
 
-    public UserAccount Decode(string token)
+    public UserAccount GetAccount(string token)
     {
-        throw new NotImplementedException();
+        var claims = DecodeToken(token);
+        return new UserAccount()
+        {
+            UserName = GetClaimValue(token, "username") ?? throw new SecurityTokenException("Missing 'username' claim in token"),
+            FullName = GetClaimValue(token, "fullName") ?? throw new SecurityTokenException("Missing 'fullName' claim in token"),
+            Claims = claims.Claims,
+            Handle = GetClaimValue(token, "handle") ?? throw new SecurityTokenException("Missing 'handle' claim in token")
+        };
     }
+
 
     public ClaimsPrincipal? DecodeToken(string token)
     {

@@ -11,7 +11,7 @@ public class UserRole : IEntity<string>, IModifiable, IVersable, ISoftDeletable,
     public RoleType RoleId { get; set; }
     public Role Role { get; set; }
 
-    public DateTime AssignedDate { get; set; }
+    public DateTimeOffset AssignedDate { get; set; }
     public string Id { get; set; }
 
     public DateTimeOffset CreatedAt { get; set; }

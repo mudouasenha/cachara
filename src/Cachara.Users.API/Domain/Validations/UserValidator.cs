@@ -1,4 +1,5 @@
-﻿using Cachara.Users.API.Domain.Entities;
+﻿using Cachara.Shared.Domain.Utils;
+using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Domain.Errors;
 using FluentValidation;
 
@@ -31,10 +32,10 @@ public class UserValidator : AbstractValidator<User>
         RuleFor(user => user.DateOfBirth)
             .NotEmpty().WithMessage("Date of birth is required.")
             .WithErrorCode("DateOfBirthRequired")
-            .Must(date => date <= DateTime.UtcNow.AddYears(-18))
+            .Must(date => date <= DateTime.UtcNow.AddYears(-18).ToDateOnly())
             .WithMessage(DomainErrors.User.InvalidDateOfBirth.Message)
             .WithErrorCode(nameof(DomainErrors.User.InvalidDateOfBirth))
-            .Must(date => date >= DateTime.UtcNow.AddYears(-120))
+            .Must(date => date >= DateTime.UtcNow.AddYears(-120).ToDateOnly())
             .WithMessage("Date of birth is too far in the past.")
             .WithErrorCode("DateOfBirthTooOld");
 

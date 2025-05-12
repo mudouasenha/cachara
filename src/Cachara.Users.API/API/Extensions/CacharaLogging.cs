@@ -47,86 +47,73 @@ public static class LoggingExtensions
         Log.Logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .WriteTo.Console()
-            .WriteTo.OpenTelemetry(x =>
-            {
-                x.Endpoint = openTelemetryOptions.Otlp.Endpoint;
-                x.Protocol = OtlpProtocol.HttpProtobuf;
-                x.Headers = new Dictionary<string, string> { ["X-Seq-ApiKey"] = openTelemetryOptions.Otlp.ApiKey };
-                x.ResourceAttributes = new Dictionary<string, object> { ["service.name"] = "CacharaService" };
-            })
+            .WriteTo.Seq(
+                serverUrl: openTelemetryOptions.Otlp.Endpoint,
+                apiKey: openTelemetryOptions.Otlp.ApiKey)
             .CreateLogger();
 
-        return builder;
+        return builder.AddSerilog();
     }
 
     public static ILoggingBuilder ConfigureOpenTelemetry(this ILoggingBuilder builder, IHostEnvironment environment,
         IConfiguration configuration)
-{
-    OpenTelemetryOptions openTelemetryOptions = new();
-    configuration.GetSection(OpenTelemetryOptions.Name).Bind(openTelemetryOptions);
-
-    builder.ClearProviders();
-    builder.AddOpenTelemetry(x =>
     {
-        x.IncludeScopes = true;
-        x.IncludeFormattedMessage = true;
+        OpenTelemetryOptions openTelemetryOptions = new();
+        configuration.GetSection(OpenTelemetryOptions.Name).Bind(openTelemetryOptions);
 
-        x.AddConsoleExporter();
-        x.AddOtlpExporter(exporter =>
-        {
-            exporter.Endpoint = new Uri(openTelemetryOptions.Otlp.Endpoint);
-            exporter.Protocol = OtlpExportProtocol.HttpProtobuf;
-            exporter.Headers = $"X-Seq-ApiKey={openTelemetryOptions.Otlp.ApiKey}";
-        });
-    });
-
-    builder.Services.AddOpenTelemetry().WithTracing(tracing =>
-    {
-        tracing
-            .SetResourceBuilder(ResourceBuilder.CreateDefault() // Correct resource setup
-                .AddService("CacharaService")
-                .AddAttributes(new Dictionary<string, object>
-                {
-                    ["deployment.environment"] = environment.EnvironmentName
-                }))
-            .AddAspNetCoreInstrumentation(options =>
+        builder.Services.AddOpenTelemetry()
+            .WithTracing(tracing =>
             {
-                options.RecordException = true;
-                options.EnrichWithHttpRequest = (activity, httpRequest) =>
-                {
-                    activity.SetTag("http.method", httpRequest.Method);
-                    activity.SetTag("http.url", httpRequest.Path.ToUriComponent());
-                    activity.SetTag("user.id", httpRequest.HttpContext.User?.Identity?.Name ?? "anonymous");
-                };
-                options.EnrichWithHttpResponse = (activity, httpResponse) =>
-                {
-                    activity.SetTag("http.status_code", httpResponse.StatusCode);
-                };
-                options.EnrichWithException = (activity, exception) =>
-                {
-                    activity.SetTag("exception.message", exception.Message);
-                };
-            })
-            .AddHttpClientInstrumentation(options =>
-            {
-                options.RecordException = true;
-                options.EnrichWithHttpRequestMessage = (activity, request) =>
-                {
-                    activity.SetTag("http.method", request.Method);
-                    activity.SetTag("http.url", request.RequestUri);
-                };
-                options.EnrichWithHttpResponseMessage = (activity, response) =>
-                {
-                    activity.SetTag("http.status_code", response.StatusCode);
-                };
-                options.EnrichWithException = (activity, exception) =>
-                {
-                    activity.SetTag("exception.message", exception.Message);
-                };
+                tracing
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                        .AddService("CacharaService")
+                        .AddAttributes(new Dictionary<string, object>
+                        {
+                            ["deployment.environment"] = environment.EnvironmentName
+                        }))
+                    .AddAspNetCoreInstrumentation(options =>
+                    {
+                        options.RecordException = true;
+                        options.EnrichWithHttpRequest = (activity, httpRequest) =>
+                        {
+                            activity.SetTag("http.method", httpRequest.Method);
+                            activity.SetTag("http.url", httpRequest.Path.ToUriComponent());
+                            activity.SetTag("user.id", httpRequest.HttpContext.User?.Identity?.Name ?? "anonymous");
+                        };
+                        options.EnrichWithHttpResponse = (activity, httpResponse) =>
+                        {
+                            activity.SetTag("http.status_code", httpResponse.StatusCode);
+                        };
+                        options.EnrichWithException = (activity, exception) =>
+                        {
+                            activity.SetTag("exception.message", exception.Message);
+                        };
+                    })
+                    .AddHttpClientInstrumentation(options =>
+                    {
+                        options.RecordException = true;
+                        options.EnrichWithHttpRequestMessage = (activity, request) =>
+                        {
+                            activity.SetTag("http.method", request.Method);
+                            activity.SetTag("http.url", request.RequestUri);
+                        };
+                        options.EnrichWithHttpResponseMessage = (activity, response) =>
+                        {
+                            activity.SetTag("http.status_code", response.StatusCode);
+                        };
+                        options.EnrichWithException = (activity, exception) =>
+                        {
+                            activity.SetTag("exception.message", exception.Message);
+                        };
+                    })
+                    .AddOtlpExporter(exporter =>
+                    {
+                        exporter.Endpoint = new Uri(openTelemetryOptions.Otlp.Endpoint);
+                        exporter.Headers = $"X-Seq-ApiKey={openTelemetryOptions.Otlp.ApiKey}";
+                    });
             });
-    });
 
-    return builder;
+        return builder;
+    }
 }
 
-}

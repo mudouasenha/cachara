@@ -14,7 +14,7 @@ public class User : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IVa
     public string UserName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-    public DateTime DateOfBirth { get; set; }
+    public DateOnly DateOfBirth { get; set; }
 
     public Subscription Subscription { get; set; }
     // TODO: Use a storage functionality to store the data, and change
@@ -36,7 +36,7 @@ public class User : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IVa
         var newRole = new UserRole()
         {
             UserId = Id,
-            AssignedDate = DateTime.UtcNow,
+            AssignedDate = DateTimeOffset.UtcNow,
             RoleId = role
         };
         newRole.GenerateId();

@@ -22,11 +22,11 @@ public static class IEntityExtensions
 
     public static void UpdateCreatedAt(this IModifiable entity)
     {
-        entity.CreatedAt = DateTime.UtcNow;
+        entity.CreatedAt = DateTimeOffset.UtcNow;
     }
 
     public static void UpdateUpdateAt(this IModifiable entity)
     {
-        entity.UpdatedAt = DateTime.UtcNow;
+        entity.UpdatedAt = DateTimeOffset.UtcNow;
     }
 }

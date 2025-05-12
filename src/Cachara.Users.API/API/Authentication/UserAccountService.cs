@@ -50,7 +50,7 @@ public class UserAccountService : IAccountService<UserAccount>
         if (string.IsNullOrEmpty(token))
             throw new UnauthorizedAccessException("Authorization token is missing.");
 
-        var claimsPrincipal = _jwtProvider.Decode(token);
+        var claimsPrincipal = _jwtProvider.GetAccount(token);
 
         if (claimsPrincipal == null)
             throw new UnauthorizedAccessException("Invalid token.");
@@ -79,7 +79,7 @@ public class UserAccountService : IAccountService<UserAccount>
     public string GetClaimValue(string claimType)
     {
         var token = GetAuthorizationToken();
-        var claimsPrincipal = _jwtProvider.Decode(token);
+        var claimsPrincipal = _jwtProvider.GetAccount(token);
 
         if (claimsPrincipal == null) throw new UnauthorizedAccessException("Invalid token.");
 

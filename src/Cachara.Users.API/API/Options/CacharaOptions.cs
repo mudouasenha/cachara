@@ -7,6 +7,7 @@ public class CacharaOptions
     public string SqlDb { get; set; }
     public string JobsSqlDb { get; set; }
     public string RedisConnection { get; set; }
+    public string KafkaConnection { get; set; }
 
     public CacharaExporterOptions CacharaExporter { get; set; } = new();
     public JwtOptions Jwt { get; set; } = new();

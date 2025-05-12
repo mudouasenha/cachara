@@ -187,6 +187,14 @@
               "target": "Package",
               "version": "[8.0.1, )"
             },
+            "AspNetCore.HealthChecks.Kafka": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "AspNetCore.HealthChecks.NpgSql": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "AspNetCore.HealthChecks.Redis": {
               "target": "Package",
               "version": "[9.0.0, )"
@@ -202,6 +210,10 @@
             "Azure.Messaging.ServiceBus": {
               "target": "Package",
               "version": "[7.18.4, )"
+            },
+            "Confluent.Kafka": {
+              "target": "Package",
+              "version": "[2.10.0, )"
             },
             "Elastic.Apm.SerilogEnricher": {
               "target": "Package",
@@ -356,6 +368,10 @@
             "Serilog.Sinks.OpenTelemetry": {
               "target": "Package",
               "version": "[4.1.1, )"
+            },
+            "Serilog.Sinks.Seq": {
+              "target": "Package",
+              "version": "[9.0.0, )"
             }
           },
           "imports": [
