@@ -25,7 +25,8 @@ public class UserService : IUserService
 
     public async Task<User> GetByUserName(string userName)
     {
-        return await _userRepository.FindByAsync(p => p.UserName == userName);
+        var normalizedUserName = userName.ToLowerInvariant();
+        return await _userRepository.FindByAsync(p => p.UserName == normalizedUserName);
     }
 
     public Task<IEnumerable<User>> Search(UserSearchCommand searchCommmand)
@@ -35,7 +36,8 @@ public class UserService : IUserService
 
     public async Task<User> GetUserById(string id)
     {
-        var user = await _userRepository.FindByAsync(p => p.Id == id)
+        var normalizedId = id.ToLowerInvariant();
+        var user = await _userRepository.FindByAsync(p => p.Id == normalizedId)
                    ?? throw new Exception("User Not Found!");
 
         user.Password = _generalDataProtectionService.DecryptString(user.Password);
@@ -97,17 +99,18 @@ public class UserService : IUserService
 
     public async Task<User> GetByEmail(string email)
     {
-        return await _userRepository.FindByAsync(p => p.Email == email);
+        var normalizedEmail = email.ToLowerInvariant();
+        return await _userRepository.FindByAsync(p => p.Email == normalizedEmail);
     }
 
     private void UpdateFromInternal(User user, UserUpsert upsert)
     {
         var encryptedPassword = _generalDataProtectionService.EncryptString(upsert.Password);
 
-        user.Email = upsert.Email;
+        user.Email = upsert.Email.ToLowerInvariant();
         user.FullName = upsert.FullName;
         user.DateOfBirth = upsert.DateOfBirth;
-        user.UserName = upsert.UserName;
+        user.UserName = upsert.UserName.ToLowerInvariant();
         user.Password = encryptedPassword;
         user.Subscription = upsert.Subscription;
 

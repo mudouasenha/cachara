@@ -8,5 +8,5 @@ public interface IAccount
 
     string FullName { get; }
 
-    IEnumerable<Claim> Claims { get; }
+    IEnumerable<IClaim> Claims { get; }
 }

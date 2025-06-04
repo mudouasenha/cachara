@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using System.Text.Json;
 using Cachara.Shared.Infrastructure;
 using Cachara.Users.API.API.Authentication;
 using Cachara.Users.API.Domain.Entities;
@@ -6,7 +7,6 @@ using Cachara.Users.API.Infrastructure.Cache;
 using Cachara.Users.API.Services.Abstractions;
 using FluentResults;
 using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
 
 namespace Cachara.Users.API.Infrastructure.SessionManagement;
 
@@ -34,9 +34,12 @@ public class SessionStoreService : ISessionStoreService<UserAccount>
             ExpiresAt = DateTime.UtcNow.AddMinutes(30)
         };
 
+        var existingUserSessions = await _cache.GetAsync<List<SessionData>>($"user-sessions:{account.Id}") ?? new List<SessionData>();
+        existingUserSessions.Add(sessionData);
+
         await _cache.SetAsync(
             $"user-sessions:{account.Id}",
-            JsonConvert.SerializeObject(sessionId),
+            existingUserSessions,
             TimeSpan.FromMinutes(30));
 
         await _cache.SetAsync($"session:{sessionId}", sessionData);
@@ -46,13 +49,18 @@ public class SessionStoreService : ISessionStoreService<UserAccount>
 
     public async Task<SessionData?> GetSession(string sessionId)
     {
-        var sessions = await _cache.GetAsync<List<string>>($"user-sessions:{sessionId}") ?? new List<string>();
+        var sessions = await _cache.GetAsync<List<SessionData>>($"user-sessions:{sessionId}") ?? new List<SessionData>();
 
-        var sessionData = sessions?.FirstOrDefault(s => s.Equals(sessionId, StringComparison.OrdinalIgnoreCase));
+        var sessionData = sessions?.FirstOrDefault(s => s.Id.Equals(sessionId, StringComparison.OrdinalIgnoreCase));
 
-        return sessionData == null
-            ? null
-            : JsonConvert.DeserializeObject<SessionData>(sessionData);
+        return sessionData;
+    }
+
+    public async Task<List<SessionData>> GetSessions(string userId)
+    {
+        var sessions = await _cache.GetAsync<List<SessionData>>($"user-sessions:{userId}") ?? new List<SessionData>();
+
+        return sessions.Count > 0 ? sessions : new List<SessionData>();
     }
 
     public async Task InvalidateSession(string sessionId)

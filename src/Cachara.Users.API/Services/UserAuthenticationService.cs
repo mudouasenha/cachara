@@ -39,13 +39,15 @@ public class UserAuthenticationService : UserService
         IJwtProvider tokenProvider,
         IGeneralDataProtectionService generalDataProtectionService,
         IAccountService<UserAccount> userAccountService,
-        ICacheService cache)
+        ICacheService cache,
+        ISessionStoreService<UserAccount> sessionStore)
         : base(userRepository, generalDataProtectionService, unitOfWork)
     {
         _logger = logger;
         _aggregateExceptionHandler = aggregateExceptionHandler;
         _tokenProvider = tokenProvider;
         _userAccountService = userAccountService;
+        _sessionStore = sessionStore;
         _cache = cache;
     }
 
@@ -55,6 +57,17 @@ public class UserAuthenticationService : UserService
         var result = new Result<UserRegisterResult>();
         try
         {
+            var userUserNameExists = await GetByUserName(register.UserName);
+            if (userUserNameExists != null)
+            {
+                return Result.Fail(ApplicationErrors.UserAuthentication.UserNameAlreadyExists);
+            }
+            var userEmailExists = await GetByEmail(register.Email);
+            if (userEmailExists != null)
+            {
+                return Result.Fail(ApplicationErrors.UserAuthentication.UserEmailAlreadyExists);
+            }
+
             var userUpsert = new UserUpsert
             {
                 FullName = register.FullName,

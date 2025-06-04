@@ -19,6 +19,8 @@ public class ApplicationErrors
             .WithMetadata(ErrorCode, nameof(SamePassword));
         public static readonly IError UserNameAlreadyExists = new Error("UserName already exists.")
             .WithMetadata(ErrorCode, nameof(UserNameAlreadyExists));
+        public static readonly IError UserEmailAlreadyExists = new Error("User email already exists.")
+            .WithMetadata(ErrorCode, nameof(UserEmailAlreadyExists));
     }
 
     public static class Password

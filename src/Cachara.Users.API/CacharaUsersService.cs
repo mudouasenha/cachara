@@ -311,7 +311,7 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
         services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
 
         services.AddScoped<ICacheService, CacheService>();
-        services.AddSingleton<IAccountService<UserAccount>, UserAccountService>();
+        services.AddScoped<IAccountService<UserAccount>, UserAccountService>();
         services.AddScoped<ISessionStoreService<UserAccount>, SessionStoreService>();
     }
 
@@ -357,6 +357,9 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
         app.UseAuthentication();
         app.UseAuthorization();
 
+        app.UseMiddleware<RequestTracingMiddleware>();
+        app.UseMiddleware<SessionValidationMiddleware>();
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
@@ -393,7 +396,7 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
             });
         });
 
-        app.UseMiddleware<RequestTracingMiddleware>();
+
 
         app.UseHangfireDashboard();
     }

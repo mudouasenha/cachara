@@ -4,6 +4,7 @@ using Elastic.Apm.Api;
 
 namespace Cachara.Users.API.API.Authentication;
 
+// TODO: Work On userAccountService
 public class UserAccountService : IAccountService<UserAccount>
 {
     private readonly IHttpContextAccessor _contextAccessor;
@@ -28,21 +29,13 @@ public class UserAccountService : IAccountService<UserAccount>
             throw new UnauthorizedAccessException("Token is missing or invalid.");
         }
 
-        var account = _jwtProvider.DecodeToken(token);
+        var account = _jwtProvider.GetAccount(token);
         if (account == null)
         {
-            throw new UnauthorizedAccessException("Token is missing or invalid.");
+            throw new UnauthorizedAccessException("Unable to retrieve account information.");
         }
 
-        return new UserAccount
-        {
-            Id = account.Claims.FirstOrDefault(p => p.Type == ClaimTypes.NameIdentifier)?.Value
-                 ?? throw new ArgumentException("Unable to retrieve user id from token."),
-            UserName = account.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "Unknown",
-            FullName = account.Claims.FirstOrDefault(p => p.Type == "full_name")?.Value ?? "Unknown",
-            Handle = account.Claims.FirstOrDefault(p => p.Type == "handle")?.Value ?? "Unknown",
-            Claims = account.Claims
-        };
+        return account;
     }
 
     public UserAccount SignIn(string token)
