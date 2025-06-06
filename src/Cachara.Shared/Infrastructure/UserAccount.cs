@@ -8,5 +8,5 @@ public class UserAccount : IAccount
     public string Handle { get; set; } // TODO: Implement Handle in User
     public string Id { get; set; }
     public string FullName { get; set; }
-    public IEnumerable<IClaim> Claims { get; set; } // TODO: handle private and public accessors
+    public IEnumerable<Claim> Claims { get; set; } // TODO: handle private and public accessors
 }

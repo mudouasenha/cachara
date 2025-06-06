@@ -1,7 +1,7 @@
 @BaseUrl = http://localhost:5100
 
-@AccessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im1hdGhldXMuZ29tZXMiLCJzdWIiOiJtYXRoZXVzLmdvbWVzIiwianRpIjoiZjRkNjNhNDMiLCJhdWQiOlsiaHR0cDovL2xvY2FsaG9zdDoyNDQzMiIsImh0dHBzOi8vbG9jYWxob3N0OjQ0MzAxIiwiaHR0cHM6Ly9sb2NhbGhvc3Q6NTEwMSIsImh0dHA6Ly9sb2NhbGhvc3Q6NTEwMCJdLCJuYmYiOjE3MzExMjE3NTUsImV4cCI6MTczOTA3MDU1NSwiaWF0IjoxNzMxMTIxNzU2LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.9BMdeKxajkQScSnicgEfyQiBESpkKuRlUGotD7mBlP0
-
+@AccessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTk3NDJkMC1hOTU5LTdkODAtODM4MS0yMjE4NjkyMTRlMTEiLCJlbWFpbCI6Impob25AZG9lLmNvbSIsIm5hbWUiOiJKaG9uIERvZSIsImp0aSI6IjNmMjQ0ZGQ2LTIxOTQtNDJmZi1hM2ZjLWY3YWQ5OTRiYjEyMiIsImlhdCI6MTc0OTE3NDE0MiwidXNlcklkIjoiMDE5NzQyZDAtYTk1OS03ZDgwLTgzODEtMjIxODY5MjE0ZTExIiwidXNlcm5hbWUiOiJKaG9uIiwiZnVsbE5hbWUiOiJKaG9uIERvZSIsImRhdGVPZkJpcnRoIjoiMTAvMDEvMTk5OSIsImV4cCI6MTc0OTE5NTc0MiwiaXNzIjoiZG90bmV0LXVzZXItand0cyIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjUxMDEifQ.dJeuLk8Ca-j5Mshpz7I7FM0_55DRMqiRgTkSP9zc-fk
+@SessionId = 4cf94207-3acd-47e2-8eb5-85b239aa6510
 
 POST http://localhost:5100/public/auth/register
 Content-Type: application/json
@@ -29,8 +29,17 @@ Content-Type: application/json
 PUT http://localhost:5100/public/auth/change-password
 Content-Type: application/json
 Authorization: Bearer {{AccessToken}}
+X-Session-Id: {{SessionId}}
 
 {
   "Password": "JhonDoe.com",
-  "NewPassword": "IdrisElba.com"
+  "NewPassword": "IdrisElba123.com"
 }
+
+
+###
+
+POST http://localhost:5100/public/auth/logout
+Content-Type: application/json
+Authorization: Bearer {{AccessToken}}
+X-Session-Id: {{SessionId}}

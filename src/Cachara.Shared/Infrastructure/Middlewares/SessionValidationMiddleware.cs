@@ -5,26 +5,19 @@ using Microsoft.Extensions.Logging;
 
 namespace Cachara.Shared.Infrastructure.Middlewares;
 
-public class SessionValidationMiddleware
+public class SessionValidationMiddleware(
+    RequestDelegate next,
+    IServiceProvider serviceProvider,
+    ILogger<SessionValidationMiddleware> logger)
 {
-    private readonly RequestDelegate _next;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<SessionValidationMiddleware> _logger;
-    private const string _sessionValidationPathException = "/public/auth/register";
-
-    public SessionValidationMiddleware(RequestDelegate next, IServiceProvider serviceProvider, ILogger<SessionValidationMiddleware> logger)
-    {
-        _next = next;
-        _serviceProvider = serviceProvider;
-        _logger = logger;
-    }
+    private static readonly string[] _sessionValidationPathExceptions = ["/public/auth/register", "/public/auth/login"];
 
     public async Task InvokeAsync(HttpContext context)
     {
-        if (context.Request.Path.StartsWithSegments(_sessionValidationPathException))
+        if (_sessionValidationPathExceptions.Any(path => context.Request.Path.StartsWithSegments(path)))
         {
-            _logger.LogDebug("Session validation bypassed for path {Path}", context.Request.Path);
-            await _next(context); // Important: we must continue the pipeline
+            logger.LogDebug("Session validation bypassed for path {Path}", context.Request.Path);
+            await next(context);
             return;
         }
 
@@ -32,28 +25,26 @@ public class SessionValidationMiddleware
 
         if (string.IsNullOrEmpty(sessionId))
         {
-            _logger.LogWarning("Missing session ID for request {Path}", context.Request.Path);
+            logger.LogWarning("Missing session ID for request {Path}", context.Request.Path);
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await context.Response.WriteAsync("Session ID is missing.");
             return;
         }
 
-        using var scope = _serviceProvider.CreateScope();
+        using var scope = serviceProvider.CreateScope();
         var sessionStore = scope.ServiceProvider.GetRequiredService<ISessionStoreService<UserAccount>>();
         var session = await sessionStore.GetSession(sessionId);
 
-        // Log invalid session
         if (session == null)
         {
-            _logger.LogWarning("Invalid or expired session for session ID {SessionId}, request {Path}", sessionId, context.Request.Path);
+            logger.LogWarning("Invalid or expired session for session ID {SessionId}, request {Path}", sessionId, context.Request.Path);
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await context.Response.WriteAsync("Session expired or invalid.");
             return;
         }
 
-        // Log successful validation at debug level
-        _logger.LogDebug("Session {SessionId} validated successfully for request {Path}", sessionId, context.Request.Path);
+        logger.LogDebug("Session {SessionId} validated successfully for request {Path}", sessionId, context.Request.Path);
 
-        await _next(context);
+        await next(context);
     }
 }

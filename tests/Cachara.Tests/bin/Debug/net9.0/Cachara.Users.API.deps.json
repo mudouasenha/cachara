@@ -54,7 +54,8 @@
           "Serilog.Settings.Configuration": "9.0.0",
           "Serilog.Sinks.Console": "6.0.0",
           "Serilog.Sinks.Elasticsearch": "10.0.0",
-          "Serilog.Sinks.OpenTelemetry": "4.1.1"
+          "Serilog.Sinks.OpenTelemetry": "4.1.1",
+          "Serilog.Sinks.Seq": "9.0.0"
         },
         "runtime": {
           "Cachara.Users.API.dll": {}
@@ -2078,7 +2079,7 @@
           "Serilog": "4.2.0",
           "Serilog.Formatting.Compact": "2.0.0",
           "Serilog.Formatting.Elasticsearch": "10.0.0",
-          "Serilog.Sinks.File": "5.0.0",
+          "Serilog.Sinks.File": "6.0.0",
           "Serilog.Sinks.PeriodicBatching": "4.0.0",
           "System.Diagnostics.DiagnosticSource": "9.0.0"
         },
@@ -2089,14 +2090,14 @@
           }
         }
       },
-      "Serilog.Sinks.File/5.0.0": {
+      "Serilog.Sinks.File/6.0.0": {
         "dependencies": {
           "Serilog": "4.2.0"
         },
         "runtime": {
-          "lib/net5.0/Serilog.Sinks.File.dll": {
-            "assemblyVersion": "5.0.0.0",
-            "fileVersion": "5.0.0.0"
+          "lib/net8.0/Serilog.Sinks.File.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.0.0"
           }
         }
       },
@@ -2122,6 +2123,18 @@
           "lib/net6.0/Serilog.Sinks.PeriodicBatching.dll": {
             "assemblyVersion": "4.0.0.0",
             "fileVersion": "4.0.0.0"
+          }
+        }
+      },
+      "Serilog.Sinks.Seq/9.0.0": {
+        "dependencies": {
+          "Serilog": "4.2.0",
+          "Serilog.Sinks.File": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Serilog.Sinks.Seq.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.0.0"
           }
         }
       },
@@ -4056,12 +4069,12 @@
       "path": "serilog.sinks.elasticsearch/10.0.0",
       "hashPath": "serilog.sinks.elasticsearch.10.0.0.nupkg.sha512"
     },
-    "Serilog.Sinks.File/5.0.0": {
+    "Serilog.Sinks.File/6.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-uwV5hdhWPwUH1szhO8PJpFiahqXmzPzJT/sOijH/kFgUx+cyoDTMM8MHD0adw9+Iem6itoibbUXHYslzXsLEAg==",
-      "path": "serilog.sinks.file/5.0.0",
-      "hashPath": "serilog.sinks.file.5.0.0.nupkg.sha512"
+      "sha512": "sha512-lxjg89Y8gJMmFxVkbZ+qDgjl+T4yC5F7WSLTvA+5q0R04tfKVLRL/EHpYoJ/MEQd2EeCKDuylBIVnAYMotmh2A==",
+      "path": "serilog.sinks.file/6.0.0",
+      "hashPath": "serilog.sinks.file.6.0.0.nupkg.sha512"
     },
     "Serilog.Sinks.OpenTelemetry/4.1.1": {
       "type": "package",
@@ -4076,6 +4089,13 @@
       "sha512": "sha512-kxg6QLNA1sDVqYEE7/6hCr/Ur3imS+qaoEqriQh07WTU1/b6jknnuVN1rWQpj67JpwAXXTmgI3Js9IGGktgumQ==",
       "path": "serilog.sinks.periodicbatching/4.0.0",
       "hashPath": "serilog.sinks.periodicbatching.4.0.0.nupkg.sha512"
+    },
+    "Serilog.Sinks.Seq/9.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-aNU8A0K322q7+voPNmp1/qNPH+9QK8xvM1p72sMmCG0wGlshFzmtDW9QnVSoSYCj0MgQKcMOlgooovtBhRlNHw==",
+      "path": "serilog.sinks.seq/9.0.0",
+      "hashPath": "serilog.sinks.seq.9.0.0.nupkg.sha512"
     },
     "StackExchange.Redis/2.7.27": {
       "type": "package",

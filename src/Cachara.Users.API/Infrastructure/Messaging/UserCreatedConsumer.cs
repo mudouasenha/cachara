@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Confluent.Kafka;
+﻿using Confluent.Kafka;
 
 namespace Cachara.Users.API.Services;
 

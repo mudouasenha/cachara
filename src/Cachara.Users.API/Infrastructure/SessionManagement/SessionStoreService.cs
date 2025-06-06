@@ -1,15 +1,11 @@
-﻿using System.Security.Claims;
-using System.Text.Json;
-using Cachara.Shared.Infrastructure;
+﻿using Cachara.Shared.Infrastructure;
 using Cachara.Users.API.API.Authentication;
-using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Infrastructure.Cache;
-using Cachara.Users.API.Services.Abstractions;
-using FluentResults;
-using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
 
 namespace Cachara.Users.API.Infrastructure.SessionManagement;
 
+// TODO: IMPLEMENT CACHE-ASIDE PATTERN FOR SESSION STORAGE
 public class SessionStoreService : ISessionStoreService<UserAccount>
 {
     private readonly ICacheService _cache;
@@ -21,8 +17,6 @@ public class SessionStoreService : ISessionStoreService<UserAccount>
         _logger = logger;
     }
 
-
-    // TODO: manage session accordingly
     public async Task<SessionData> CreateSession(UserAccount account)
     {
         var sessionId = Guid.NewGuid().ToString();
@@ -34,58 +28,100 @@ public class SessionStoreService : ISessionStoreService<UserAccount>
             ExpiresAt = DateTime.UtcNow.AddMinutes(30)
         };
 
-        var existingUserSessions = await _cache.GetAsync<List<SessionData>>($"user-sessions:{account.Id}") ?? new List<SessionData>();
-        existingUserSessions.Add(sessionData);
+        _logger.LogInformation("Creating new session. UserId: {UserId}, SessionId: {SessionId}", account.Id, sessionId);
 
-        await _cache.SetAsync(
-            $"user-sessions:{account.Id}",
-            existingUserSessions,
-            TimeSpan.FromMinutes(30));
+        await _cache.SetAsync($"session:{sessionId}", sessionData, TimeSpan.FromMinutes(30));
 
-        await _cache.SetAsync($"session:{sessionId}", sessionData);
+        var userSessions = await _cache.GetAsync<List<string>>($"user-sessions:{account.Id}") ?? new List<string>();
+        userSessions.Add(sessionId);
+        await _cache.SetAsync($"user-sessions:{account.Id}", userSessions, TimeSpan.FromMinutes(30));
+
+        _logger.LogDebug("Session created and stored. UserId: {UserId}, TotalSessions: {SessionCount}", account.Id, userSessions.Count);
 
         return sessionData;
     }
 
-    public async Task<SessionData?> GetSession(string sessionId)
+    public async Task<SessionData> GetSession(string sessionId)
     {
-        var sessions = await _cache.GetAsync<List<SessionData>>($"user-sessions:{sessionId}") ?? new List<SessionData>();
-
-        var sessionData = sessions?.FirstOrDefault(s => s.Id.Equals(sessionId, StringComparison.OrdinalIgnoreCase));
+        var sessionData = await _cache.GetAsync<SessionData>($"session:{sessionId}");
+        if (sessionData == null)
+        {
+            _logger.LogWarning("Session not found. SessionId: {SessionId}", sessionId);
+        }
+        else
+        {
+            _logger.LogDebug("Session retrieved. SessionId: {SessionId}", sessionId);
+        }
 
         return sessionData;
     }
 
     public async Task<List<SessionData>> GetSessions(string userId)
     {
-        var sessions = await _cache.GetAsync<List<SessionData>>($"user-sessions:{userId}") ?? new List<SessionData>();
+        var sessionIds = await _cache.GetAsync<List<string>>($"user-sessions:{userId}") ?? new List<string>();
 
-        return sessions.Count > 0 ? sessions : new List<SessionData>();
+        var sessions = new List<SessionData>();
+        foreach (var sessionId in sessionIds)
+        {
+            var sessionData = await _cache.GetAsync<SessionData>($"session:{sessionId}");
+            if (sessionData != null)
+            {
+                sessions.Add(sessionData);
+            }
+        }
+
+        _logger.LogInformation("Retrieved {SessionCount} sessions for UserId: {UserId}", sessions.Count, userId);
+
+        return sessions;
     }
 
     public async Task InvalidateSession(string sessionId)
     {
-        await _cache.RemoveAsync($"user-sessions:{sessionId}");
-        await _cache.RemoveAsync($"session:{sessionId}");
-    }
-
-    public async Task InvalidateAllSessionsAsync(string accountId)
-    {
-        var sessions = await _cache.GetAsync<List<string>>($"user-sessions:{accountId}");
-        if (sessions == null) return;
-
-        foreach (var sessionId in sessions)
+        var sessionData = await _cache.GetAsync<SessionData>($"session:{sessionId}");
+        if (sessionData != null)
         {
-            await _cache.RemoveAsync($"session:{sessionId}");
+            var userSessions = await _cache.GetAsync<List<string>>($"user-sessions:{sessionData.UserId}") ?? new List<string>();
+            userSessions.Remove(sessionId);
+
+            if (userSessions.Count > 0)
+            {
+                await _cache.SetAsync($"user-sessions:{sessionData.UserId}", userSessions, TimeSpan.FromMinutes(30));
+            }
+            else
+            {
+                await _cache.RemoveAsync($"user-sessions:{sessionData.UserId}");
+            }
+
+            _logger.LogDebug("Session removed from user's session list. SessionId: {SessionId}", sessionId);
         }
 
-        await _cache.RemoveAsync($"user-sessions:{accountId}");
+        await _cache.RemoveAsync($"session:{sessionId}");
+        _logger.LogInformation("Session invalidated. SessionId: {SessionId}", sessionId);
+    }
+
+    public async Task InvalidateAllSessionsAsync(string userId)
+    {
+        var sessionIds = await _cache.GetAsync<List<string>>($"user-sessions:{userId}");
+        if (sessionIds != null)
+        {
+            foreach (var sessionId in sessionIds)
+            {
+                await _cache.RemoveAsync($"session:{sessionId}");
+            }
+
+            await _cache.RemoveAsync($"user-sessions:{userId}");
+            _logger.LogInformation("All sessions invalidated for UserId: {UserId}", userId);
+        }
+        else
+        {
+            _logger.LogDebug("No active sessions found to invalidate for UserId: {UserId}", userId);
+        }
     }
 
     public async Task<bool> IsSessionActiveAsync(string sessionId)
     {
-        return await _cache.ExistsAsync(sessionId);
+        var exists = await _cache.ExistsAsync($"session:{sessionId}");
+        _logger.LogDebug("Session active check. SessionId: {SessionId}, IsActive: {IsActive}", sessionId, exists);
+        return exists;
     }
 }
-
-

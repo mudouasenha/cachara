@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Cachara.Shared.Infrastructure;
 
 namespace Cachara.Users.API.API.Authentication;

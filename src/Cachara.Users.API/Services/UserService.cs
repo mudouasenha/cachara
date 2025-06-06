@@ -45,6 +45,15 @@ public class UserService : IUserService
         return user;
     }
 
+    public async Task<User> FindById(string id)
+    {
+        var normalizedId = id.ToLowerInvariant();
+        var user = await _userRepository.FindByAsync(p => p.Id == normalizedId)
+                   ?? throw new Exception("User Not Found!");
+
+        return user;
+    }
+
     public async Task<User> GetWithPostsById(string id)
     {
         return await _userRepository
@@ -70,6 +79,16 @@ public class UserService : IUserService
     }
 
 
+    // TODO: Use Password Hashing Instead of Encryption
+    /// <summary>
+    /// For passwords, encryption is not recommended.
+    /// ✅ Use a password hash algorithm (bcrypt, PBKDF2, Argon2).
+    /// ✅ Store the salt with the hash.
+    /// ✅ On password change, rehash and compare.
+    /// </summary>
+    /// <param name="command"></param>
+    /// <see cref="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"/>
+    /// <see cref="https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/introduction?view=aspnetcore-8.0"/>
     public async Task<User> CreateUser(UserUpsert upsert)
     {
         var user = new User
@@ -128,7 +147,7 @@ public class UserService : IUserService
     {
         var encryptedPassword = _generalDataProtectionService.EncryptString(password);
 
-        return user.Password == encryptedPassword;
+        return user.Password == password;
     }
 
     internal async Task<User> InsertInternal(
@@ -143,6 +162,25 @@ public class UserService : IUserService
 
         await _userRepository.AddAsync(user);
         return user;
+    }
+
+    // TODO: Use Password Hashing Instead of Encryption
+    /// <summary>
+    /// For passwords, encryption is not recommended.
+    /// ✅ Use a password hash algorithm (bcrypt, PBKDF2, Argon2).
+    /// ✅ Store the salt with the hash.
+    /// ✅ On password change, rehash and compare.
+    /// </summary>
+    /// <param name="command"></param>
+    /// <see cref="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"/>
+    /// <see cref="https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/introduction?view=aspnetcore-8.0"/>
+    internal async Task<User> UpdatePassword(
+        User user,
+        string newPassword
+    )
+    {
+        var newPasswordEncrypted = _generalDataProtectionService.EncryptString(newPassword);
+        return await UpdateInternal(user, userUpdate => userUpdate.Password = newPasswordEncrypted);
     }
 
     internal async Task<User> UpdateInternal(

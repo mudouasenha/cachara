@@ -1,12 +1,7 @@
 using Cachara.Users.API.API.Options;
-using OpenTelemetry.Exporter;
-using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
-using Serilog.Sinks.OpenTelemetry;
-using OpenTelemetry.Instrumentation.AspNetCore;
-using OpenTelemetry.Instrumentation.Http;
 
 namespace Cachara.Users.API.API.Extensions;
 

@@ -511,3 +511,4 @@ C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\t
 C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\obj\Debug\net9.0\Cachara.Tests.pdb
 C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\obj\Debug\net9.0\Cachara.Tests.genruntimeconfig.cache
 C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\obj\Debug\net9.0\ref\Cachara.Tests.dll
+C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net9.0\Serilog.Sinks.Seq.dll

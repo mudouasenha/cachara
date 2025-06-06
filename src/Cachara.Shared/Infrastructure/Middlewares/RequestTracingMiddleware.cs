@@ -2,21 +2,12 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using OpenTelemetry.Trace;
 
 namespace Cachara.Shared.Infrastructure.Middlewares;
 
-public class RequestTracingMiddleware
+public class RequestTracingMiddleware(RequestDelegate next, ILogger<RequestTracingMiddleware> logger)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger<RequestTracingMiddleware> _logger;
     private const string CorrelationIdHeader = "X-Correlation-ID";
-
-    public RequestTracingMiddleware(RequestDelegate next, ILogger<RequestTracingMiddleware> logger)
-    {
-        _next = next;
-        _logger = logger;
-    }
 
     public async Task Invoke(HttpContext context)
     {
@@ -40,26 +31,26 @@ public class RequestTracingMiddleware
             activity.SetTag("tenant.id", tenantId);
         }
 
-        using (_logger.BeginScope(new
+        using (logger.BeginScope(new
                {
                    CorrelationId = correlationId,
                    UserId = userId,
                    TenantId = tenantId
                }))
         {
-            _logger.LogInformation("Request started: {Method} {Path}", method, path);
+            logger.LogInformation("Request started: {Method} {Path}", method, path);
 
             var stopwatch = Stopwatch.StartNew();
 
             try
             {
-                await _next(context);
+                await next(context);
             }
             catch (Exception ex)
             {
                 activity?.AddException(ex);
 
-                _logger.LogError(
+                logger.LogError(
                     ex,
                     "Unhandled exception occurred. CorrelationId: {CorrelationId}, Method: {Method} - Path: {Path}",
                     correlationId,
@@ -72,10 +63,10 @@ public class RequestTracingMiddleware
                 stopwatch.Stop();
                 if (context.Response.StatusCode >= 400)
                 {
-                    _logger.LogWarning("Client error: {Method} {Path} - StatusCode: {StatusCode}",
+                    logger.LogWarning("Client error: {Method} {Path} - StatusCode: {StatusCode}",
                         method, path, context.Response.StatusCode);
                 }
-                _logger.LogInformation(
+                logger.LogInformation(
                     "Request finished: {Method} {Path} - StatusCode: {StatusCode} - ElapsedMs: {ElapsedMs}",
                     method, path, context.Response.StatusCode, stopwatch.ElapsedMilliseconds);
             }

@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using Cachara.Users.API.Services.Abstractions;
-using Elastic.Apm.Api;
 
 namespace Cachara.Users.API.API.Authentication;
 
@@ -9,7 +8,7 @@ public class UserAccountService : IAccountService<UserAccount>
 {
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly IJwtProvider _jwtProvider;
-    private UserAccount? _current;
+    private UserAccount _current;
 
     public UserAccountService(IHttpContextAccessor contextAccessor, IJwtProvider jwtProvider)
     {

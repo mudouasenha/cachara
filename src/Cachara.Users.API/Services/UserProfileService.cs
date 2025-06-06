@@ -1,6 +1,4 @@
 using Cachara.Users.API.Domain.Entities;
-using Cachara.Users.API.Domain.Errors;
-using Cachara.Users.API.Domain.Specification;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Services.Abstractions;
 using Cachara.Users.API.Services.Models;

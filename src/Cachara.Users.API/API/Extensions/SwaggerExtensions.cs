@@ -1,7 +1,4 @@
-﻿using Cachara.Users.API.API.Swagger;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Models;
+﻿
 //using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Cachara.Users.API.API.Extensions;

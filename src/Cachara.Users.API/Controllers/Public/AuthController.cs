@@ -45,7 +45,7 @@ public class AuthController(IUserService userService, UserAuthenticationService 
     public async Task<IActionResult> Logout()
     {
         // TODO: session??
-        var result = await userAuthService.Logout("");
+        var result = await userAuthService.Logout();
 
         // if (result.IsFailed)
         // {

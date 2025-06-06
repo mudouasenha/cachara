@@ -1,6 +1,5 @@
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Services.Models;
-using FluentResults;
 
 namespace Cachara.Users.API.Services.Abstractions;
 

@@ -1,7 +1,5 @@
 using System.Security.Claims;
 using Cachara.Users.API.Services.Abstractions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cachara.Users.API.Controllers;

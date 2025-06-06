@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿
+using Cachara.Users.API.API.Authentication;
 
 namespace Cachara.Shared.Infrastructure;
 
@@ -8,5 +9,5 @@ public interface IAccount
 
     string FullName { get; }
 
-    IEnumerable<IClaim> Claims { get; }
+    IEnumerable<Claim> Claims { get; }
 }
