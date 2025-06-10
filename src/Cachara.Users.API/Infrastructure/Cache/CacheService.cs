@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace Cachara.Users.API.Infrastructure.Cache;
 
+// TODO: make HybridCache here
 public class CacheService(IDistributedCache cache, ILogger<CacheService> logger) : ICacheService
 {
     private readonly JsonSerializerOptions _jsonOptions = new(JsonSerializerDefaults.Web);
@@ -52,6 +53,19 @@ public class CacheService(IDistributedCache cache, ILogger<CacheService> logger)
         catch (Exception ex)
         {
             logger.LogError(ex, "Error setting key in cache: {Key}", key);
+        }
+    }
+
+    public async Task RefreshAsync(string key, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await cache.RefreshAsync(key, cancellationToken);
+            logger.LogDebug("Refreshed key: {Key} in cache", key);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error refreshing key in cache: {Key}", key);
         }
     }
 

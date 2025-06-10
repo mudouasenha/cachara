@@ -90,12 +90,9 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
         services.AddScoped<IAggregateExceptionHandler, AggregateExceptionHandler>();
         services.AddScoped<IErrorExceptionHandler<Exception>, ExceptionHandler>();
 
-        services.AddMemoryCache();
         services.AddStackExchangeRedisCache(options => { options.Configuration = Options.RedisConnection; });
-        //services.AddDistributedMemoryCache() IMPORTANTE PARA USAR A INTERFACE IDISTRIBUTEDCACHE, MAS SEM PRECISAR
-        // IMPLEMENTAR O REDIS
+        services.AddDistributedMemoryCache();
 
-#pragma warning disable EXTEXP0018
         services.AddHybridCache(options =>
         {
             options.MaximumPayloadBytes = 1024 * 1024;
@@ -105,7 +102,6 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
                 Expiration = TimeSpan.FromSeconds(30), LocalCacheExpiration = TimeSpan.FromSeconds(10)
             };
         });
-#pragma warning restore EXTEXP0018
 
         ConfigureHangfire(services);
         ConfigureDataAccess(services);

@@ -21,7 +21,6 @@ public class UserAuthenticationService : UserService
 {
     private readonly ILogger<UserAuthenticationService> _logger;
     private readonly IJwtProvider _tokenProvider;
-    private readonly ICacheService _cache;
     private readonly ISessionStoreService<UserAccount> _sessionStore;
     private readonly IAccountService<UserAccount> _userAccountService;
     private readonly IAggregateExceptionHandler _aggregateExceptionHandler;
@@ -35,7 +34,6 @@ public class UserAuthenticationService : UserService
         IJwtProvider tokenProvider,
         IGeneralDataProtectionService generalDataProtectionService,
         IAccountService<UserAccount> userAccountService,
-        ICacheService cache,
         ISessionStoreService<UserAccount> sessionStore)
         : base(userRepository, generalDataProtectionService, unitOfWork)
     {
@@ -44,7 +42,6 @@ public class UserAuthenticationService : UserService
         _tokenProvider = tokenProvider;
         _userAccountService = userAccountService;
         _sessionStore = sessionStore;
-        _cache = cache;
     }
 
     public async Task<Result<UserRegisterResult>> RegisterUser(RegisterCommand register)
