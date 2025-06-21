@@ -1,6 +1,12 @@
+using Cachara.Playground;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+MappingConfig.RegisterMappings();
+
+var mapsterTest = new MapsterTests();
+
+mapsterTest.TestMapster();
 
 app.Run();

@@ -25,6 +25,10 @@
     <File Path=".editorconfig" />
     <File Path="docker-compose.yml" />
   </Folder>
+  <Folder Name="/Solution Items/Workflows/">
+    <File Path="..\.github\workflows\sonarcloud.yml" />
+    <File Path="..\.github\workflows\publish-ghrc.yml" />
+  </Folder>
   <Folder Name="/Tests/">
     <Project Path="../tests/Cachara.Tests/Cachara.Tests.csproj" />
   </Folder>
