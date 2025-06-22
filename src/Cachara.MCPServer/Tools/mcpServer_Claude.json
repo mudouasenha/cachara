@@ -1,0 +1,9 @@
+﻿{
+  "mcpServers": {
+    "PostsMcpServer": {
+      "command": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.MCPServer\\bin\\Debug\\net9.0\\Cachara.MCPServer.exe",
+      "args": [],
+      "type": "stdio"
+    }
+  }
+}
