@@ -1,35 +1,12 @@
-using Cachara.Users.API.API.Options;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
 
-namespace Cachara.Users.API.API.Extensions;
-
-
-public class CacharaLogging<TOptions> where TOptions : CacharaOptions, new()
-{
-    private readonly IConfiguration Configuration;
-
-    private IHostEnvironment Environment;
-
-    public CacharaLogging(IHostEnvironment environment, IConfiguration configuration)
-    {
-        Environment = environment;
-        Configuration = configuration;
-        Options = new TOptions { Name = GetType().Name };
-        try
-        {
-            Configuration?.Bind(Options);
-        }
-        catch (Exception)
-        {
-            Console.WriteLine($"Could not Bind Options for {nameof(CacharaUsersService<TOptions>)}");
-            throw;
-        }
-    }
-
-    private TOptions Options { get; }
-}
+namespace Cachara.Shared.Application;
 
 public static class LoggingExtensions
 {

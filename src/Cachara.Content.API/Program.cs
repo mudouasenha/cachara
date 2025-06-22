@@ -1,9 +1,9 @@
 using Cachara.Content.API;
-using Cachara.Content.API.API.Extensions;
 using Cachara.Content.API.API.Options;
+using Cachara.Shared.Application;
 
 var builder = WebApplication.CreateBuilder(args);
-var service = new CacharaContentService<CacharaContentOptions>(builder.Environment, builder.Configuration);
+var service = new CacharaContentService(builder.Environment, builder.Configuration);
 //var logging = new CacharaLogging<CacharaOptions>(builder.Environment, builder.Configuration);
 
 builder.Host.ConfigureServices(service.ConfigureServices);

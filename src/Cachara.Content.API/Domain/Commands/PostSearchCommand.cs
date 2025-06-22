@@ -11,4 +11,6 @@ public class PostSearchCommand
     public int Views { get; set; }
 
     public bool Deleted { get; set; }
+    public int Page { get; set; }
+    public int PageSize { get; set; }
 }

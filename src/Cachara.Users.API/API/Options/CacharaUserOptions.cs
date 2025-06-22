@@ -1,9 +1,9 @@
-﻿namespace Cachara.Users.API.API.Options;
+﻿using Cachara.Shared.Application;
 
-public class CacharaOptions
+namespace Cachara.Users.API.API.Options;
+
+public class CacharaUserOptions : CacharaOptions
 {
-    public string Name { get; set; }
-
     public string SqlDb { get; set; }
     public string JobsSqlDb { get; set; }
     public string RedisConnection { get; set; }

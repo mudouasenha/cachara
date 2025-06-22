@@ -1,8 +1,5 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
-using Cachara.Content.API.API.BackgroundServices;
-using Cachara.Content.API.API.Extensions;
-using Cachara.Content.API.API.Hangfire;
 using Cachara.Content.API.API.Options;
 using Cachara.Content.API.Infrastructure;
 using Cachara.Content.API.Infrastructure.Clients;
@@ -11,6 +8,7 @@ using Cachara.Content.API.Infrastructure.Data.Repository;
 using Cachara.Content.API.Services;
 using Cachara.Content.API.Services.External;
 using Cachara.Content.API.Services.Internal;
+using Cachara.Shared.Application;
 using Cachara.Shared.Infrastructure.AzureServiceBus;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Hangfire;
@@ -21,6 +19,7 @@ using Hangfire.Console;
 using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -28,37 +27,22 @@ using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using ProblemDetailsOptions = Hellang.Middleware.ProblemDetails.ProblemDetailsOptions;
+using StreamInputFormatter = Cachara.Content.API.Infrastructure.StreamInputFormatter;
 
 namespace Cachara.Content.API;
 
-public class CacharaContentService<TOptions> where TOptions : CacharaContentOptions, new()
+public class CacharaContentService(IHostEnvironment environment, IConfiguration configuration)
+    : CacharaService<CacharaContentOptions>(environment, configuration)
 {
     private readonly IConfiguration Configuration;
 
     private readonly IHostEnvironment Environment;
-
-    public CacharaContentService(IHostEnvironment environment, IConfiguration configuration)
-    {
-        Environment = environment;
-        Configuration = configuration;
-        Options = new TOptions { Name = GetType().Name };
-        try
-        {
-            Configuration?.Bind(Options);
-        }
-        catch (Exception)
-        {
-            Console.WriteLine($"Could not Bind Options for {nameof(CacharaContentService<TOptions>)}");
-            throw;
-        }
-    }
-
-    private TOptions Options { get; }
+    private CacharaContentOptions Options;
 
     public void ConfigureServices(IServiceCollection services)
     {
         // Dependency Injection Options
-        services.AddOptions<TOptions>().Bind(Configuration);
+        services.AddOptions<CacharaContentOptions>().Bind(Configuration);
 
         services.AddScoped<IGeneralDataProtectionService, AesGeneralDataProtectionService>(p =>
             new AesGeneralDataProtectionService(Options.Security.Key));
@@ -75,7 +59,7 @@ public class CacharaContentService<TOptions> where TOptions : CacharaContentOpti
                 name: "database_check",
                 failureStatus: HealthStatus.Degraded);
 
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddMapster();
 
         services.AddProblemDetails(delegate(ProblemDetailsOptions opts) { });
 
@@ -116,7 +100,6 @@ public class CacharaContentService<TOptions> where TOptions : CacharaContentOpti
         });
         services.AddResponseCaching();
         services.AddEndpointsApiExplorer();
-        services.AddCustomSwagger();
 
         services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
             x => new ServiceBusQueue(Options.CacharaUsers.ServiceBusConn ?? "")
@@ -124,10 +107,10 @@ public class CacharaContentService<TOptions> where TOptions : CacharaContentOpti
 
         ConfigureExternalServices(services);
 
-        if (Options.CacharaUsers?.ListenerEnabled == true)
-        {
-            services.AddHostedService<UserListernerService>();
-        }
+        // if (Options.CacharaUsers?.ListenerEnabled == true)
+        // {
+        //     services.AddHostedService<UserListernerService>();
+        // }
 
         ConfigureHangfire(services);
         ConfigureDataAccess(services);
@@ -146,14 +129,14 @@ public class CacharaContentService<TOptions> where TOptions : CacharaContentOpti
 
     private void ConfigureExternalServices(IServiceCollection services)
     {
-        services.AddAzureClients(builder =>
-        {
-            if (Options.CacharaUsers?.ListenerEnabled == true)
-            {
-                builder.AddServiceBusClient(Options.CacharaUsers.ServiceBusConn)
-                    .WithName(UserListernerService.UsersServiceBusKey);
-            }
-        });
+        // services.AddAzureClients(builder =>
+        // {
+        //     if (Options.CacharaUsers?.ListenerEnabled == true)
+        //     {
+        //         builder.AddServiceBusClient(Options.CacharaUsers.ServiceBusConn)
+        //             .WithName(UserListernerService.UsersServiceBusKey);
+        //     }
+        // });
     }
 
     public void ConfigureHangfire(IServiceCollection services)

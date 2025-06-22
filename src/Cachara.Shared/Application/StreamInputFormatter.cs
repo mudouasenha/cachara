@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.Formatters;
 
-namespace Cachara.Users.API.API.Swagger;
+namespace Cachara.Shared.Application;
 
 public class StreamInputFormatter : IInputFormatter
 {
     public bool CanRead(InputFormatterContext context)
     {
-        if (context == null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
+        ArgumentNullException.ThrowIfNull(context);
 
         var contentType = context.HttpContext.Request.ContentType;
         if (contentType == "application/octet-stream")
@@ -22,10 +19,7 @@ public class StreamInputFormatter : IInputFormatter
 
     public async Task<InputFormatterResult> ReadAsync(InputFormatterContext context)
     {
-        if (context == null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
+        ArgumentNullException.ThrowIfNull(context);
 
         var memoryStream = new MemoryStream();
         await context.HttpContext.Request.Body.CopyToAsync(memoryStream);

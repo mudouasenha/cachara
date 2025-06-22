@@ -1,16 +1,13 @@
-﻿namespace Cachara.Shared.Models;
+﻿namespace Cachara.Content.API.Services.Models;
 
-public class PostBase
+public class Post
 {
-    public string Id { get; set; }
-
     public string Title { get; set; }
 
     public string Body { get; set; }
 
-    public string AuthorName { get; set; }
-
-    public string AuthorUserName { get; set; }
+    public string AuthorId { get; set; }
+    public string Id { get; set; }
 
     public DateTimeOffset CreatedAt { get; set; }
 

@@ -10,7 +10,6 @@ using Cachara.Shared.Infrastructure.Hangfire;
 using Cachara.Shared.Infrastructure.Middlewares;
 using Cachara.Shared.Infrastructure.Security;
 using Cachara.Users.API.API.Authentication;
-using Cachara.Users.API.API.Hangfire;
 using Cachara.Users.API.API.Options;
 using Cachara.Users.API.API.Security;
 using Cachara.Users.API.API.Swagger;
@@ -41,29 +40,13 @@ using Subscription = Cachara.Users.API.API.Security.Subscription;
 
 namespace Cachara.Users.API;
 
-public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOptions, new()
+public sealed class CacharaUsersService(IHostEnvironment environment, IConfiguration configuration)
+    : CacharaService<CacharaUserOptions>(environment, configuration)
 {
     private readonly IConfiguration _configuration;
-
     private readonly IHostEnvironment _environment;
 
-    public CacharaUsersService(IHostEnvironment environment, IConfiguration configuration)
-    {
-        _environment = environment;
-        _configuration = configuration;
-        Options = new TOptions { Name = GetType().Name };
-        try
-        {
-            _configuration.Bind(Options);
-        }
-        catch (Exception)
-        {
-            Console.WriteLine($"Could not Bind Options for {nameof(CacharaUsersService<TOptions>)}");
-            throw;
-        }
-    }
-
-    private TOptions Options { get; }
+    private CacharaUserOptions Options { get; }
 
     public void Configure(IApplicationBuilder app)
     {
@@ -73,7 +56,7 @@ public sealed class CacharaUsersService<TOptions> where TOptions : CacharaOption
     public void ConfigureServices(IServiceCollection services)
     {
         // Dependency Injection Options
-        services.AddOptions<TOptions>().Bind(_configuration);
+        services.AddOptions<CacharaUserOptions>().Bind(_configuration);
 
         AddServicesAndRepositories(services);
         ConfigureAzure(services);

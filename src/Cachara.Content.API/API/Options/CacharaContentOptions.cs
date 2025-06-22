@@ -1,6 +1,8 @@
-﻿namespace Cachara.Content.API.API.Options;
+﻿using Cachara.Shared.Application;
 
-public class CacharaContentOptions
+namespace Cachara.Content.API.API.Options;
+
+public class CacharaContentOptions : CacharaOptions
 {
     public string Name { get; set; }
     public string SqlDb { get; set; }
@@ -15,17 +17,7 @@ public class CacharaContentOptions
     public SecurityOptions Security { get; set; }
 }
 
-public class OpenTelemetryOptions
-{
-    public const string Name = "OpenTelemetry";
-    public OltpOptions Otlp { get; set; }
 
-    public class OltpOptions
-    {
-        public string Endpoint { get; set; }
-        public string ApiKey { get; set; }
-    }
-}
 
 public class CacharaExporterOptions
 {
