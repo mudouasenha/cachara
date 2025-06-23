@@ -10,7 +10,16 @@ namespace Cachara.Shared.Application;
 
 public static class LoggingExtensions
 {
-    public static ILoggingBuilder ConfigureSerilog(this ILoggingBuilder builder, IHostEnvironment environment,
+    public static ILoggingBuilder ConfigureLogging(this ILoggingBuilder builder, IHostEnvironment environment,
+        IConfiguration configuration)
+    {
+        builder.ConfigureSerilog(environment, configuration);
+        builder.ConfigureOpenTelemetry(environment, configuration);
+
+        return builder;
+    }
+
+    private static ILoggingBuilder ConfigureSerilog(this ILoggingBuilder builder, IHostEnvironment environment,
         IConfiguration configuration)
     {
         OpenTelemetryOptions openTelemetryOptions = new();
@@ -27,7 +36,7 @@ public static class LoggingExtensions
         return builder.AddSerilog();
     }
 
-    public static ILoggingBuilder ConfigureOpenTelemetry(this ILoggingBuilder builder, IHostEnvironment environment,
+    private static ILoggingBuilder ConfigureOpenTelemetry(this ILoggingBuilder builder, IHostEnvironment environment,
         IConfiguration configuration)
     {
         OpenTelemetryOptions openTelemetryOptions = new();

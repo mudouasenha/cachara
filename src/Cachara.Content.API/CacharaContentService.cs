@@ -31,18 +31,12 @@ using StreamInputFormatter = Cachara.Content.API.Infrastructure.StreamInputForma
 
 namespace Cachara.Content.API;
 
-public class CacharaContentService(IHostEnvironment environment, IConfiguration configuration)
+public sealed class CacharaContentService(IHostEnvironment environment, IConfiguration configuration)
     : CacharaService<CacharaContentOptions>(environment, configuration)
 {
-    private readonly IConfiguration Configuration;
-
-    private readonly IHostEnvironment Environment;
-    private CacharaContentOptions Options;
-
-    public void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(IServiceCollection services)
     {
-        // Dependency Injection Options
-        services.AddOptions<CacharaContentOptions>().Bind(Configuration);
+        base.ConfigureServices(services);
 
         services.AddScoped<IGeneralDataProtectionService, AesGeneralDataProtectionService>(p =>
             new AesGeneralDataProtectionService(Options.Security.Key));
@@ -50,7 +44,7 @@ public class CacharaContentService(IHostEnvironment environment, IConfiguration 
         services.AddScoped<IPostService, PostService>();
         services.AddScoped<IPostManagerService, PostManagerService>();
 
-        services.AddScoped<IPostRepository, PostRepository>();
+
 
         services.AddHealthChecks()
             .AddSqlServer(
@@ -107,18 +101,16 @@ public class CacharaContentService(IHostEnvironment environment, IConfiguration 
 
         ConfigureExternalServices(services);
 
-        // if (Options.CacharaUsers?.ListenerEnabled == true)
-        // {
-        //     services.AddHostedService<UserListernerService>();
-        // }
 
-        ConfigureHangfire(services);
-        ConfigureDataAccess(services);
-        ConfigureHttpClients(services);
+
     }
 
-    private void ConfigureHttpClients(IServiceCollection services)
+    private void ConfigureInfrastructure(IServiceCollection services)
     {
+        ConfigureExternalServices(services);
+        ConfigureHangfire(services);
+        ConfigureDataAccess(services);
+
         services.AddHttpClient<GitHubService>((serviceProvider, client) =>
         {
             // client.DefaultRequestHeaders.Add("Authorization", Options.GitHubToken);
@@ -127,8 +119,13 @@ public class CacharaContentService(IHostEnvironment environment, IConfiguration 
         });
     }
 
-    private void ConfigureExternalServices(IServiceCollection services)
+    private static void ConfigureExternalServices(IServiceCollection services)
     {
+        // if (Options.CacharaUsers?.ListenerEnabled == true)
+        // {
+        //     services.AddHostedService<UserListernerService>();
+        // }
+
         // services.AddAzureClients(builder =>
         // {
         //     if (Options.CacharaUsers?.ListenerEnabled == true)
@@ -139,7 +136,7 @@ public class CacharaContentService(IHostEnvironment environment, IConfiguration 
         // });
     }
 
-    public void ConfigureHangfire(IServiceCollection services)
+    private void ConfigureHangfire(IServiceCollection services)
     {
         services.AddScoped<IBackgroundServiceManager, BackgroundServiceManager>();
 
@@ -147,10 +144,7 @@ public class CacharaContentService(IHostEnvironment environment, IConfiguration 
         {
             config.UseSimpleAssemblyNameTypeSerializer();
             config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
-            config.UseRecommendedSerializerSettings(x =>
-            {
-                //x.Converters.Add(new JsonDateOnlyConverter());
-            });
+            config.UseRecommendedSerializerSettings();
             config.UseSqlServerStorage(Options.JobsSqlDb,
                 new SqlServerStorageOptions { SchemaName = "CacharaContentHangfire", PrepareSchemaIfNecessary = true });
             config.UseConsole();
@@ -164,8 +158,10 @@ public class CacharaContentService(IHostEnvironment environment, IConfiguration 
         });
     }
 
-    public void ConfigureDataAccess(IServiceCollection services)
+    private void ConfigureDataAccess(IServiceCollection services)
     {
+        services.AddScoped<IPostRepository, PostRepository>();
+
         services.AddDbContext<CacharaContentDbContext>(options =>
             {
                 options.UseSqlServer(Options.SqlDb);
@@ -176,8 +172,10 @@ public class CacharaContentService(IHostEnvironment environment, IConfiguration 
         ;
     }
 
-    public void ConfigureApp(IApplicationBuilder app)
+    protected override void ConfigureApp(IApplicationBuilder app)
     {
+        base.ConfigureApp(app);
+
         app.UseProblemDetails();
         app.UseSwaggerUI(opts =>
         {
@@ -219,8 +217,4 @@ public class CacharaContentService(IHostEnvironment environment, IConfiguration 
         app.UseHangfireDashboard();
     }
 
-    public virtual void Configure(IApplicationBuilder app)
-    {
-        ConfigureApp(app);
-    }
 }

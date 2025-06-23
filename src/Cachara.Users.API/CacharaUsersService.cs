@@ -43,10 +43,8 @@ namespace Cachara.Users.API;
 public sealed class CacharaUsersService(IHostEnvironment environment, IConfiguration configuration)
     : CacharaService<CacharaUserOptions>(environment, configuration)
 {
-    private readonly IConfiguration _configuration;
-    private readonly IHostEnvironment _environment;
-
-    private CacharaUserOptions Options { get; }
+    private readonly IHostEnvironment _environment = environment;
+    private readonly IConfiguration _configuration = configuration;
 
     public void Configure(IApplicationBuilder app)
     {
@@ -325,8 +323,10 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
             .AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<CacharaUsersDbContext>());
     }
 
-    public void ConfigureApp(IApplicationBuilder app)
+    protected override void ConfigureApp(IApplicationBuilder app)
     {
+        base.ConfigureApp(app);
+
         app.UseRouting();
 
         app.UseAuthentication();
@@ -370,8 +370,6 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
         });
-
-
 
         app.UseHangfireDashboard();
     }

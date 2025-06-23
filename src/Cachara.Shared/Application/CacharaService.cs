@@ -10,7 +10,7 @@ public abstract class CacharaService<TOptions> where TOptions : CacharaOptions, 
 {
     protected readonly IConfiguration Configuration;
     protected readonly IHostEnvironment Environment;
-    internal TOptions Options { get; }
+    protected TOptions Options { get; }
 
     protected CacharaService(IHostEnvironment environment, IConfiguration configuration)
     {
@@ -36,11 +36,11 @@ public abstract class CacharaService<TOptions> where TOptions : CacharaOptions, 
 
     public virtual void ConfigureServices(IServiceCollection services)
     {
-        //services.AddOptions<TOptions>().Bind(Configuration);
-
+        services.AddOptions<TOptions>().Bind(Configuration);
     }
 
     protected virtual void ConfigureApp(IApplicationBuilder app)
     {
+
     }
 }
