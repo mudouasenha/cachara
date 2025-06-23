@@ -1,13 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>9de50e3c-725f-4cd4-a994-df7fd1c19451</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <Nullable>disable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="AspNetCore.Authentication.ApiKey" />
     <PackageReference Include="AspNetCore.HealthChecks.Kafka" />
@@ -61,24 +59,19 @@
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" />
     <PackageReference Include="Serilog.Sinks.Seq" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Remove="Extensions\HangFireExtensions.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Cachara.Shared\Cachara.Shared.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="..\.dockerignore">
       <Link>.dockerignore</Link>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="API\Extensions\" />
     <Folder Include="Controllers\Management\" />
   </ItemGroup>
-
 </Project>

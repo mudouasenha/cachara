@@ -1,12 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <RootNamespace>Cachara.Shared</RootNamespace>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Azure.Messaging.ServiceBus" />
     <PackageReference Include="Extensions.Hosting.AsyncInitialization" />
@@ -52,7 +50,5 @@
     <PackageReference Include="Serilog.Sinks.Elasticsearch" />
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" />
     <PackageReference Include="Serilog.Sinks.Seq" />
-
   </ItemGroup>
-
 </Project>
