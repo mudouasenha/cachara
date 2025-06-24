@@ -6,12 +6,11 @@ using System.Text;
 using Cachara.Users.API.API.Authentication;
 using Cachara.Users.API.API.Options;
 using Cachara.Users.API.Domain.Entities;
-using Cachara.Users.API.Services.Abstractions;
 using Cachara.Users.API.Services.Models.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Claim = System.Security.Claims.Claim;
 
-namespace Cachara.Users.API.Services;
+namespace Cachara.Users.API.Infrastructure;
 
 public class JwtProvider : IJwtProvider
 {

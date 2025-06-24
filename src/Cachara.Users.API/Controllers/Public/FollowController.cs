@@ -2,7 +2,7 @@ using System.Security.Claims;
 using Cachara.Users.API.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cachara.Users.API.Controllers;
+namespace Cachara.Users.API.Controllers.Public;
 
 [ApiController]
 [Route("public/[controller]")]

@@ -13,18 +13,22 @@ using Cachara.Users.API.API.Authentication;
 using Cachara.Users.API.API.Options;
 using Cachara.Users.API.API.Security;
 using Cachara.Users.API.API.Swagger;
+using Cachara.Users.API.Infrastructure;
 using Cachara.Users.API.Infrastructure.Cache;
 using Cachara.Users.API.Infrastructure.Data;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Infrastructure.SessionManagement;
 using Cachara.Users.API.Services;
 using Cachara.Users.API.Services.Abstractions;
+using Cachara.Users.API.Services.Externals;
+using Cachara.Users.API.Services.Mappings;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.PostgreSql;
 using HealthChecks.UI.Client;
 using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
+using Mapster;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -63,7 +67,8 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
 
         AddSecurity(services);
 
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddMapster();
+        UsersMappings.Configure();
 
         ConfigureEndpoints(services);
 

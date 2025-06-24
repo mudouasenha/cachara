@@ -1,4 +1,3 @@
-using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Services.Commands;
 using Cachara.Users.API.Services.Models;
 

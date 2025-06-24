@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
 
-namespace Cachara.Users.API.Services;
+namespace Cachara.Users.API.Infrastructure.Messaging;
 
 public class UserCreatedConsumer : IDisposable
 {

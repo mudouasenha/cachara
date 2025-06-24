@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Confluent.Kafka;
 
-namespace Cachara.Users.API.Services;
+namespace Cachara.Users.API.Infrastructure.Messaging;
 
 public class UserCreatedProducer : IAsyncDisposable
 {

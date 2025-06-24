@@ -6,7 +6,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Cachara.Users.API.Controllers;
+namespace Cachara.Users.API.Controllers.Internal;
 
 [ApiController]
 [Route("internal/[controller]")]

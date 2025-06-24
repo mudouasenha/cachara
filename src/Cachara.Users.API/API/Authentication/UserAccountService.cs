@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Cachara.Users.API.Infrastructure;
 using Cachara.Users.API.Services.Abstractions;
 
 namespace Cachara.Users.API.API.Authentication;

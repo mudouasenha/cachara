@@ -1,5 +1,5 @@
-﻿using Cachara.Users.API.Services.Commands;
-using Cachara.Users.API.Services.Errors;
+﻿using Cachara.Users.API.Domain.Errors;
+using Cachara.Users.API.Services.Commands;
 using FluentValidation;
 
 namespace Cachara.Users.API.Services.Validations;
@@ -10,23 +10,23 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
     {
         RuleFor(x => x)
             .Must(BeDifferentPasswords)
-            .WithMessage(ApplicationErrors.UserAuthentication.SamePassword.Message)
-            .WithErrorCode(nameof(ApplicationErrors.UserAuthentication.SamePassword));
+            .WithMessage(DomainErrors.UserAuthentication.SamePassword.Message)
+            .WithErrorCode(nameof(DomainErrors.UserAuthentication.SamePassword));
         RuleFor(x => x.NewPassword)
-            .NotEmpty().WithMessage(ApplicationErrors.Password.Required.Message)
-            .WithErrorCode(nameof(ApplicationErrors.Password.Required))
-            .MinimumLength(8).WithMessage(ApplicationErrors.Password.MinimumLength.Message)
-            .WithErrorCode(nameof(ApplicationErrors.Password.MinimumLength))
-            .MaximumLength(50).WithMessage(ApplicationErrors.Password.MaximumLength.Message)
-            .WithErrorCode(nameof(ApplicationErrors.Password.MaximumLength))
-            .Matches("[A-Z]").WithMessage(ApplicationErrors.Password.UppercaseRequired.Message)
-            .WithErrorCode(nameof(ApplicationErrors.Password.UppercaseRequired))
-            .Matches("[a-z]").WithMessage(ApplicationErrors.Password.LowercaseRequired.Message)
-            .WithErrorCode(nameof(ApplicationErrors.Password.LowercaseRequired))
-            .Matches("[0-9]").WithMessage(ApplicationErrors.Password.NumberRequired.Message)
-            .WithErrorCode(nameof(ApplicationErrors.Password.NumberRequired))
-            .Matches("[^a-zA-Z0-9]").WithMessage(ApplicationErrors.Password.SpecialCharacterRequired.Message)
-            .WithErrorCode(nameof(ApplicationErrors.Password.SpecialCharacterRequired));
+            .NotEmpty().WithMessage(DomainErrors.Password.Required.Message)
+            .WithErrorCode(nameof(DomainErrors.Password.Required))
+            .MinimumLength(8).WithMessage(DomainErrors.Password.MinimumLength.Message)
+            .WithErrorCode(nameof(DomainErrors.Password.MinimumLength))
+            .MaximumLength(50).WithMessage(DomainErrors.Password.MaximumLength.Message)
+            .WithErrorCode(nameof(DomainErrors.Password.MaximumLength))
+            .Matches("[A-Z]").WithMessage(DomainErrors.Password.UppercaseRequired.Message)
+            .WithErrorCode(nameof(DomainErrors.Password.UppercaseRequired))
+            .Matches("[a-z]").WithMessage(DomainErrors.Password.LowercaseRequired.Message)
+            .WithErrorCode(nameof(DomainErrors.Password.LowercaseRequired))
+            .Matches("[0-9]").WithMessage(DomainErrors.Password.NumberRequired.Message)
+            .WithErrorCode(nameof(DomainErrors.Password.NumberRequired))
+            .Matches("[^a-zA-Z0-9]").WithMessage(DomainErrors.Password.SpecialCharacterRequired.Message)
+            .WithErrorCode(nameof(DomainErrors.Password.SpecialCharacterRequired));
     }
 
     private static bool BeDifferentPasswords(ChangePasswordCommand command)

@@ -51,11 +51,6 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
-            "AutoMapper": {
-              "target": "Package",
-              "version": "[14.0.0, )",
-              "versionCentrallyManaged": true
-            },
             "Azure.Messaging.ServiceBus": {
               "target": "Package",
               "version": "[7.20.1, )",
@@ -251,7 +246,6 @@
             "AspNetCore.HealthChecks.Redis": "9.0.0",
             "AspNetCore.HealthChecks.SqlServer": "9.0.0",
             "AspNetCore.HealthChecks.UI.Client": "9.0.0",
-            "AutoMapper": "14.0.0",
             "Azure.Messaging.ServiceBus": "7.20.1",
             "Confluent.Kafka": "2.10.1",
             "Dapper": "2.1.66",
@@ -774,6 +768,11 @@
               "version": "[7.4.0, )",
               "versionCentrallyManaged": true
             },
+            "Mapster.DependencyInjection": {
+              "target": "Package",
+              "version": "[1.0.1, )",
+              "versionCentrallyManaged": true
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[10.0.0-preview.5.25277.114, )",
@@ -914,7 +913,6 @@
             "AspNetCore.HealthChecks.Redis": "9.0.0",
             "AspNetCore.HealthChecks.SqlServer": "9.0.0",
             "AspNetCore.HealthChecks.UI.Client": "9.0.0",
-            "AutoMapper": "14.0.0",
             "Azure.Messaging.ServiceBus": "7.20.1",
             "Confluent.Kafka": "2.10.1",
             "Dapper": "2.1.66",
@@ -1472,10 +1470,6 @@
             "AutoFixture": {
               "target": "Package",
               "version": "[4.18.1, )"
-            },
-            "AutoMapper": {
-              "target": "Package",
-              "version": "[14.0.0, )"
             },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",

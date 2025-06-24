@@ -29,6 +29,7 @@
     <PackageReference Include="Hangfire.SqlServer" />
     <PackageReference Include="Hellang.Middleware.ProblemDetails" />
     <PackageReference Include="Mapster" />
+    <PackageReference Include="Mapster.DependencyInjection" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
@@ -73,5 +74,6 @@
   <ItemGroup>
     <Folder Include="API\Extensions\" />
     <Folder Include="Controllers\Management\" />
+    <Folder Include="Services\Internals\" />
   </ItemGroup>
 </Project>

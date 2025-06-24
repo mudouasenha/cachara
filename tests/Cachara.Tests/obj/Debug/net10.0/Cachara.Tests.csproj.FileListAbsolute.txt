@@ -23,7 +23,6 @@ C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\t
 C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\HealthChecks.UI.Client.dll
 C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\HealthChecks.UI.Core.dll
 C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\AutoFixture.dll
-C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\AutoMapper.dll
 C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\Azure.Core.dll
 C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\Azure.Core.Amqp.dll
 C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\Azure.Identity.dll
@@ -273,3 +272,4 @@ C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\t
 C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\obj\Debug\net10.0\Cachara.Tests.pdb
 C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\obj\Debug\net10.0\Cachara.Tests.genruntimeconfig.cache
 C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\obj\Debug\net10.0\ref\Cachara.Tests.dll
+C:\Users\mathe\OneDrive\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\Mapster.DependencyInjection.dll

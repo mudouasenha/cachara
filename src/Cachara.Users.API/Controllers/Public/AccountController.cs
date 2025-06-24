@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IUserProfileService = Cachara.Users.API.Services.Abstractions.IUserProfileService;
 
-namespace Cachara.Users.API.Controllers;
+namespace Cachara.Users.API.Controllers.Public;
 
 // TODO: Implement Rate Limiting in this API.
 [ApiController]

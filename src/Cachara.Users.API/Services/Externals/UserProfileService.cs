@@ -1,10 +1,11 @@
 using Cachara.Users.API.Domain.Entities;
+using Cachara.Users.API.Infrastructure;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Services.Abstractions;
 using Cachara.Users.API.Services.Models;
 using FluentResults;
 
-namespace Cachara.Users.API.Services;
+namespace Cachara.Users.API.Services.Externals;
 
 public class UserProfileService : IUserProfileService
 {

@@ -1,10 +1,10 @@
-using Cachara.Users.API.Services;
 using Cachara.Users.API.Services.Abstractions;
 using Cachara.Users.API.Services.Commands;
+using Cachara.Users.API.Services.Externals;
 using Cachara.Users.API.Services.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cachara.Users.API.Controllers;
+namespace Cachara.Users.API.Controllers.Public;
 
 [ApiController]
 [Route("public/[controller]")]

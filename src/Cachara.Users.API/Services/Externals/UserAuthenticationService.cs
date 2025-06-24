@@ -5,20 +5,21 @@ using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Security;
 using Cachara.Users.API.API.Authentication;
 using Cachara.Users.API.API.Security;
-using Cachara.Users.API.Infrastructure.Cache;
+using Cachara.Users.API.Domain.Errors;
+using Cachara.Users.API.Infrastructure;
 using Cachara.Users.API.Infrastructure.Data.Repository;
-using Cachara.Users.API.Services.Abstractions;
 using Cachara.Users.API.Services.Commands;
-using Cachara.Users.API.Services.Errors;
 using Cachara.Users.API.Services.Models;
 using Cachara.Users.API.Services.Models.Internal;
 using Cachara.Users.API.Services.Validations;
 using FluentResults;
+using MapsterMapper;
 
-namespace Cachara.Users.API.Services;
+namespace Cachara.Users.API.Services.Externals;
 
 public class UserAuthenticationService : UserService
 {
+    private readonly IMapper _mapper;
     private readonly ILogger<UserAuthenticationService> _logger;
     private readonly IJwtProvider _tokenProvider;
     private readonly ISessionStoreService<UserAccount> _sessionStore;
@@ -27,6 +28,7 @@ public class UserAuthenticationService : UserService
 
 
     public UserAuthenticationService(
+        IMapper mapper,
         ILogger<UserAuthenticationService> logger,
         IAggregateExceptionHandler aggregateExceptionHandler,
         IUserRepository userRepository,
@@ -35,8 +37,9 @@ public class UserAuthenticationService : UserService
         IGeneralDataProtectionService generalDataProtectionService,
         IAccountService<UserAccount> userAccountService,
         ISessionStoreService<UserAccount> sessionStore)
-        : base(userRepository, generalDataProtectionService, unitOfWork)
+        : base(mapper, userRepository, generalDataProtectionService, unitOfWork)
     {
+        _mapper = mapper;
         _logger = logger;
         _aggregateExceptionHandler = aggregateExceptionHandler;
         _tokenProvider = tokenProvider;
@@ -49,15 +52,15 @@ public class UserAuthenticationService : UserService
         var result = new Result<UserRegisterResult>();
         try
         {
-            var userUserNameExists = await GetByUserName(register.UserName);
+            var userUserNameExists = await FindByUserName(register.UserName);
             if (userUserNameExists != null)
             {
-                return Result.Fail(ApplicationErrors.UserAuthentication.UserNameAlreadyExists);
+                return Result.Fail(DomainErrors.UserAuthentication.UserNameAlreadyExists);
             }
             var userEmailExists = await GetByEmail(register.Email);
             if (userEmailExists != null)
             {
-                return Result.Fail(ApplicationErrors.UserAuthentication.UserEmailAlreadyExists);
+                return Result.Fail(DomainErrors.UserAuthentication.UserEmailAlreadyExists);
             }
 
             var userUpsert = new UserUpsert
@@ -70,7 +73,14 @@ public class UserAuthenticationService : UserService
                 Subscription = Subscription.Standard
             };
 
-            var user = await CreateUser(userUpsert);
+            var userCreateResult = await CreateUser(userUpsert);
+
+            if (userCreateResult.IsFailed)
+            {
+                return Result.Fail(DomainErrors.User.CreateUserFailed);
+            }
+
+            var user = await FindById(userCreateResult.Value.Id);
 
             var token = _tokenProvider.Generate(user);
 
@@ -99,17 +109,17 @@ public class UserAuthenticationService : UserService
     {
         try
         {
-            var user = await GetByEmail(request.Email);
+            var user = await FindByEmail(request.Email);
             if (user is null)
             {
-                return Result.Fail(ApplicationErrors.UserAuthentication.InvalidCredentials);
+                return Result.Fail(DomainErrors.UserAuthentication.InvalidCredentials);
             }
 
             var decryptedPassword = DecryptPassword(user);
 
             if (!string.Equals(request.Password, decryptedPassword))
             {
-                return Result.Fail(ApplicationErrors.UserAuthentication.InvalidCredentials);
+                return Result.Fail(DomainErrors.UserAuthentication.InvalidCredentials);
             }
 
             var token = _tokenProvider.Generate(user);
@@ -154,16 +164,16 @@ public class UserAuthenticationService : UserService
         try
         {
             var userAccount = _userAccountService.Current;
-            var user = await GetUserById(userAccount.Id);
+            var user = await FindById(userAccount.Id);
             if (user == null)
             {
-                return Result.Fail(ApplicationErrors.UserAuthentication.UserNotFound);
+                return Result.Fail(DomainErrors.UserAuthentication.UserNotFound);
             }
 
             var isOldPasswordValid = VerifyPassword(user, command.Password);
             if (!isOldPasswordValid)
             {
-                return Result.Fail(ApplicationErrors.UserAuthentication.InvalidCredentials);
+                return Result.Fail(DomainErrors.UserAuthentication.InvalidCredentials);
             }
 
             var passwordValidationResult = new ChangePasswordCommandValidator().Validate(command);
@@ -174,7 +184,7 @@ public class UserAuthenticationService : UserService
 
             if (VerifyPassword(user, command.NewPassword))
             {
-                return Result.Fail(ApplicationErrors.UserAuthentication.SamePassword);
+                return Result.Fail(DomainErrors.UserAuthentication.SamePassword);
             }
 
             // Step 5: Hash and update the password
