@@ -8,8 +8,8 @@ using Post = Cachara.Content.API.Services.Models.Post;
 namespace Cachara.Content.API.Controllers.Public;
 
 [ApiController]
-[Route("api/public/post")]
-[TagGroup("Post")]
+[Route("public/[controller]")]
+[Tags("Post")]
 public class PostController : ResultControllerBase
 {
     private readonly ILogger<PostController> _logger;

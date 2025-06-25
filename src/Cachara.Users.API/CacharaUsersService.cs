@@ -1,8 +1,6 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json.Serialization;
 using Cachara.Shared.Application;
-using Cachara.Shared.Application.Errors;
 using Cachara.Shared.Infrastructure;
 using Cachara.Shared.Infrastructure.AzureServiceBus;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
@@ -18,7 +16,6 @@ using Cachara.Users.API.Infrastructure.Cache;
 using Cachara.Users.API.Infrastructure.Data;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Infrastructure.SessionManagement;
-using Cachara.Users.API.Services;
 using Cachara.Users.API.Services.Abstractions;
 using Cachara.Users.API.Services.Externals;
 using Cachara.Users.API.Services.Mappings;
@@ -48,33 +45,25 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
     : CacharaService<CacharaUserOptions>(environment, configuration)
 {
     private readonly IHostEnvironment _environment = environment;
-    private readonly IConfiguration _configuration = configuration;
 
-    public void Configure(IApplicationBuilder app)
+    public override void ConfigureServices(IServiceCollection services)
     {
-        ConfigureApp(app);
+        base.ConfigureServices(services);
+        AddServices(services);
+        ConfigureInfrastructure(services);
+        ConfigureEndpoints(services);
+        // Dependency Injection Options
+        //services.AddOptions<CacharaUserOptions>().Bind(_configuration);
+
+
     }
 
-    public void ConfigureServices(IServiceCollection services)
+    private void ConfigureInfrastructure(IServiceCollection services)
     {
-        // Dependency Injection Options
-        services.AddOptions<CacharaUserOptions>().Bind(_configuration);
-
-        AddServicesAndRepositories(services);
-        ConfigureAzure(services);
-
+        ConfigureExternalServices(services);
         AddHealthChecks(services);
-
         AddSecurity(services);
-
-        services.AddMapster();
-        UsersMappings.Configure();
-
-        ConfigureEndpoints(services);
-
-        // Exception Handlers
-        services.AddScoped<IAggregateExceptionHandler, AggregateExceptionHandler>();
-        services.AddScoped<IErrorExceptionHandler<Exception>, ExceptionHandler>();
+        ConfigureHangfire(services);
 
         services.AddStackExchangeRedisCache(options => { options.Configuration = Options.RedisConnection; });
         services.AddDistributedMemoryCache();
@@ -89,8 +78,15 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
             };
         });
 
-        ConfigureHangfire(services);
-        ConfigureDataAccess(services);
+        services.AddDbContext<CacharaUsersDbContext>(options =>
+            {
+                options.UseNpgsql(Options.SqlDb);
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                options.EnableSensitiveDataLogging(_environment.IsDevelopment());
+            }).AddAsyncInitializer<DbContextInitializer<CacharaUsersDbContext>>()
+            .AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<CacharaUsersDbContext>());
+
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 
     private static void ConfigureEndpoints(IServiceCollection services)
@@ -193,7 +189,7 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
         services.AddResponseCaching();
     }
 
-    private void ConfigureAzure(IServiceCollection services)
+    private void ConfigureExternalServices(IServiceCollection services)
     {
         services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
             _ => new ServiceBusQueue(Options.CacharaContent.ServiceBusConn)
@@ -275,8 +271,11 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
 
     }
 
-    private void AddServicesAndRepositories(IServiceCollection services)
+    private void AddServices(IServiceCollection services)
     {
+        services.AddMapster();
+        UsersMappings.Configure();
+
         services.AddScoped<IGeneralDataProtectionService, AesGeneralDataProtectionService>(_ =>
             new AesGeneralDataProtectionService(Options.Security.Key));
         services.AddSingleton<IJwtProvider, JwtProvider>(_ => new JwtProvider(Options.Jwt));
@@ -284,7 +283,6 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<UserAuthenticationService>();
         services.AddScoped<IUserProfileService, UserProfileService>();
-        services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<UserSubscriptionProvider>();
         services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
 
@@ -317,27 +315,14 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
         });
     }
 
-    private void ConfigureDataAccess(IServiceCollection services)
-    {
-        services.AddDbContext<CacharaUsersDbContext>(options =>
-            {
-                options.UseNpgsql(Options.SqlDb);
-                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                options.EnableSensitiveDataLogging(_environment.IsDevelopment());
-            }).AddAsyncInitializer<DbContextInitializer<CacharaUsersDbContext>>()
-            .AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<CacharaUsersDbContext>());
-    }
-
     protected override void ConfigureApp(IApplicationBuilder app)
     {
         base.ConfigureApp(app);
 
         app.UseRouting();
-
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseMiddleware<RequestTracingMiddleware>();
         app.UseMiddleware<SessionValidationMiddleware>();
 
         app.UseEndpoints(endpoints =>
@@ -359,10 +344,10 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
             endpoints.MapScalarApiReference("scalar", options =>
             {
                 options
-                    .WithPreferredScheme("Bearer")
-                    .WithHttpBearerAuthentication(bearer =>
+                    .AddPreferredSecuritySchemes("Bearer")
+                    .AddHttpAuthentication("Bearer",config =>
                     {
-                        bearer.Token = "your-bearer-token";
+                        config.Token = "your-bearer-token";
                     });
 
                 options.AddDocument("internal");
@@ -378,4 +363,5 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
 
         app.UseHangfireDashboard();
     }
+
 }

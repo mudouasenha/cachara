@@ -69,23 +69,6 @@
           }
         }
       },
-      "AspNetCore.HealthChecks.SqlServer/9.0.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Data.SqlClient": "5.2.2",
-          "Microsoft.Extensions.Diagnostics.HealthChecks": "8.0.11"
-        },
-        "compile": {
-          "lib/net8.0/HealthChecks.SqlServer.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/HealthChecks.SqlServer.dll": {
-            "related": ".xml"
-          }
-        }
-      },
       "AspNetCore.HealthChecks.UI.Client/9.0.0": {
         "type": "package",
         "dependencies": {
@@ -260,39 +243,6 @@
           }
         }
       },
-      "Elastic.Apm/1.22.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Diagnostics.PerformanceCounter": "6.0.1"
-        },
-        "compile": {
-          "lib/net6.0/Elastic.Apm.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/Elastic.Apm.dll": {
-            "related": ".pdb;.xml"
-          }
-        }
-      },
-      "Elastic.Apm.SerilogEnricher/8.18.1": {
-        "type": "package",
-        "dependencies": {
-          "Elastic.Apm": "1.22.0",
-          "Serilog": "4.1.0"
-        },
-        "compile": {
-          "lib/net8.0/Elastic.Apm.SerilogEnricher.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Elastic.Apm.SerilogEnricher.dll": {
-            "related": ".pdb;.xml"
-          }
-        }
-      },
       "Elasticsearch.Net/7.17.5": {
         "type": "package",
         "compile": {
@@ -340,11 +290,8 @@
           }
         }
       },
-      "FluentAssertions/6.7.0": {
+      "FluentAssertions/8.3.0": {
         "type": "package",
-        "dependencies": {
-          "System.Configuration.ConfigurationManager": "4.4.0"
-        },
         "compile": {
           "lib/net6.0/FluentAssertions.dll": {
             "related": ".pdb;.xml"
@@ -383,19 +330,6 @@
         },
         "runtime": {
           "lib/netstandard2.1/FluentResults.Extensions.AspNetCore.dll": {}
-        }
-      },
-      "FluentResults.Extensions.FluentAssertions/2.1.2": {
-        "type": "package",
-        "dependencies": {
-          "FluentAssertions": "6.7.0",
-          "FluentResults": "3.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.1/FluentResults.Extensions.FluentAssertions.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.1/FluentResults.Extensions.FluentAssertions.dll": {}
         }
       },
       "FluentValidation/12.0.0": {
@@ -612,22 +546,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/Hangfire.PostgreSql.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Hangfire.SqlServer/1.8.20": {
-        "type": "package",
-        "dependencies": {
-          "Hangfire.Core": "[1.8.20]"
-        },
-        "compile": {
-          "lib/netstandard2.0/Hangfire.SqlServer.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Hangfire.SqlServer.dll": {
             "related": ".xml"
           }
         }
@@ -2919,7 +2837,7 @@
           "System.Security.Cryptography.ProtectedData": "9.0.4"
         },
         "compile": {
-          "lib/net9.0/System.Configuration.ConfigurationManager.dll": {
+          "lib/net9.0/_._": {
             "related": ".xml"
           }
         },
@@ -2935,7 +2853,7 @@
       "System.Diagnostics.EventLog/9.0.4": {
         "type": "package",
         "compile": {
-          "lib/net9.0/System.Diagnostics.EventLog.dll": {
+          "lib/net9.0/_._": {
             "related": ".xml"
           }
         },
@@ -2953,31 +2871,6 @@
             "rid": "win"
           },
           "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          }
-        }
-      },
-      "System.Diagnostics.PerformanceCounter/6.0.1": {
-        "type": "package",
-        "dependencies": {
-          "System.Configuration.ConfigurationManager": "6.0.0"
-        },
-        "compile": {
-          "lib/net6.0/System.Diagnostics.PerformanceCounter.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/System.Diagnostics.PerformanceCounter.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/net6.0/System.Diagnostics.PerformanceCounter.dll": {
             "assetType": "runtime",
             "rid": "win"
           }
@@ -3235,23 +3128,16 @@
           "AspNetCore.HealthChecks.Kafka": "9.0.0",
           "AspNetCore.HealthChecks.NpgSql": "9.0.0",
           "AspNetCore.HealthChecks.Redis": "9.0.0",
-          "AspNetCore.HealthChecks.SqlServer": "9.0.0",
           "AspNetCore.HealthChecks.UI.Client": "9.0.0",
-          "Azure.Messaging.ServiceBus": "7.20.1",
           "Cachara.Shared": "1.0.0",
           "Confluent.Kafka": "2.10.1",
-          "Elastic.Apm.SerilogEnricher": "8.18.1",
-          "Elasticsearch.Net": "7.17.5",
           "Extensions.Hosting.AsyncInitialization": "3.0.1",
           "FluentResults.Extensions.AspNetCore": "0.1.0",
-          "FluentResults.Extensions.FluentAssertions": "2.1.2",
-          "FluentValidation": "12.0.0",
           "Flurl": "4.0.0",
           "Hangfire.AspNetCore": "1.8.20",
           "Hangfire.Console": "1.4.3",
           "Hangfire.Core": "1.8.20",
           "Hangfire.PostgreSql": "1.20.12",
-          "Hangfire.SqlServer": "1.8.20",
           "Hellang.Middleware.ProblemDetails": "6.5.1",
           "Mapster": "7.4.0",
           "Mapster.DependencyInjection": "1.0.1",
@@ -3260,26 +3146,11 @@
           "Microsoft.EntityFrameworkCore": "10.0.0-preview.5.25277.114",
           "Microsoft.Extensions.Caching.Hybrid": "9.6.0",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "10.0.0-preview.5.25277.114",
-          "Microsoft.Extensions.DependencyInjection": "10.0.0-preview.5.25277.114",
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.21.2",
           "NSwag.AspNetCore": "14.4.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
-          "OpenTelemetry.Exporter.Console": "1.12.0",
-          "OpenTelemetry.Exporter.OpenTelemetryProtocol": "1.12.0",
-          "OpenTelemetry.Extensions.Hosting": "1.12.0",
-          "OpenTelemetry.Instrumentation.AspNetCore": "1.12.0",
-          "OpenTelemetry.Instrumentation.Http": "1.12.0",
           "RabbitMQ.Client": "7.1.2",
-          "Scalar.AspNetCore": "2.5.0",
-          "Serilog": "4.3.0",
-          "Serilog.Enrichers.Environment": "3.0.1",
-          "Serilog.Extensions.Hosting": "9.0.0",
-          "Serilog.Extensions.Logging": "9.0.2",
-          "Serilog.Settings.Configuration": "9.0.0",
-          "Serilog.Sinks.Console": "6.0.0",
-          "Serilog.Sinks.Elasticsearch": "10.0.0",
-          "Serilog.Sinks.OpenTelemetry": "4.2.0",
-          "Serilog.Sinks.Seq": "9.0.0"
+          "Scalar.AspNetCore": "2.5.0"
         },
         "compile": {
           "bin/placeholder/Cachara.Users.API.dll": {}
@@ -3381,22 +3252,6 @@
         "lib/net8.0/HealthChecks.Redis.xml",
         "lib/netstandard2.0/HealthChecks.Redis.dll",
         "lib/netstandard2.0/HealthChecks.Redis.xml"
-      ]
-    },
-    "AspNetCore.HealthChecks.SqlServer/9.0.0": {
-      "sha512": "UxCf65iCF2nU1u7AcB320abjL4CRg5swCgJECY6mKk1j5lrGMfVtskWwriGs1T29pYdRig9Vra3SPnP+4G82pA==",
-      "type": "package",
-      "path": "aspnetcore.healthchecks.sqlserver/9.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "aspnetcore.healthchecks.sqlserver.9.0.0.nupkg.sha512",
-        "aspnetcore.healthchecks.sqlserver.nuspec",
-        "icon.png",
-        "lib/net8.0/HealthChecks.SqlServer.dll",
-        "lib/net8.0/HealthChecks.SqlServer.xml",
-        "lib/netstandard2.0/HealthChecks.SqlServer.dll",
-        "lib/netstandard2.0/HealthChecks.SqlServer.xml"
       ]
     },
     "AspNetCore.HealthChecks.UI.Client/9.0.0": {
@@ -3649,52 +3504,6 @@
         "lib/netstandard2.0/Dapper.Contrib.xml"
       ]
     },
-    "Elastic.Apm/1.22.0": {
-      "sha512": "Aq/xjAsZzWx6NbnV9dmQCtYC4iBGheYjkaiVclQOOztLRNZHQPnPH9Ozn2awDilUWhN72k2Mj6acfaW2QQs9tQ==",
-      "type": "package",
-      "path": "elastic.apm/1.22.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE",
-        "NOTICE",
-        "elastic.apm.1.22.0.nupkg.sha512",
-        "elastic.apm.nuspec",
-        "lib/net461/Elastic.Apm.dll",
-        "lib/net461/Elastic.Apm.pdb",
-        "lib/net461/Elastic.Apm.xml",
-        "lib/net6.0/Elastic.Apm.dll",
-        "lib/net6.0/Elastic.Apm.pdb",
-        "lib/net6.0/Elastic.Apm.xml",
-        "lib/netstandard2.0/Elastic.Apm.dll",
-        "lib/netstandard2.0/Elastic.Apm.pdb",
-        "lib/netstandard2.0/Elastic.Apm.xml",
-        "nuget-icon.png"
-      ]
-    },
-    "Elastic.Apm.SerilogEnricher/8.18.1": {
-      "sha512": "+dDoNJdYiUW1KonxM0yXLNc91PgRBJS8oB1MRcxikjCawGiHqsS0oTecgcb5ujJHdOyUEDLT5nxzI01iBVPc6g==",
-      "type": "package",
-      "path": "elastic.apm.serilogenricher/8.18.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "elastic.apm.serilogenricher.8.18.1.nupkg.sha512",
-        "elastic.apm.serilogenricher.nuspec",
-        "lib/net462/Elastic.Apm.SerilogEnricher.dll",
-        "lib/net462/Elastic.Apm.SerilogEnricher.pdb",
-        "lib/net462/Elastic.Apm.SerilogEnricher.xml",
-        "lib/net8.0/Elastic.Apm.SerilogEnricher.dll",
-        "lib/net8.0/Elastic.Apm.SerilogEnricher.pdb",
-        "lib/net8.0/Elastic.Apm.SerilogEnricher.xml",
-        "lib/netstandard2.0/Elastic.Apm.SerilogEnricher.dll",
-        "lib/netstandard2.0/Elastic.Apm.SerilogEnricher.pdb",
-        "lib/netstandard2.0/Elastic.Apm.SerilogEnricher.xml",
-        "license.txt",
-        "nuget-icon.png"
-      ]
-    },
     "Elasticsearch.Net/7.17.5": {
       "sha512": "orChsQi1Ceho/NyIylNOn6y4vuGcsbCfMZnCueNN0fzqYEGQmQdPfcVmsR5+3fwpXTgxCdjTUVmqOwvHpCSB+Q==",
       "type": "package",
@@ -3747,15 +3556,16 @@
         "lib/netstandard1.1/Fare.xml"
       ]
     },
-    "FluentAssertions/6.7.0": {
-      "sha512": "PWbow/R3MnYDP8UW7zh/w80rGb+1NufGoNJeuzouTo2bqpvwNTFxbDwF6XWfFZ5IuquL2225Um+qSyZ8jVsT+w==",
+    "FluentAssertions/8.3.0": {
+      "sha512": "iri1druxHPUAvaFqTUKJG7NOHwnOLmWwfDorgezZWpeBWBJmk2o8niI7jL7zW9TEFGnUpMJi/JLG6FXgr3cM3A==",
       "type": "package",
-      "path": "fluentassertions/6.7.0",
+      "path": "fluentassertions/8.3.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "FluentAssertions.png",
-        "fluentassertions.6.7.0.nupkg.sha512",
+        "LICENSE",
+        "fluentassertions.8.3.0.nupkg.sha512",
         "fluentassertions.nuspec",
         "lib/net47/FluentAssertions.dll",
         "lib/net47/FluentAssertions.pdb",
@@ -3763,12 +3573,6 @@
         "lib/net6.0/FluentAssertions.dll",
         "lib/net6.0/FluentAssertions.pdb",
         "lib/net6.0/FluentAssertions.xml",
-        "lib/netcoreapp2.1/FluentAssertions.dll",
-        "lib/netcoreapp2.1/FluentAssertions.pdb",
-        "lib/netcoreapp2.1/FluentAssertions.xml",
-        "lib/netcoreapp3.0/FluentAssertions.dll",
-        "lib/netcoreapp3.0/FluentAssertions.pdb",
-        "lib/netcoreapp3.0/FluentAssertions.xml",
         "lib/netstandard2.0/FluentAssertions.dll",
         "lib/netstandard2.0/FluentAssertions.pdb",
         "lib/netstandard2.0/FluentAssertions.xml",
@@ -3806,20 +3610,6 @@
         "fluentresults.extensions.aspnetcore.nuspec",
         "lib/netstandard2.0/FluentResults.Extensions.AspNetCore.dll",
         "lib/netstandard2.1/FluentResults.Extensions.AspNetCore.dll"
-      ]
-    },
-    "FluentResults.Extensions.FluentAssertions/2.1.2": {
-      "sha512": "bWwCyPf1qH8VmzIGAG6IEbLxP7tXGNt0z3bepnOiefU/JeGdD99D4b0cOcsH6nTYEEtUMyR/MWTnYZSPk2ziNQ==",
-      "type": "package",
-      "path": "fluentresults.extensions.fluentassertions/2.1.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "FluentResults-Icon-128.png",
-        "fluentresults.extensions.fluentassertions.2.1.2.nupkg.sha512",
-        "fluentresults.extensions.fluentassertions.nuspec",
-        "lib/netstandard2.0/FluentResults.Extensions.FluentAssertions.dll",
-        "lib/netstandard2.1/FluentResults.Extensions.FluentAssertions.dll"
       ]
     },
     "FluentValidation/12.0.0": {
@@ -4124,32 +3914,6 @@
         "hangfire.postgresql.nuspec",
         "lib/netstandard2.0/Hangfire.PostgreSql.dll",
         "lib/netstandard2.0/Hangfire.PostgreSql.xml"
-      ]
-    },
-    "Hangfire.SqlServer/1.8.20": {
-      "sha512": "O+0A2dEf+cbKnJQRxK5jF5c4aLDCOf2+KllYBwjdO82KRVKz0nox8wirWQP/AKW85f4NJ93ZKAEtAWOFk6DLxw==",
-      "type": "package",
-      "path": "hangfire.sqlserver/1.8.20",
-      "hasTools": true,
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "COPYING",
-        "COPYING.LESSER",
-        "LICENSE.md",
-        "LICENSE_ROYALTYFREE",
-        "LICENSE_STANDARD",
-        "NOTICES",
-        "hangfire.sqlserver.1.8.20.nupkg.sha512",
-        "hangfire.sqlserver.nuspec",
-        "icon.png",
-        "lib/net451/Hangfire.SqlServer.dll",
-        "lib/net451/Hangfire.SqlServer.xml",
-        "lib/netstandard1.3/Hangfire.SqlServer.dll",
-        "lib/netstandard1.3/Hangfire.SqlServer.xml",
-        "lib/netstandard2.0/Hangfire.SqlServer.dll",
-        "lib/netstandard2.0/Hangfire.SqlServer.xml",
-        "tools/install.sql"
       ]
     },
     "Hellang.Middleware.ProblemDetails/6.5.1": {
@@ -7021,35 +6785,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Diagnostics.PerformanceCounter/6.0.1": {
-      "sha512": "dDl7Gx3bmSrM2k2ZIm+ucEJnLloZRyvfQF1DvfvATcGF3jtaUBiPvChma+6ZcZzxWMirN3kCywkW7PILphXyMQ==",
-      "type": "package",
-      "path": "system.diagnostics.performancecounter/6.0.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/netcoreapp2.0/System.Diagnostics.PerformanceCounter.targets",
-        "buildTransitive/netcoreapp3.1/_._",
-        "lib/net461/System.Diagnostics.PerformanceCounter.dll",
-        "lib/net461/System.Diagnostics.PerformanceCounter.xml",
-        "lib/net6.0/System.Diagnostics.PerformanceCounter.dll",
-        "lib/net6.0/System.Diagnostics.PerformanceCounter.xml",
-        "lib/netcoreapp3.1/System.Diagnostics.PerformanceCounter.dll",
-        "lib/netcoreapp3.1/System.Diagnostics.PerformanceCounter.xml",
-        "lib/netstandard2.0/System.Diagnostics.PerformanceCounter.dll",
-        "lib/netstandard2.0/System.Diagnostics.PerformanceCounter.xml",
-        "runtimes/win/lib/net6.0/System.Diagnostics.PerformanceCounter.dll",
-        "runtimes/win/lib/net6.0/System.Diagnostics.PerformanceCounter.xml",
-        "runtimes/win/lib/netcoreapp3.1/System.Diagnostics.PerformanceCounter.dll",
-        "runtimes/win/lib/netcoreapp3.1/System.Diagnostics.PerformanceCounter.xml",
-        "system.diagnostics.performancecounter.6.0.1.nupkg.sha512",
-        "system.diagnostics.performancecounter.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
     "System.IdentityModel.Tokens.Jwt/8.0.1": {
       "sha512": "GJw3bYkWpOgvN3tJo5X4lYUeIFA2HD293FPUhKmp7qxS+g5ywAb34Dnd3cDAFLkcMohy5XTpoaZ4uAHuw0uSPQ==",
       "type": "package",
@@ -7370,6 +7105,7 @@
     "net10.0": [
       "AutoFixture >= 4.18.1",
       "Cachara.Users.API >= 1.0.0",
+      "FluentAssertions >= 8.3.0",
       "Microsoft.NET.Test.Sdk >= 17.14.1",
       "coverlet.collector >= 6.0.4",
       "xunit >= 2.9.3",
@@ -7383,11 +7119,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj",
       "projectName": "Cachara.Tests",
-      "projectPath": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj",
+      "projectPath": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj",
       "packagesPath": "C:\\Users\\mathe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\obj\\",
+      "outputPath": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -7408,8 +7144,8 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj": {
-              "projectPath": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj"
+            "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj": {
+              "projectPath": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj"
             }
           }
         }
@@ -7433,6 +7169,10 @@
           "AutoFixture": {
             "target": "Package",
             "version": "[4.18.1, )"
+          },
+          "FluentAssertions": {
+            "target": "Package",
+            "version": "[8.3.0, )"
           },
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",

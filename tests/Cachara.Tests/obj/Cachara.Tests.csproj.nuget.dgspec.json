@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj": {}
+    "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj": {
+    "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj",
+        "projectUniqueName": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj",
         "projectName": "Cachara.Shared",
-        "projectPath": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj",
+        "projectPath": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj",
         "packagesPath": "C:\\Users\\mathe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Shared\\obj\\",
+        "outputPath": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "centralPackageVersionsManagementEnabled": true,
         "fallbackFolders": [
@@ -607,14 +607,14 @@
         }
       }
     },
-    "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj": {
+    "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj",
+        "projectUniqueName": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj",
         "projectName": "Cachara.Users.API",
-        "projectPath": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj",
+        "projectPath": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj",
         "packagesPath": "C:\\Users\\mathe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\obj\\",
+        "outputPath": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\obj\\",
         "projectStyle": "PackageReference",
         "centralPackageVersionsManagementEnabled": true,
         "fallbackFolders": [
@@ -636,8 +636,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj": {
-                "projectPath": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj"
+              "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj": {
+                "projectPath": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Shared\\Cachara.Shared.csproj"
               }
             }
           }
@@ -678,34 +678,14 @@
               "version": "[9.0.0, )",
               "versionCentrallyManaged": true
             },
-            "AspNetCore.HealthChecks.SqlServer": {
-              "target": "Package",
-              "version": "[9.0.0, )",
-              "versionCentrallyManaged": true
-            },
             "AspNetCore.HealthChecks.UI.Client": {
               "target": "Package",
               "version": "[9.0.0, )",
               "versionCentrallyManaged": true
             },
-            "Azure.Messaging.ServiceBus": {
-              "target": "Package",
-              "version": "[7.20.1, )",
-              "versionCentrallyManaged": true
-            },
             "Confluent.Kafka": {
               "target": "Package",
               "version": "[2.10.1, )",
-              "versionCentrallyManaged": true
-            },
-            "Elastic.Apm.SerilogEnricher": {
-              "target": "Package",
-              "version": "[8.18.1, )",
-              "versionCentrallyManaged": true
-            },
-            "Elasticsearch.Net": {
-              "target": "Package",
-              "version": "[7.17.5, )",
               "versionCentrallyManaged": true
             },
             "Extensions.Hosting.AsyncInitialization": {
@@ -716,16 +696,6 @@
             "FluentResults.Extensions.AspNetCore": {
               "target": "Package",
               "version": "[0.1.0, )",
-              "versionCentrallyManaged": true
-            },
-            "FluentResults.Extensions.FluentAssertions": {
-              "target": "Package",
-              "version": "[2.1.2, )",
-              "versionCentrallyManaged": true
-            },
-            "FluentValidation": {
-              "target": "Package",
-              "version": "[12.0.0, )",
               "versionCentrallyManaged": true
             },
             "Flurl": {
@@ -751,11 +721,6 @@
             "Hangfire.PostgreSql": {
               "target": "Package",
               "version": "[1.20.12, )",
-              "versionCentrallyManaged": true
-            },
-            "Hangfire.SqlServer": {
-              "target": "Package",
-              "version": "[1.8.20, )",
               "versionCentrallyManaged": true
             },
             "Hellang.Middleware.ProblemDetails": {
@@ -805,11 +770,6 @@
               "version": "[10.0.0-preview.5.25277.114, )",
               "versionCentrallyManaged": true
             },
-            "Microsoft.Extensions.DependencyInjection": {
-              "target": "Package",
-              "version": "[10.0.0-preview.5.25277.114, )",
-              "versionCentrallyManaged": true
-            },
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
               "version": "[1.21.2, )",
@@ -825,31 +785,6 @@
               "version": "[9.0.4, )",
               "versionCentrallyManaged": true
             },
-            "OpenTelemetry.Exporter.Console": {
-              "target": "Package",
-              "version": "[1.12.0, )",
-              "versionCentrallyManaged": true
-            },
-            "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
-              "target": "Package",
-              "version": "[1.12.0, )",
-              "versionCentrallyManaged": true
-            },
-            "OpenTelemetry.Extensions.Hosting": {
-              "target": "Package",
-              "version": "[1.12.0, )",
-              "versionCentrallyManaged": true
-            },
-            "OpenTelemetry.Instrumentation.AspNetCore": {
-              "target": "Package",
-              "version": "[1.12.0, )",
-              "versionCentrallyManaged": true
-            },
-            "OpenTelemetry.Instrumentation.Http": {
-              "target": "Package",
-              "version": "[1.12.0, )",
-              "versionCentrallyManaged": true
-            },
             "RabbitMQ.Client": {
               "target": "Package",
               "version": "[7.1.2, )",
@@ -858,51 +793,6 @@
             "Scalar.AspNetCore": {
               "target": "Package",
               "version": "[2.5.0, )",
-              "versionCentrallyManaged": true
-            },
-            "Serilog": {
-              "target": "Package",
-              "version": "[4.3.0, )",
-              "versionCentrallyManaged": true
-            },
-            "Serilog.Enrichers.Environment": {
-              "target": "Package",
-              "version": "[3.0.1, )",
-              "versionCentrallyManaged": true
-            },
-            "Serilog.Extensions.Hosting": {
-              "target": "Package",
-              "version": "[9.0.0, )",
-              "versionCentrallyManaged": true
-            },
-            "Serilog.Extensions.Logging": {
-              "target": "Package",
-              "version": "[9.0.2, )",
-              "versionCentrallyManaged": true
-            },
-            "Serilog.Settings.Configuration": {
-              "target": "Package",
-              "version": "[9.0.0, )",
-              "versionCentrallyManaged": true
-            },
-            "Serilog.Sinks.Console": {
-              "target": "Package",
-              "version": "[6.0.0, )",
-              "versionCentrallyManaged": true
-            },
-            "Serilog.Sinks.Elasticsearch": {
-              "target": "Package",
-              "version": "[10.0.0, )",
-              "versionCentrallyManaged": true
-            },
-            "Serilog.Sinks.OpenTelemetry": {
-              "target": "Package",
-              "version": "[4.2.0, )",
-              "versionCentrallyManaged": true
-            },
-            "Serilog.Sinks.Seq": {
-              "target": "Package",
-              "version": "[9.0.0, )",
               "versionCentrallyManaged": true
             }
           },
@@ -1417,14 +1307,14 @@
         }
       }
     },
-    "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj": {
+    "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj",
+        "projectUniqueName": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj",
         "projectName": "Cachara.Tests",
-        "projectPath": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj",
+        "projectPath": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\Cachara.Tests.csproj",
         "packagesPath": "C:\\Users\\mathe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\obj\\",
+        "outputPath": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\tests\\Cachara.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -1445,8 +1335,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj": {
-                "projectPath": "C:\\Users\\mathe\\OneDrive\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj"
+              "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj": {
+                "projectPath": "C:\\Users\\mathe\\Documents\\Development\\source\\repos\\mudouasenha\\cachara\\src\\Cachara.Users.API\\Cachara.Users.API.csproj"
               }
             }
           }
@@ -1470,6 +1360,10 @@
             "AutoFixture": {
               "target": "Package",
               "version": "[4.18.1, )"
+            },
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[8.3.0, )"
             },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",

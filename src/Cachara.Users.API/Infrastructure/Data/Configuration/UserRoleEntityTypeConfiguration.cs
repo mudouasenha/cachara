@@ -7,7 +7,7 @@ namespace Cachara.Users.API.Infrastructure.Data.Configuration;
 
 public class UserRoleEntityTypeConfiguration : BaseEntityTypeConfiguration<UserRole>
 {
-    public void Configure(EntityTypeBuilder<UserRole> builder)
+    public new void Configure(EntityTypeBuilder<UserRole> builder)
     {
         builder.Property(t => t.UserId)
             .HasMaxLength(36)

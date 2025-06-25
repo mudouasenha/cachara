@@ -6,7 +6,7 @@ namespace Cachara.Users.API.Infrastructure.Data.Configuration;
 
 public class UserEntityTypeConfiguration : BaseEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public new void Configure(EntityTypeBuilder<User> builder)
     {
         builder.Property(t => t.FullName)
             .HasMaxLength(64)

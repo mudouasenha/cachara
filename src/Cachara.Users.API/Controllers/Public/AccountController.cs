@@ -16,7 +16,7 @@ namespace Cachara.Users.API.Controllers.Public;
 [Tags("Account")]
 public class AccountController(IUserProfileService userProfileService) : ControllerBase
 {
-    private readonly IUserProfileService _userProfileService = userProfileService;
+   //private readonly IUserProfileService _userProfileService = userProfileService;
 
     [HttpGet("profile")]
     public async Task<UserProfile> GetProfile()
@@ -30,16 +30,16 @@ public class AccountController(IUserProfileService userProfileService) : Control
     [EndpointDescription("This returns a hello message for a standard user or above.")]
     [EndpointSummary("Hello for standard users and above.")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
-    public async Task<string> HelloStantard()
+    public  Task<string> HelloStantard()
     {
-        return $"Hello Standard {HttpContext.User.Identity?.Name}";
+        return Task.FromResult($"Hello Standard {HttpContext.User.Identity?.Name}");
     }
 
     [Authorize(Policies.ManagementUser, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpGet("hello-management")]
-    public async Task<string> Hello()
+    public Task<string> Hello()
     {
-        return $"Hello Management {HttpContext.User.Identity?.Name}";
+        return Task.FromResult($"Hello Management {HttpContext.User.Identity?.Name}");
     }
 
     [HttpPut("update-profile")]

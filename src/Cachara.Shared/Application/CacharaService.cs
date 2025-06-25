@@ -1,4 +1,5 @@
-﻿using Cachara.Shared.Infrastructure.Middlewares;
+﻿using Cachara.Shared.Application.Errors;
+using Cachara.Shared.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,10 +38,16 @@ public abstract class CacharaService<TOptions> where TOptions : CacharaOptions, 
     public virtual void ConfigureServices(IServiceCollection services)
     {
         services.AddOptions<TOptions>().Bind(Configuration);
+
+
+        // Exception Handlers
+        services.AddScoped<IAggregateExceptionHandler, AggregateExceptionHandler>();
+        services.AddScoped<IErrorExceptionHandler<Exception>, ExceptionHandler>();
     }
 
     protected virtual void ConfigureApp(IApplicationBuilder app)
     {
+        app.UseMiddleware<RequestTracingMiddleware>();
 
     }
 }

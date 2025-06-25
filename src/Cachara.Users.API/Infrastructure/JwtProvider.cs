@@ -77,7 +77,7 @@ public class JwtProvider : IJwtProvider
     }
 
 
-    public ClaimsPrincipal? DecodeToken(string token)
+    public ClaimsPrincipal DecodeToken(string token)
     {
         var handler = new JwtSecurityTokenHandler();
 
@@ -90,16 +90,16 @@ public class JwtProvider : IJwtProvider
         return new ClaimsPrincipal(identity);
     }
 
-    private string? GetClaimValue(string token, string claimType)
+    private string GetClaimValue(string token, string claimType)
     {
         var claimsPrincipal = DecodeToken(token);
         return claimsPrincipal?.FindFirst(claimType)?.Value;
     }
 
-    public string? GetUserId(string token)
+    public string GetUserId(string token)
         => GetClaimValue(token, ClaimTypes.NameIdentifier);
 
-    public string? GetTenantId(string token)
+    public string GetTenantId(string token)
         => GetClaimValue(token, "tenant_id");
 
     private static string GenerateRefreshToken()

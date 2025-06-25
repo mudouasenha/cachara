@@ -2,7 +2,7 @@
 
 public class AlgoTrading
 {
-    private static void Main(string[] args)
+    private static void Test(string[] args)
     {
         var simulator = new MarketSimulator();
         var prices = simulator.GeneratePrices(200);

@@ -2,7 +2,7 @@
 
 public class ImplicitOperator
 {
-    public async Task PracticeImplicitOperatorMapping()
+    public Task PracticeImplicitOperatorMapping()
     {
         var dto = new MeterReadingDto { Timestamp = "2025-06-15T12:30:00Z", Value = 123.45 };
 
@@ -11,6 +11,7 @@ public class ImplicitOperator
 
         Console.WriteLine(reading.Date); // Output: 6/15/2025 12:30:00 PM +00:00
         Console.WriteLine(reading.Value);
+        return Task.CompletedTask;
     }
 
     public class MeterReadingDto

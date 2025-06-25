@@ -12,23 +12,16 @@
           "AspNetCore.HealthChecks.Kafka": "9.0.0",
           "AspNetCore.HealthChecks.NpgSql": "9.0.0",
           "AspNetCore.HealthChecks.Redis": "9.0.0",
-          "AspNetCore.HealthChecks.SqlServer": "9.0.0",
           "AspNetCore.HealthChecks.UI.Client": "9.0.0",
-          "Azure.Messaging.ServiceBus": "7.20.1",
           "Cachara.Shared": "1.0.0",
           "Confluent.Kafka": "2.10.1",
-          "Elastic.Apm.SerilogEnricher": "8.18.1",
-          "Elasticsearch.Net": "7.17.5",
           "Extensions.Hosting.AsyncInitialization": "3.0.1",
           "FluentResults.Extensions.AspNetCore": "0.1.0",
-          "FluentResults.Extensions.FluentAssertions": "2.1.2",
-          "FluentValidation": "12.0.0",
           "Flurl": "4.0.0",
           "Hangfire.AspNetCore": "1.8.20",
           "Hangfire.Console": "1.4.3",
           "Hangfire.Core": "1.8.20",
           "Hangfire.PostgreSql": "1.20.12",
-          "Hangfire.SqlServer": "1.8.20",
           "Hellang.Middleware.ProblemDetails": "6.5.1",
           "Mapster": "7.4.0",
           "Mapster.DependencyInjection": "1.0.1",
@@ -40,22 +33,8 @@
           "Microsoft.Extensions.Caching.StackExchangeRedis": "10.0.0-preview.5.25277.114",
           "NSwag.AspNetCore": "14.4.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
-          "OpenTelemetry.Exporter.Console": "1.12.0",
-          "OpenTelemetry.Exporter.OpenTelemetryProtocol": "1.12.0",
-          "OpenTelemetry.Extensions.Hosting": "1.12.0",
-          "OpenTelemetry.Instrumentation.AspNetCore": "1.12.0",
-          "OpenTelemetry.Instrumentation.Http": "1.12.0",
           "RabbitMQ.Client": "7.1.2",
-          "Scalar.AspNetCore": "2.5.0",
-          "Serilog": "4.3.0",
-          "Serilog.Enrichers.Environment": "3.0.1",
-          "Serilog.Extensions.Hosting": "9.0.0",
-          "Serilog.Extensions.Logging": "9.0.2",
-          "Serilog.Settings.Configuration": "9.0.0",
-          "Serilog.Sinks.Console": "6.0.0",
-          "Serilog.Sinks.Elasticsearch": "10.0.0",
-          "Serilog.Sinks.OpenTelemetry": "4.2.0",
-          "Serilog.Sinks.Seq": "9.0.0"
+          "Scalar.AspNetCore": "2.5.0"
         },
         "runtime": {
           "Cachara.Users.API.dll": {}
@@ -97,17 +76,6 @@
         },
         "runtime": {
           "lib/net8.0/HealthChecks.Redis.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.0.0"
-          }
-        }
-      },
-      "AspNetCore.HealthChecks.SqlServer/9.0.0": {
-        "dependencies": {
-          "Microsoft.Data.SqlClient": "6.0.2"
-        },
-        "runtime": {
-          "lib/net8.0/HealthChecks.SqlServer.dll": {
             "assemblyVersion": "9.0.0.0",
             "fileVersion": "9.0.0.0"
           }
@@ -214,29 +182,6 @@
           }
         }
       },
-      "Elastic.Apm/1.22.0": {
-        "dependencies": {
-          "System.Diagnostics.PerformanceCounter": "6.0.1"
-        },
-        "runtime": {
-          "lib/net6.0/Elastic.Apm.dll": {
-            "assemblyVersion": "1.22.0.0",
-            "fileVersion": "1.22.0.0"
-          }
-        }
-      },
-      "Elastic.Apm.SerilogEnricher/8.18.1": {
-        "dependencies": {
-          "Elastic.Apm": "1.22.0",
-          "Serilog": "4.3.0"
-        },
-        "runtime": {
-          "lib/net8.0/Elastic.Apm.SerilogEnricher.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.18.1.0"
-          }
-        }
-      },
       "Elasticsearch.Net/7.17.5": {
         "runtime": {
           "lib/netstandard2.1/Elasticsearch.Net.dll": {
@@ -250,17 +195,6 @@
           "lib/net6.0/Extensions.Hosting.AsyncInitialization.dll": {
             "assemblyVersion": "3.0.0.0",
             "fileVersion": "3.0.1.0"
-          }
-        }
-      },
-      "FluentAssertions/6.7.0": {
-        "dependencies": {
-          "System.Configuration.ConfigurationManager": "9.0.4"
-        },
-        "runtime": {
-          "lib/net6.0/FluentAssertions.dll": {
-            "assemblyVersion": "6.7.0.0",
-            "fileVersion": "6.7.0.0"
           }
         }
       },
@@ -280,18 +214,6 @@
           "lib/netstandard2.1/FluentResults.Extensions.AspNetCore.dll": {
             "assemblyVersion": "0.1.0.0",
             "fileVersion": "0.1.0.0"
-          }
-        }
-      },
-      "FluentResults.Extensions.FluentAssertions/2.1.2": {
-        "dependencies": {
-          "FluentAssertions": "6.7.0",
-          "FluentResults": "3.16.0"
-        },
-        "runtime": {
-          "lib/netstandard2.1/FluentResults.Extensions.FluentAssertions.dll": {
-            "assemblyVersion": "2.1.2.0",
-            "fileVersion": "2.1.2.0"
           }
         }
       },
@@ -447,17 +369,6 @@
           "lib/netstandard2.0/Hangfire.PostgreSql.dll": {
             "assemblyVersion": "1.20.12.0",
             "fileVersion": "1.20.12.0"
-          }
-        }
-      },
-      "Hangfire.SqlServer/1.8.20": {
-        "dependencies": {
-          "Hangfire.Core": "1.8.20"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Hangfire.SqlServer.dll": {
-            "assemblyVersion": "1.8.20.0",
-            "fileVersion": "1.8.20.0"
           }
         }
       },
@@ -1835,25 +1746,6 @@
           }
         }
       },
-      "System.Diagnostics.PerformanceCounter/6.0.1": {
-        "dependencies": {
-          "System.Configuration.ConfigurationManager": "9.0.4"
-        },
-        "runtime": {
-          "lib/net6.0/System.Diagnostics.PerformanceCounter.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.422.16404"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/net6.0/System.Diagnostics.PerformanceCounter.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.422.16404"
-          }
-        }
-      },
       "System.Formats.Nrbf/9.0.0": {
         "runtime": {
           "lib/net9.0/System.Formats.Nrbf.dll": {
@@ -2018,13 +1910,6 @@
       "path": "aspnetcore.healthchecks.redis/9.0.0",
       "hashPath": "aspnetcore.healthchecks.redis.9.0.0.nupkg.sha512"
     },
-    "AspNetCore.HealthChecks.SqlServer/9.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-UxCf65iCF2nU1u7AcB320abjL4CRg5swCgJECY6mKk1j5lrGMfVtskWwriGs1T29pYdRig9Vra3SPnP+4G82pA==",
-      "path": "aspnetcore.healthchecks.sqlserver/9.0.0",
-      "hashPath": "aspnetcore.healthchecks.sqlserver.9.0.0.nupkg.sha512"
-    },
     "AspNetCore.HealthChecks.UI.Client/9.0.0": {
       "type": "package",
       "serviceable": true,
@@ -2088,20 +1973,6 @@
       "path": "dapper.contrib/2.0.78",
       "hashPath": "dapper.contrib.2.0.78.nupkg.sha512"
     },
-    "Elastic.Apm/1.22.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Aq/xjAsZzWx6NbnV9dmQCtYC4iBGheYjkaiVclQOOztLRNZHQPnPH9Ozn2awDilUWhN72k2Mj6acfaW2QQs9tQ==",
-      "path": "elastic.apm/1.22.0",
-      "hashPath": "elastic.apm.1.22.0.nupkg.sha512"
-    },
-    "Elastic.Apm.SerilogEnricher/8.18.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-+dDoNJdYiUW1KonxM0yXLNc91PgRBJS8oB1MRcxikjCawGiHqsS0oTecgcb5ujJHdOyUEDLT5nxzI01iBVPc6g==",
-      "path": "elastic.apm.serilogenricher/8.18.1",
-      "hashPath": "elastic.apm.serilogenricher.8.18.1.nupkg.sha512"
-    },
     "Elasticsearch.Net/7.17.5": {
       "type": "package",
       "serviceable": true,
@@ -2116,13 +1987,6 @@
       "path": "extensions.hosting.asyncinitialization/3.0.1",
       "hashPath": "extensions.hosting.asyncinitialization.3.0.1.nupkg.sha512"
     },
-    "FluentAssertions/6.7.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-PWbow/R3MnYDP8UW7zh/w80rGb+1NufGoNJeuzouTo2bqpvwNTFxbDwF6XWfFZ5IuquL2225Um+qSyZ8jVsT+w==",
-      "path": "fluentassertions/6.7.0",
-      "hashPath": "fluentassertions.6.7.0.nupkg.sha512"
-    },
     "FluentResults/3.16.0": {
       "type": "package",
       "serviceable": true,
@@ -2136,13 +2000,6 @@
       "sha512": "sha512-f70/sQdwVSGi7saH8pzFqg77GxmQBDjIWdVUX01UFqyrxFvWiIhB2WfihC4i57+hK7mjybbE5k4gLHsmmUlkTA==",
       "path": "fluentresults.extensions.aspnetcore/0.1.0",
       "hashPath": "fluentresults.extensions.aspnetcore.0.1.0.nupkg.sha512"
-    },
-    "FluentResults.Extensions.FluentAssertions/2.1.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-bWwCyPf1qH8VmzIGAG6IEbLxP7tXGNt0z3bepnOiefU/JeGdD99D4b0cOcsH6nTYEEtUMyR/MWTnYZSPk2ziNQ==",
-      "path": "fluentresults.extensions.fluentassertions/2.1.2",
-      "hashPath": "fluentresults.extensions.fluentassertions.2.1.2.nupkg.sha512"
     },
     "FluentValidation/12.0.0": {
       "type": "package",
@@ -2220,13 +2077,6 @@
       "sha512": "sha512-KvozigeVgbYSinFmaj5qQWRaBG7ey/S73UP6VLIOPcP1UrZO0/6hSw4jN53TKpWP2UsiMuYONRmQbFDxGAi4ug==",
       "path": "hangfire.postgresql/1.20.12",
       "hashPath": "hangfire.postgresql.1.20.12.nupkg.sha512"
-    },
-    "Hangfire.SqlServer/1.8.20": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-O+0A2dEf+cbKnJQRxK5jF5c4aLDCOf2+KllYBwjdO82KRVKz0nox8wirWQP/AKW85f4NJ93ZKAEtAWOFk6DLxw==",
-      "path": "hangfire.sqlserver/1.8.20",
-      "hashPath": "hangfire.sqlserver.1.8.20.nupkg.sha512"
     },
     "Hellang.Middleware.ProblemDetails/6.5.1": {
       "type": "package",
@@ -2864,13 +2714,6 @@
       "sha512": "sha512-dvjqKp+2LpGid6phzrdrS/2mmEPxFl3jE1+L7614q4ZChKbLJCpHXg6sBILlCCED1t//EE+un/UdAetzIMpqnw==",
       "path": "system.configuration.configurationmanager/9.0.4",
       "hashPath": "system.configuration.configurationmanager.9.0.4.nupkg.sha512"
-    },
-    "System.Diagnostics.PerformanceCounter/6.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-dDl7Gx3bmSrM2k2ZIm+ucEJnLloZRyvfQF1DvfvATcGF3jtaUBiPvChma+6ZcZzxWMirN3kCywkW7PILphXyMQ==",
-      "path": "system.diagnostics.performancecounter/6.0.1",
-      "hashPath": "system.diagnostics.performancecounter.6.0.1.nupkg.sha512"
     },
     "System.Formats.Nrbf/9.0.0": {
       "type": "package",

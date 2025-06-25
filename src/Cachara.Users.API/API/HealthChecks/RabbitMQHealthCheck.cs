@@ -19,10 +19,10 @@ public class RabbitMQHealthCheck : IHealthCheck
         try
         {
             var factory = new ConnectionFactory { Uri = new Uri(_connectionString) };
-            using var connection = await factory.CreateConnectionAsync();
-            using var channel = await connection.CreateChannelAsync();
+            await using var connection = await factory.CreateConnectionAsync(cancellationToken);
+            await using var channel = await connection.CreateChannelAsync(cancellationToken: cancellationToken);
             // Optionally, you can check for a specific queue
-            await channel.QueueDeclarePassiveAsync("your_queue_name"); // Replace with your queue name
+            await channel.QueueDeclarePassiveAsync("your_queue_name", cancellationToken); // Replace with your queue name
 
             return HealthCheckResult.Healthy("RabbitMQ is healthy.");
         }

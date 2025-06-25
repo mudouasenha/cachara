@@ -25,6 +25,5 @@
     <Pkgxunit_analyzers Condition=" '$(Pkgxunit_analyzers)' == '' ">C:\Users\mathe\.nuget\packages\xunit.analyzers\1.18.0</Pkgxunit_analyzers>
     <PkgMicrosoft_Extensions_ApiDescription_Server Condition=" '$(PkgMicrosoft_Extensions_ApiDescription_Server)' == '' ">C:\Users\mathe\.nuget\packages\microsoft.extensions.apidescription.server\8.0.14</PkgMicrosoft_Extensions_ApiDescription_Server>
     <PkgMicrosoft_VisualStudio_Azure_Containers_Tools_Targets Condition=" '$(PkgMicrosoft_VisualStudio_Azure_Containers_Tools_Targets)' == '' ">C:\Users\mathe\.nuget\packages\microsoft.visualstudio.azure.containers.tools.targets\1.21.2</PkgMicrosoft_VisualStudio_Azure_Containers_Tools_Targets>
-    <PkgHangfire_SqlServer Condition=" '$(PkgHangfire_SqlServer)' == '' ">C:\Users\mathe\.nuget\packages\hangfire.sqlserver\1.8.20</PkgHangfire_SqlServer>
   </PropertyGroup>
 </Project>

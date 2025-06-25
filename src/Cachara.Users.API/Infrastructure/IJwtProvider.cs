@@ -9,5 +9,5 @@ public interface IJwtProvider
 {
     TokenResult Generate(Domain.Entities.User user);
     UserAccount GetAccount(string token);
-    ClaimsPrincipal? DecodeToken(string token);
+    ClaimsPrincipal DecodeToken(string token);
 }

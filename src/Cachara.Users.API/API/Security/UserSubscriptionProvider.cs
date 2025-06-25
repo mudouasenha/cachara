@@ -16,7 +16,7 @@ public class UserSubscriptionProvider // IApiKeyProvider
 {
     public HybridCache hybridCache;
 
-    public Subscription GetSubscription(string? userId)
+    public Subscription GetSubscription(string userId)
     {
         // TODO: Use a database for this.
         if (string.IsNullOrEmpty(userId))
@@ -29,7 +29,7 @@ public class UserSubscriptionProvider // IApiKeyProvider
 
     // public Task<IApiKey> ProvideAsync(string key)
     // {
-    //         
+    //
     //     if (string.IsNullOrEmpty(key))
     //     {
     //         return Task.FromResult<IApiKey>(Subscription.Standard);
