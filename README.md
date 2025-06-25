@@ -1,7 +1,6 @@
-```markdown
 # Project Cachara - Social Media Platform
 
-Project Cachara is a **social media platform** designed using **.NET Core 8** and a **Microservices Architecture** to simulate real-world engineering challenges.
+Project Cachara is a **social media platform** designed using **.NET 10** and a **Microservices Architecture** to simulate real-world engineering challenges.
 
 This project was initiated to:
 
