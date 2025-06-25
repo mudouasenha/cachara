@@ -9,6 +9,47 @@ docker run -d -p 6379:6379 -v redis-data:/data --name redis redis:latest
 Using Redis Insight:
 https://redis.io/insight/
 
+
+#### Run  GitHub Actions Locally:
+✅ How to run GitHub Actions locally with act
+1. Install act
+  
+Windows: via Scoop
+```bash 
+scoop install act
+```
+
+Linux:
+```bash 
+curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
+```
+
+2. Run your workflow In the root of your repo (where .github/workflows/ exists):
+
+```bash
+act
+```
+To run a specific event:
+```bash
+act push       # or pull_request, workflow_dispatch, etc.
+```
+
+To list available jobs:
+```bash
+act -l
+```
+
+3. Use secrets locally
+   Create a .secrets file:
+```bash
+MY_SECRET=value
+```
+
+Then run:
+```bash
+act -s MY_SECRET=value
+```
+
 #### Migrations
 
 dotnet ef migrations add Initial --context CacharaUsersDbContext --startup-project Cachara.Users.API -o
