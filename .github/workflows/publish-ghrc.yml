@@ -1,16 +1,226 @@
-name: Docker Image CI for GHCR
+# =============================================================================
+# Docker Microservices CI/CD Pipeline for GitHub Container Registry (GHCR)
+# =============================================================================
+# 
+# This GitHub Action builds and publishes multiple Docker images for a 
+# microservices architecture to GitHub Container Registry.
+#
+# Author: [Your Name]
+# Created: 2025-06-25
+# 
+# Features:
+# - Builds multiple microservices in parallel using matrix strategy
+# - Custom versioning scheme: 1.YY.MMDD.N (e.g., 1.25.0625.1)
+# - Automatic tagging with multiple tag strategies
+# - Publishes to GitHub Container Registry (ghcr.io)
+# - Supports branch-based and PR-based builds
+#
+# =============================================================================
 
+name: Docker Microservices CI for GHCR
+
+# =============================================================================
+# WORKFLOW TRIGGERS
+# =============================================================================
+# Define when this workflow should run
 on:
-  push
+  # Run on pushes to main and develop branches
+  push:
+    branches: [ main, develop ]
   
-  
+  # Also run on pull requests targeting main branch
+  pull_request:
+    branches: [ main ]
+
+# =============================================================================
+# GLOBAL ENVIRONMENT VARIABLES
+# =============================================================================
+# Variables available to all jobs in this workflow
+env:
+  # GitHub Container Registry URL
+  REGISTRY: ghcr.io
+
+# =============================================================================
+# JOBS DEFINITION
+# =============================================================================
 jobs:
+  # Main job that builds and publishes Docker images
   build_and_publish:
-    runs-on: ubuntu:latest
+    # Use the latest Ubuntu runner provided by GitHub
+    runs-on: ubuntu-latest
+    
+    # =============================================================================
+    # PERMISSIONS
+    # =============================================================================
+    # Define what this job is allowed to do
+    permissions:
+      contents: read      # Read repository contents
+      packages: write     # Write to GitHub Container Registry
+    
+    # =============================================================================
+    # MATRIX STRATEGY
+    # =============================================================================
+    # Build multiple services in parallel using matrix strategy
+    # Each service runs as a separate job instance simultaneously
+    strategy:
+      matrix:
+        service:
+          # Cachara Users Service Configuration
+          - name: Cachara Users Service                    # Human-readable name
+            image_name: cachara-users                      # Docker image name
+            dockerfile_path: ./src/Cachara.Users.API/Dockerfile    # Path to Dockerfile
+            context: ./src/Cachara.Users.API              # Build context directory
+          
+          # Cachara Content Service Configuration  
+          - name: Cachara Content Service                  # Human-readable name
+            image_name: cachara-content                    # Docker image name
+            dockerfile_path: ./src/Cachara.Content.API/Dockerfile  # Path to Dockerfile
+            context: ./src/Cachara.Content.API            # Build context directory
+    
+    # =============================================================================
+    # WORKFLOW STEPS
+    # =============================================================================
+    # Sequential steps executed for each matrix item
     steps:
-      - uses: actions/checkout@v3
-      - name: Build and push the image 
+      
+      # -------------------------------------------------------------------------
+      # STEP 1: SOURCE CODE CHECKOUT
+      # -------------------------------------------------------------------------
+      # Download the repository source code to the runner
+      - name: Checkout repository
+        uses: actions/checkout@v4  # Latest stable version of checkout action
+      
+      # -------------------------------------------------------------------------
+      # STEP 2: CONTAINER REGISTRY AUTHENTICATION
+      # -------------------------------------------------------------------------
+      # Authenticate with GitHub Container Registry using built-in token
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}           # ghcr.io
+          username: ${{ github.actor }}           # GitHub username (automatic)
+          password: ${{ secrets.GITHUB_TOKEN }}   # GitHub token (automatic)
+      
+      # -------------------------------------------------------------------------
+      # STEP 3: GENERATE CUSTOM VERSION TAG
+      # -------------------------------------------------------------------------
+      # Create version tag in format: 1.YY.MMDD.N
+      # Example: 1.25.0625.1 (1st build on June 25, 2025)
+      - name: Generate version tag
+        id: version  # Step ID to reference outputs in later steps
         run: |
-          docker login --username mudouasenha --password ${{ secrets.GH_PAT }} ghcr.io
-          docker build . --tag ghcr.io/mudouasenha/cachara-users:latest
-          docker push ghcr.io/mudouasenha/cachara-users:latest
+          # Extract 2-digit year (25 for 2025)
+          YEAR=$(date +%y)
+          
+          # Extract month and day with leading zeros (0625 for June 25)
+          MONTH_DAY=$(date +%m%d)
+          
+          # Build version tag using GitHub run number as sequence
+          # Format: 1.YY.MMDD.N where N is the GitHub run number
+          VERSION_TAG="1.${YEAR}.${MONTH_DAY}.${{ github.run_number }}"
+          
+          # Export version tag for use in subsequent steps
+          echo "version_tag=${VERSION_TAG}" >> $GITHUB_OUTPUT
+          
+          # Log the generated version for debugging
+          echo "Generated version for ${{ matrix.service.name }}: ${VERSION_TAG}"
+      
+      # -------------------------------------------------------------------------
+      # STEP 4: EXTRACT DOCKER METADATA AND TAGS
+      # -------------------------------------------------------------------------
+      # Generate Docker image tags and labels using metadata action
+      - name: Extract metadata
+        id: meta  # Step ID to reference outputs in build step
+        uses: docker/metadata-action@v5
+        with:
+          # Target image name: ghcr.io/username/image-name
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ matrix.service.image_name }}
+          
+          # Define multiple tagging strategies
+          tags: |
+            # Custom version tag (e.g., 1.25.0625.1)
+            type=raw,value=${{ steps.version.outputs.version_tag }}
+            
+            # Latest tag (only for main branch builds)
+            type=raw,value=latest,enable={{is_default_branch}}
+            
+            # Branch name with service suffix (e.g., main-Cachara Users Service)
+            type=ref,event=branch,suffix=-${{ matrix.service.name }}
+            
+            # Service name with commit SHA (e.g., Cachara Users Service-abc123d)
+            type=sha,prefix=${{ matrix.service.name }}-
+      
+      # -------------------------------------------------------------------------
+      # STEP 5: BUILD AND PUSH DOCKER IMAGE
+      # -------------------------------------------------------------------------
+      # Build Docker image and push to GitHub Container Registry
+      - name: Build and push Docker image for ${{ matrix.service.name }}
+        uses: docker/build-push-action@v5
+        with:
+          # Build context (directory containing source code)
+          context: ${{ matrix.service.context }}
+          
+          # Path to Dockerfile
+          file: ${{ matrix.service.dockerfile_path }}
+          
+          # Enable pushing to registry (set to false for testing)
+          push: true
+          
+          # Apply all generated tags from metadata step
+          tags: ${{ steps.meta.outputs.tags }}
+          
+          # Apply generated labels (includes commit info, build date, etc.)
+          labels: ${{ steps.meta.outputs.labels }}
+
+# =============================================================================
+# EXPECTED OUTPUT EXAMPLES
+# =============================================================================
+#
+# For a build on June 25, 2025 (run number 42), this workflow will create:
+#
+# Cachara Users Service:
+# - ghcr.io/mudouasenha/cachara-users:1.25.0625.42
+# - ghcr.io/mudouasenha/cachara-users:latest (if main branch)
+# - ghcr.io/mudouasenha/cachara-users:main-Cachara Users Service
+# - ghcr.io/mudouasenha/cachara-users:Cachara Users Service-abc123d
+#
+# Cachara Content Service:
+# - ghcr.io/mudouasenha/cachara-content:1.25.0625.42
+# - ghcr.io/mudouasenha/cachara-content:latest (if main branch)
+# - ghcr.io/mudouasenha/cachara-content:main-Cachara Content Service
+# - ghcr.io/mudouasenha/cachara-content:Cachara Content Service-abc123d
+#
+# =============================================================================
+# ADDING NEW SERVICES
+# =============================================================================
+#
+# To add a new microservice, simply add a new entry to the matrix:
+#
+# - name: Cachara Orders Service
+#   image_name: cachara-orders
+#   dockerfile_path: ./src/Cachara.Orders.API/Dockerfile
+#   context: ./src/Cachara.Orders.API
+#
+# =============================================================================
+# TROUBLESHOOTING
+# =============================================================================
+#
+# Common issues and solutions:
+#
+# 1. Permission denied errors:
+#    - Check repository Settings > Actions > General > Workflow permissions
+#    - Ensure "Read and write permissions" is selected
+#
+# 2. Dockerfile not found:
+#    - Verify dockerfile_path points to correct location
+#    - Check file naming (Dockerfile vs dockerfile)
+#
+# 3. Build context errors:
+#    - Ensure context directory contains all required files
+#    - Check relative paths in Dockerfile FROM and COPY commands
+#
+# 4. Authentication failures:
+#    - GITHUB_TOKEN is automatically provided
+#    - Ensure packages permission is set to 'write'
+#
+# =============================================================================
