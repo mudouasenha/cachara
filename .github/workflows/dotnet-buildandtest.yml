@@ -25,8 +25,8 @@ jobs:
         dotnet --list-sdks
         dotnet --list-runtimes
     - name: Restore dependencies on .NET 10
-      run: dotnet restore ./src/Cachara.sln
+      run: dotnet restore ./src/Cachara.slnx
     - name: Build on .NET 10
-      run: dotnet build --no-restore ./src/Cachara.sln
+      run: dotnet build --no-restore ./src/Cachara.slnx
     - name: Test on .NET 10
       run: dotnet test --no-build --verbosity normal ./src/Cachara.Tests/Cachara.Tests.csproj
