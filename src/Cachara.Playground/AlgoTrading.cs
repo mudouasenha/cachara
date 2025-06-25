@@ -29,15 +29,11 @@ public class PriceData
     }
 }
 
-public class Trade
+public readonly struct Trade(DateTime timestamp, decimal price, string action)
 {
-    public DateTime Timestamp { get; set; }
-    public decimal Price { get; set; }
-    public string Action { get; set; } // Buy or Sell
-
     public override string ToString()
     {
-        return $"[{Timestamp:yyyy-MM-dd}] {Action} @ {Price:C}";
+        return $"[{timestamp:yyyy-MM-dd}] {action} @ {price:C}";
     }
 }
 
@@ -83,18 +79,12 @@ public class MovingAverageTrader
 
             if (shortSMA > longSMA && !_inPosition)
             {
-                TradeHistory.Add(new Trade
-                {
-                    Timestamp = currentPrice.Timestamp, Price = currentPrice.ClosePrice, Action = "Buy"
-                });
+                TradeHistory.Add(new Trade(currentPrice.Timestamp, currentPrice.ClosePrice, "Buy"));
                 _inPosition = true;
             }
             else if (shortSMA < longSMA && _inPosition)
             {
-                TradeHistory.Add(new Trade
-                {
-                    Timestamp = currentPrice.Timestamp, Price = currentPrice.ClosePrice, Action = "Sell"
-                });
+                TradeHistory.Add(new Trade(currentPrice.Timestamp, currentPrice.ClosePrice, "Sell"));
                 _inPosition = false;
             }
         }

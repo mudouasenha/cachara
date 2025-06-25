@@ -25,6 +25,6 @@ public class PostsClient
             return new List<Post>();
 
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<List<Post>>(_jsonSerializerOptions);
+        return await response.Content.ReadFromJsonAsync<List<Post>>(_jsonSerializerOptions) ?? new List<Post>();
     }
 }

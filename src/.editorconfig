@@ -98,7 +98,7 @@ charset = utf-8-bom
 dotnet_diagnostic.SYSLIB1054.severity = warning
 
 # ASP0012: Suggest using builder.Services instead of ConfigureServices
-dotnet_diagnostic.ASP00012.severity = none
+dotnet_diagnostic.ASP0012.severity = none
 
 # CA1018: Mark attributes with AttributeUsageAttribute
 dotnet_diagnostic.CA1018.severity = warning

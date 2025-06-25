@@ -6,7 +6,7 @@ namespace Cachara.Content.API.Infrastructure.Data.Configuration;
 
 public class PostEntityTypeConfiguration : BaseEntityTypeConfiguration<Post>
 {
-    public void Configure(EntityTypeBuilder<Post> builder)
+    public new void Configure(EntityTypeBuilder<Post> builder)
     {
         builder.Property(t => t.Title)
             .HasMaxLength(200)

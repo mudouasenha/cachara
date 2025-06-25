@@ -15,15 +15,15 @@ public class PostManagerService : IPostManagerService
         //_postRepository = postRepository;
     }
 
-    public async Task<Result> ExportPosts(string userId)
+    public Task<Result> ExportPosts(string userId)
     {
         _backgroundServiceManager.Enqueue<IPostManagerService>(x => x.ExportPostsInternal(userId));
-        return new Result();
+        return Task.FromResult(new Result());
     }
 
-    public async Task<Result> ExportPostsInternal(string userId)
+    public Task<Result> ExportPostsInternal(string userId)
     {
         Console.WriteLine($"Exporting Posts for userId {userId}");
-        return new Result();
+        return Task.FromResult(new Result());
     }
 }

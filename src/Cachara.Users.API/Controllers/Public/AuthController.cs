@@ -10,7 +10,7 @@ namespace Cachara.Users.API.Controllers.Public;
 [Route("public/[controller]")]
 [ApiExplorerSettings(GroupName = "public")]
 [Tags("Auth")]
-public class AuthController(IUserService userService, UserAuthenticationService userAuthService) : ControllerBase
+public class AuthController(UserAuthenticationService userAuthService) : ControllerBase
 {
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)

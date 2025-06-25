@@ -195,7 +195,7 @@ public sealed class CacharaContentService(IHostEnvironment environment, IConfigu
 
     }
 
-    private void AddServices(IServiceCollection services)
+    private static void AddServices(IServiceCollection services)
     {
         services.AddMapster();
         //UsersMappings.Configure();

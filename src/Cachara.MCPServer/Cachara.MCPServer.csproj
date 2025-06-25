@@ -18,7 +18,6 @@
       <PackageReference Include="Microsoft.Extensions.Hosting" />
       <PackageReference Include="Microsoft.Extensions.Http" />
       <PackageReference Include="ModelContextProtocol"/>
-      <PackageReference Include="System.Text.Json" />
     </ItemGroup>
 
 </Project>

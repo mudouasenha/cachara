@@ -1,4 +1,6 @@
-﻿namespace Cachara.Playground;
+﻿using System.Globalization;
+
+namespace Cachara.Playground;
 
 public class ImplicitOperator
 {
@@ -22,7 +24,7 @@ public class ImplicitOperator
         // Implicit conversion to MeterReading
         public static implicit operator MeterReading(MeterReadingDto dto)
         {
-            return new MeterReading { Date = DateTimeOffset.Parse(dto.Timestamp), Value = dto.Value };
+            return new MeterReading { Date = DateTimeOffset.Parse(dto.Timestamp, CultureInfo.InvariantCulture), Value = dto.Value };
         }
     }
 

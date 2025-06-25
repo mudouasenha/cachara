@@ -56,13 +56,5 @@ public class AesGeneralDataProtectionServiceTests
         Assert.NotEqual(encryptedBytes1, encryptedBytes2);
     }
 
-    private static byte[] GenerateRandomKey(int size = 32)
-    {
-        using (var rng = new RNGCryptoServiceProvider())
-        {
-            var key = new byte[size];
-            rng.GetBytes(key);
-            return key;
-        }
-    }
+    private static byte[] GenerateRandomKey(int size = 32) => RandomNumberGenerator.GetBytes(size);
 }

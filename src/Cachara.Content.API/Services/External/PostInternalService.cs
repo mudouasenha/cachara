@@ -15,7 +15,7 @@ public partial class PostInternalService
         _postRepository = postRepository;
     }
 
-    internal void UpdateFromInternal(Post post, PostUpsert upsert)
+    internal static void UpdateFromInternal(Post post, PostUpsert upsert)
     {
         post.Title = upsert.Title;
         post.Body = upsert.Body;

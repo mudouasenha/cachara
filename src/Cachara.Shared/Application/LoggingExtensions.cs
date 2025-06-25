@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,10 +28,11 @@ public static class LoggingExtensions
 
         Log.Logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
-            .WriteTo.Console()
+            .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
             .WriteTo.Seq(
                 serverUrl: openTelemetryOptions.Otlp.Endpoint,
-                apiKey: openTelemetryOptions.Otlp.ApiKey)
+                apiKey: openTelemetryOptions.Otlp.ApiKey,
+                formatProvider: CultureInfo.InvariantCulture)
             .CreateLogger();
 
         return builder.AddSerilog();

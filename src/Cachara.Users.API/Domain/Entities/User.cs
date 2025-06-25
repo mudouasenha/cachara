@@ -30,7 +30,7 @@ public class User : IEntity<string>, IModifiable, IVersable, ISoftDeletable, IVa
     {
         if (UserRoles.Any(p => p.RoleId == role))
         {
-            throw new Exception("User has already assigned role");
+            return;
         }
 
         var newRole = new UserRole()

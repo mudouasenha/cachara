@@ -4,11 +4,8 @@ namespace Cachara.Content.API.API.Options;
 
 public class CacharaContentOptions : CacharaOptions
 {
-    public string Name { get; set; }
     public string SqlDb { get; set; }
     public string JobsSqlDb { get; set; }
-
-    public CacharaExporterOptions CacharaExporter { get; set; }
 
     public CacharaUsersOptions CacharaUsers { get; set; } = new();
 
@@ -18,15 +15,6 @@ public class CacharaContentOptions : CacharaOptions
 }
 
 
-
-public class CacharaExporterOptions
-{
-    public const string Name = "CacharaExporter";
-
-    public string Url { get; set; }
-
-    public string Token { get; set; }
-}
 
 public class CacharaUsersOptions
 {

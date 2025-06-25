@@ -23,17 +23,17 @@ public class DevTestController
     }
 
     [HttpPost("test-hangfire")]
-    public async Task<IResult> Enqueue()
+    public Task<IResult> Enqueue()
     {
         _postManagerService.ExportPosts(Guid.NewGuid().ToString());
-        return Results.Ok();
+        return Task.FromResult(Results.Ok());
     }
 
     [HttpPost("ping")]
-    public async Task<IResult> Ping()
+    public Task<IResult> Ping()
     {
         _logger.LogInformation("Ping ok;");
-        return Results.Ok();
+        return Task.FromResult(Results.Ok());
     }
 
     [HttpPost("test-receive-message")]

@@ -73,7 +73,7 @@ public class UserService : UserInternalService, IUserService
         var entityUser = await _userRepository.FindByAsync(x => x.Id == upsert.Id);
         if (entityUser is null && upsert.Id is not null)
         {
-            throw new Exception("User not found");
+            throw new NotFoundException("User not found");
         }
 
         entityUser = entityUser == null

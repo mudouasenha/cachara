@@ -26,10 +26,10 @@ public class DevTestController : ControllerBase
     [HttpPost("ping")]
     [EndpointSummary("Ping the application.")]
     [EndpointDescription("Makes sure that the request is received and returned by only returning an Ok Result.")]
-    public async Task<IResult> Ping()
+    public Task<IResult> Ping()
     {
         _logger.LogInformation("Ping ok;");
-        return Results.Ok();
+        return Task.FromResult(Results.Ok());
     }
 
     [HttpPost("test-send-message")]
