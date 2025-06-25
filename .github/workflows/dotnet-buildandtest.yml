@@ -29,4 +29,4 @@ jobs:
     - name: Build on .NET 10
       run: dotnet build --no-restore ./src/Cachara.slnx
     - name: Test on .NET 10
-      run: dotnet test --no-build --verbosity normal ./src/Cachara.Tests/Cachara.Tests.csproj
+      run: dotnet test --no-build --verbosity normal ./tests/Cachara.Tests/Cachara.Tests.csproj
