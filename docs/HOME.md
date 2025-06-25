@@ -8,7 +8,7 @@ docker run -d -p 6379:6379 -v redis-data:/data --name redis redis:latest
 
 Using Redis Insight:
 https://redis.io/insight/
-
+  
 
 #### Run  GitHub Actions Locally:
 ✅ How to run GitHub Actions locally with act
