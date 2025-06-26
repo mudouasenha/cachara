@@ -1,4 +1,5 @@
 using System.Globalization;
+using Cachara.Shared.Application.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -7,7 +8,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
 
-namespace Cachara.Shared.Application;
+namespace Cachara.Shared.Infrastructure.Logging;
 
 public static class LoggingExtensions
 {

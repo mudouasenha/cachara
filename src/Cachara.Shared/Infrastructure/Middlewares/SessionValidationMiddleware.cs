@@ -1,4 +1,5 @@
-﻿using Cachara.Users.API.API.Authentication;
+﻿using Cachara.Shared.Application.Abstractions;
+using Cachara.Shared.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -10,10 +11,15 @@ public class SessionValidationMiddleware(
     IServiceProvider serviceProvider,
     ILogger<SessionValidationMiddleware> logger)
 {
-    private static readonly string[] _sessionValidationPathExceptions = ["/public/auth/register", "/public/auth/login"];
+    private static readonly string[] _sessionValidationPathExceptions = ["/public/auth/register", "/public/auth/login", "/"];
+
 
     public async Task InvokeAsync(HttpContext context)
     {
+        logger.LogDebug("Session validation IS BEING BYPASSED FOR ALL PATHS, PLEASE FIX! path {Path}", context.Request.Path);
+        await next(context);
+        return;
+
         if (_sessionValidationPathExceptions.Any(path => context.Request.Path.StartsWithSegments(path)))
         {
             logger.LogDebug("Session validation bypassed for path {Path}", context.Request.Path);

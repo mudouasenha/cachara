@@ -11,7 +11,7 @@ namespace Cachara.Users.API.Controllers.Public;
 // TODO: Implement Rate Limiting in this API.
 [ApiController]
 //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("public/[controller]")]
+[Route("api/public/[controller]")]
 [ApiExplorerSettings(GroupName = "public")]
 [Tags("Account")]
 public class AccountController(IUserProfileService userProfileService) : ControllerBase

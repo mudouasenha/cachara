@@ -10,6 +10,7 @@
     <PackageReference Include="Extensions.Hosting.AsyncInitialization" />
     <PackageReference Include="FluentResults" />
     <PackageReference Include="Hangfire.Core" />
+    <PackageReference Include="Hellang.Middleware.ProblemDetails" />
     <PackageReference Include="Microsoft.AspNetCore.Http" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" />

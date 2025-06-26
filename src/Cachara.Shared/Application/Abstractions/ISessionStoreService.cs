@@ -1,4 +1,6 @@
-﻿namespace Cachara.Shared.Infrastructure;
+﻿using Cachara.Shared.Infrastructure.Session;
+
+namespace Cachara.Shared.Application.Abstractions;
 
 public interface ISessionStoreService<TAccount> where TAccount : IAccount
 {

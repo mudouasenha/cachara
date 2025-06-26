@@ -1,4 +1,4 @@
-﻿namespace Cachara.Shared.Application.Exceptions;
+﻿namespace Cachara.Shared.Application.Errors;
 
 public class NotFoundException : Exception
 {

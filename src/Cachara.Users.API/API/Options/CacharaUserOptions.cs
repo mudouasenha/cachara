@@ -1,4 +1,5 @@
 ﻿using Cachara.Shared.Application;
+using Cachara.Shared.Application.Options;
 
 namespace Cachara.Users.API.API.Options;
 

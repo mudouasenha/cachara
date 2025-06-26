@@ -3,14 +3,15 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Cachara.Users.API.API.Authentication;
+using Cachara.Shared.Domain.Entities;
+using Cachara.Shared.Infrastructure;
 using Cachara.Users.API.API.Options;
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Services.Models.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Claim = System.Security.Claims.Claim;
 
-namespace Cachara.Users.API.Infrastructure;
+namespace Cachara.Users.API.Infrastructure.Security;
 
 public class JwtProvider : IJwtProvider
 {
@@ -70,7 +71,7 @@ public class JwtProvider : IJwtProvider
         {
             UserName = GetClaimValue(token, "username") ?? throw new SecurityTokenException("Missing 'username' claim in token"),
             FullName = GetClaimValue(token, "fullName") ?? throw new SecurityTokenException("Missing 'fullName' claim in token"),
-            Claims = claims.Claims.Select(API.Authentication.Claim.FromClaim),
+            Claims = claims.Claims.Select(Shared.Infrastructure.Security.Claim.FromClaim),
             Id = GetClaimValue(token, "userId") ?? throw new SecurityTokenException("Missing 'userId' claim in token")
             //Handle = GetClaimValue(token, "handle") ?? throw new SecurityTokenException("Missing 'handle' claim in token")
         };

@@ -1,9 +1,15 @@
 ﻿using Cachara.Shared.Application.Errors;
+using Cachara.Shared.Application.Options;
 using Cachara.Shared.Infrastructure.Middlewares;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Hellang.Middleware.ProblemDetails;
 
 namespace Cachara.Shared.Application;
 
@@ -39,15 +45,45 @@ public abstract class CacharaService<TOptions> where TOptions : CacharaOptions, 
     {
         services.AddOptions<TOptions>().Bind(Configuration);
 
+        services.Configure<RouteOptions>(options =>
+        {
+            options.LowercaseUrls = true;
+        });
+
+        services.AddProblemDetails(options =>
+        {
+            options.IncludeExceptionDetails = (ctx, ex) => Environment.IsDevelopment();
+            options.Map<ValidationException>(ex => new StatusCodeProblemDetails(400)
+            {
+                Title = ex.Message,
+                Detail = ex.Message,
+                Status = StatusCodes.Status400BadRequest
+            });
+
+            options.Map<UnauthorizedAccessException>(ex => new ProblemDetails
+            {
+                Title = "Unauthorized",
+                Status = StatusCodes.Status401Unauthorized,
+                Detail = ex.Message,
+            });
+
+            options.Map<NotFoundException>(ex => new ProblemDetails
+            {
+                Title = "Not Found",
+                Status = StatusCodes.Status404NotFound,
+                Detail = ex.Message,
+            });
+        });
 
         // Exception Handlers
         services.AddScoped<IAggregateExceptionHandler, AggregateExceptionHandler>();
         services.AddScoped<IErrorExceptionHandler<Exception>, ExceptionHandler>();
+        services.AddScoped<IErrorExceptionHandler<NotFoundException>, NotFoundExceptionHandler>();
     }
 
     protected virtual void ConfigureApp(IApplicationBuilder app)
     {
         app.UseMiddleware<RequestTracingMiddleware>();
-
+        app.UseProblemDetails();
     }
 }

@@ -2,7 +2,7 @@ using Cachara.Content.API.Services;
 using Cachara.Shared.Infrastructure.AzureServiceBus;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cachara.Content.API.Controllers.Internal;
+namespace Cachara.Content.API.API.Controllers.Internal;
 
 [ApiExplorerSettings(GroupName = "internal")]
 [Route("internal/devtest")]

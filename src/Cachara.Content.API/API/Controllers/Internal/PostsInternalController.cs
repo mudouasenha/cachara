@@ -1,28 +1,35 @@
-using Cachara.Content.API.Controllers.Public;
+using Cachara.Content.API.API.Controllers.Public;
 using Cachara.Content.API.Domain.Commands;
+using Cachara.Content.API.Services.External;
 using Cachara.Content.API.Services.Internal;
+using Cachara.Content.API.Services.Models;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cachara.Content.API.Controllers.Internal;
+namespace Cachara.Content.API.API.Controllers.Internal;
 
 [ApiExplorerSettings(GroupName = "internal")]
 [Route("internal/devtest")]
 [Tags("Posts")]
-public class PostsInternalController
+public class PostsInternalController(InternalPostService postService, ILogger<PostController> logger)
 {
-    private readonly ILogger<PostController> _logger;
-    private readonly PostManagerService _postManagerService;
+    private readonly ILogger<PostController> _logger = logger;
 
-    public PostsInternalController(PostManagerService postManagerService, ILogger<PostController> logger)
+
+    [HttpGet()]
+    public async Task<List<Post>> GetPosts()
     {
-        _postManagerService = postManagerService;
-        _logger = logger;
+        var result = await postService.Get();
+
+        return result;
     }
 
-    [HttpPost("export")]
-    public async Task<Result> ExportPosts(PostSearchCommand search)
+
+    [HttpGet()]
+    public async Task<List<Post>> UpsertPost()
     {
-        return await _postManagerService.ExportPosts(search.Author);
+        var result = await postService.Get();
+
+        return result;
     }
 }

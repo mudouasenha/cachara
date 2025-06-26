@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Formatters;
 
-namespace Cachara.Shared.Application;
+namespace Cachara.Shared.Application.Mvc.Formatters;
 
 public class StreamInputFormatter : IInputFormatter
 {

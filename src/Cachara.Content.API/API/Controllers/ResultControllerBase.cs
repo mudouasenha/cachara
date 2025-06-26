@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cachara.Content.API.Controllers;
+namespace Cachara.Content.API.API.Controllers;
 
     [ApiController]
     public abstract class ResultControllerBase : ControllerBase

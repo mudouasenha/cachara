@@ -281,7 +281,6 @@ C:\Users\mathe\Documents\Development\source\repos\mudouasenha\cachara\tests\Cach
 C:\Users\mathe\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\Cachara.Users.API.runtimeconfig.json
 C:\Users\mathe\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\appsettings.Development.json
 C:\Users\mathe\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\appsettings.json
-C:\Users\mathe\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\http-client.env.json
 C:\Users\mathe\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\Cachara.Users.API.staticwebassets.endpoints.json
 C:\Users\mathe\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\Cachara.Users.API.exe
 C:\Users\mathe\Documents\Development\source\repos\mudouasenha\cachara\tests\Cachara.Tests\bin\Debug\net10.0\testhost.exe

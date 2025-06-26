@@ -6,12 +6,14 @@ using Cachara.Content.API.Infrastructure.Data;
 using Cachara.Content.API.Infrastructure.Data.Repository;
 using Cachara.Content.API.Services;
 using Cachara.Content.API.Services.External;
-using Cachara.Content.API.Services.Internal;
 using Cachara.Shared.Application;
+using Cachara.Shared.Application.Mvc.Formatters;
+using Cachara.Shared.Application.Services;
+using Cachara.Shared.Infrastructure;
+using Cachara.Shared.Infrastructure.Data.EF;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Hangfire;
 using Cachara.Shared.Infrastructure.Middlewares;
-using Cachara.Users.API.API.Swagger;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.PostgreSql;
@@ -199,9 +201,9 @@ public sealed class CacharaContentService(IHostEnvironment environment, IConfigu
     {
         services.AddMapster();
         //UsersMappings.Configure();
-        services.AddScoped<IPostService, PostService>();
-        services.AddScoped<IPostManagerService, PostManagerService>();
-
+        services.AddScoped<PostService>();
+        services.AddScoped<ManagementPostService>();
+        services.AddScoped<PublicPostService>();
     }
 
     private void ConfigureHangfire(IServiceCollection services)

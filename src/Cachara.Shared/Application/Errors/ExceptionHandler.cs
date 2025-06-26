@@ -9,8 +9,12 @@ public class ExceptionHandler : IErrorExceptionHandler<Exception>
         var error = new Error(exception.Message);
         return error;
     }
+}
 
-    public IError Handle<TResult>(Exception exception) where TResult : Result
+
+public class NotFoundExceptionHandler : IErrorExceptionHandler<NotFoundException>
+{
+    public IError Handle(NotFoundException exception)
     {
         var error = new Error(exception.Message);
         return error;

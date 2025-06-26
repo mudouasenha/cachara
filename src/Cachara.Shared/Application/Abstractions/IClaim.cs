@@ -1,4 +1,4 @@
-﻿namespace Cachara.Shared.Infrastructure;
+﻿namespace Cachara.Shared.Application.Abstractions;
 
 public interface IClaim
 {

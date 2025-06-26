@@ -1,8 +1,8 @@
 ﻿using Cachara.Content.API.Domain.Commands;
 using Cachara.Content.API.Infrastructure.Data.Repository;
+using Cachara.Content.API.Services.Internal;
 using Cachara.Content.API.Services.Models;
 using Cachara.Shared.Application.Errors;
-using Cachara.Shared.Application.Exceptions;
 using Cachara.Shared.Application.Results;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using FluentResults;
@@ -16,9 +16,15 @@ public class PostService(
     IUnitOfWork unitOfWork,
     ILogger<PostService> logger,
     IAggregateExceptionHandler exceptionHandler)
-    : PostInternalService(postRepository), IPostService
+    : PostInternalService(postRepository)
 {
     private readonly IPostRepository _postRepository = postRepository;
+
+
+    public Task<List<Post>> Get() =>
+        Task.FromResult(_postRepository.GetEntities()
+        .ProjectToType<Post>()
+        .ToList());
 
     public async Task<Result<Post>> GetById(string id)
     {

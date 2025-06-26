@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cachara.Users.API.Controllers.Public;
 
 [ApiController]
-[Route("public/[controller]")]
+[Route("api/public/[controller]")]
 //[Authorize("standard-user", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [ApiExplorerSettings(GroupName = "public")]
 [Tags("Follow")]

@@ -1,4 +1,7 @@
-﻿using Cachara.Shared.Infrastructure;
+﻿using Cachara.Shared.Application.Abstractions;
+using Cachara.Shared.Domain.Entities;
+using Cachara.Shared.Infrastructure;
+using Cachara.Shared.Infrastructure.Session;
 using Cachara.Users.API.API.Authentication;
 using Cachara.Users.API.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;

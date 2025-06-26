@@ -1,7 +1,4 @@
 <Solution>
-  <Folder Name="/0 - Building Blocks/">
-    <Project Path="Cachara.Shared/Cachara.Shared.csproj" />
-  </Folder>
   <Folder Name="/0 - Docs/">
     <File Path="../docs/HOME.md" />
     <File Path="../docs/MAINTENANCE-AND-SUPPORT.md" />
@@ -12,17 +9,22 @@
     <File Path="../README.md" />
     <File Path="../README_OLD.md" />
   </Folder>
-  <Folder Name="/4 - Playground/">
-    <Project Path="Cachara.Playground/Cachara.Playground.csproj" />
+  <Folder Name="/1 - Building Blocks/">
+    <Project Path="Cachara.Shared/Cachara.Shared.csproj" />
   </Folder>
-  <Folder Name="/Services/">
+  <Folder Name="/2 - Presentation/">
     <Project Path="Cachara.API.Gateway/Cachara.API.Gateway.csproj" />
     <Project Path="Cachara.Content.API/Cachara.Content.API.csproj" />
-    <Project Path="Cachara.GraphQL/Cachara.GraphQL.csproj" />
     <Project Path="Cachara.MCPServer\Cachara.MCPServer.csproj" Type="Classic C#" />
     <Project Path="Cachara.Users.API/Cachara.Users.API.csproj" />
   </Folder>
-  <Folder Name="/Solution Items/">
+  <Folder Name="/4 - Playground/">
+    <Project Path="Cachara.Playground/Cachara.Playground.csproj" />
+  </Folder>
+  <Folder Name="/4 - Tests/">
+    <Project Path="../tests/Cachara.Tests/Cachara.Tests.csproj" />
+  </Folder>
+  <Folder Name="/5 - Solution Items/">
     <File Path=".editorconfig" />
     <File Path="docker-compose.yml" />
     <File Path="Directory.Packages.props" />
@@ -31,8 +33,5 @@
     <File Path="..\.github\workflows\sonarcloud.yml" />
     <File Path="..\.github\workflows\publish-ghrc.yml" />
     <File Path="..\.github\workflows\dotnet-buildandtest.yml" />
-  </Folder>
-  <Folder Name="/Tests/">
-    <Project Path="../tests/Cachara.Tests/Cachara.Tests.csproj" />
   </Folder>
 </Solution>

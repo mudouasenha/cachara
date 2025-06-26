@@ -1,4 +1,6 @@
 using Cachara.Shared.Application;
+using Cachara.Shared.Infrastructure;
+using Cachara.Shared.Infrastructure.Logging;
 using Cachara.Users.API;
 using Cachara.Users.API.API.Options;
 

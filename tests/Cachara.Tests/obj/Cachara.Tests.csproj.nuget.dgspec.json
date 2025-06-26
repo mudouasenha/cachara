@@ -86,6 +86,11 @@
               "version": "[1.8.20, )",
               "versionCentrallyManaged": true
             },
+            "Hellang.Middleware.ProblemDetails": {
+              "target": "Package",
+              "version": "[6.5.1, )",
+              "versionCentrallyManaged": true
+            },
             "Microsoft.AspNetCore.Http": {
               "target": "Package",
               "version": "[2.3.0, )",

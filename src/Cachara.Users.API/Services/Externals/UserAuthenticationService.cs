@@ -1,5 +1,7 @@
+using Cachara.Shared.Application.Abstractions;
 using Cachara.Shared.Application.Errors;
 using Cachara.Shared.Domain;
+using Cachara.Shared.Domain.Entities;
 using Cachara.Shared.Infrastructure;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Security;
@@ -8,6 +10,7 @@ using Cachara.Users.API.API.Security;
 using Cachara.Users.API.Domain.Errors;
 using Cachara.Users.API.Infrastructure;
 using Cachara.Users.API.Infrastructure.Data.Repository;
+using Cachara.Users.API.Infrastructure.Security;
 using Cachara.Users.API.Services.Commands;
 using Cachara.Users.API.Services.Models;
 using Cachara.Users.API.Services.Models.Internal;

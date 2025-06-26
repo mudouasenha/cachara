@@ -1,6 +1,6 @@
-﻿using Cachara.Shared.Infrastructure;
+﻿using Cachara.Shared.Application.Abstractions;
 
-namespace Cachara.Users.API.API.Authentication;
+namespace Cachara.Shared.Infrastructure.Security;
 
 public class Claim : IClaim
 {

@@ -1,11 +1,9 @@
 using Cachara.Content.API.Domain.Commands;
-using Cachara.Content.API.Infrastructure;
 using Cachara.Content.API.Services;
 using Cachara.Content.API.Services.Models;
 using Microsoft.AspNetCore.Mvc;
-using Post = Cachara.Content.API.Services.Models.Post;
 
-namespace Cachara.Content.API.Controllers.Public;
+namespace Cachara.Content.API.API.Controllers.Public;
 
 [ApiController]
 [Route("public/[controller]")]

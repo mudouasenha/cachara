@@ -1,4 +1,4 @@
-﻿namespace Cachara.Shared.Application;
+﻿namespace Cachara.Shared.Application.Options;
 
 public class CacharaOptions
 {

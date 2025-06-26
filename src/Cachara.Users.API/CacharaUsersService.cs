@@ -1,8 +1,13 @@
 ﻿using System.Text;
 using System.Text.Json.Serialization;
 using Cachara.Shared.Application;
+using Cachara.Shared.Application.Abstractions;
+using Cachara.Shared.Application.Mvc.Formatters;
+using Cachara.Shared.Application.Services;
+using Cachara.Shared.Domain.Entities;
 using Cachara.Shared.Infrastructure;
 using Cachara.Shared.Infrastructure.AzureServiceBus;
+using Cachara.Shared.Infrastructure.Data.EF;
 using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Infrastructure.Hangfire;
 using Cachara.Shared.Infrastructure.Middlewares;
@@ -10,11 +15,11 @@ using Cachara.Shared.Infrastructure.Security;
 using Cachara.Users.API.API.Authentication;
 using Cachara.Users.API.API.Options;
 using Cachara.Users.API.API.Security;
-using Cachara.Users.API.API.Swagger;
 using Cachara.Users.API.Infrastructure;
 using Cachara.Users.API.Infrastructure.Cache;
 using Cachara.Users.API.Infrastructure.Data;
 using Cachara.Users.API.Infrastructure.Data.Repository;
+using Cachara.Users.API.Infrastructure.Security;
 using Cachara.Users.API.Infrastructure.SessionManagement;
 using Cachara.Users.API.Services.Abstractions;
 using Cachara.Users.API.Services.Externals;
@@ -52,10 +57,6 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
         AddServices(services);
         ConfigureInfrastructure(services);
         ConfigureEndpoints(services);
-        // Dependency Injection Options
-        //services.AddOptions<CacharaUserOptions>().Bind(_configuration);
-
-
     }
 
     private void ConfigureInfrastructure(IServiceCollection services)
@@ -117,17 +118,16 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
                     {
                         Title = "Cachara Users API - Management API",
                         Version = "1.2024.12.1",
-                        Description = "This API contains all endpoints for users operations."
-                    };
-
-                    document.Info.Contact = new OpenApiContact
-                    {
-                        Email = "support@cachara.test",
-                        Name = "Cachara Support",
-                        Url = "https://github.com/mudouasenha/cachara"
+                        Description = "This API contains all endpoints for users operations.",
+                        Contact = new OpenApiContact
+                        {
+                            Email = "support@cachara.test",
+                            Name = "Cachara Support",
+                            Url = "https://github.com/mudouasenha/cachara"
+                        }
                     };
                 };
-                options.ApiGroupNames = new[] { "management" };
+                options.ApiGroupNames = ["management"];
             });
 
         services.AddOpenApiDocument(options =>
@@ -150,17 +150,16 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
                     {
                         Title = "Cachara Users API - Public API",
                         Version = "1.2024.12.1",
-                        Description = "This API contains all endpoints for users operations."
-                    };
-
-                    document.Info.Contact = new OpenApiContact
-                    {
-                        Email = "support@cachara.test",
-                        Name = "Cachara Support",
-                        Url = "https://github.com/mudouasenha/cachara"
+                        Description = "This API contains all endpoints for users operations.",
+                        Contact = new OpenApiContact
+                        {
+                            Email = "support@cachara.test",
+                            Name = "Cachara Support",
+                            Url = "https://github.com/mudouasenha/cachara"
+                        }
                     };
                 };
-                options.ApiGroupNames = new[] { "public" };
+                options.ApiGroupNames = ["public"];
             });
 
         services.AddOpenApiDocument(options =>
@@ -173,17 +172,16 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
                     {
                         Title = "Cachara Users API - Internal API",
                         Version = "1.2024.12.1",
-                        Description = "This API contains all endpoints for users operations."
-                    };
-
-                    document.Info.Contact = new OpenApiContact
-                    {
-                        Email = "support@cachara.test",
-                        Name = "Cachara Support",
-                        Url = "https://github.com/mudouasenha/cachara"
+                        Description = "This API contains all endpoints for users operations.",
+                        Contact = new OpenApiContact
+                        {
+                            Email = "support@cachara.test",
+                            Name = "Cachara Support",
+                            Url = "https://github.com/mudouasenha/cachara"
+                        }
                     };
                 };
-                options.ApiGroupNames = new[] { "internal" };
+                options.ApiGroupNames = ["internal"];
             });
 
         services.AddResponseCaching();
@@ -251,14 +249,13 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
         services.AddHealthChecks()
             .AddNpgSql(
                 Options.SqlDb,
-                "SELECT 1;",
                 name: "PostgreSQL",
-                tags: new[] { "relational", "database" },
+                tags: ["relational", "database"],
                 failureStatus: HealthStatus.Degraded)
             .AddRedis(
                 Options.RedisConnection,
                 name: "Redis",
-                tags: new[] { "cache", "database" },
+                tags: ["cache", "database"],
                 failureStatus: HealthStatus.Degraded)
             .AddKafka(
                 setup =>
@@ -266,7 +263,7 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
                     setup.BootstrapServers = Options.KafkaConnection;
                 },
                 name: "kafka",
-                tags: new[] { "messaging", "event-streaming", "distributed", "integration" },
+                tags: ["messaging", "event-streaming", "distributed", "integration"],
                 failureStatus: HealthStatus.Degraded);
 
     }
@@ -311,7 +308,7 @@ public sealed class CacharaUsersService(IHostEnvironment environment, IConfigura
         services.AddHangfireServer(options =>
         {
             options.WorkerCount = 5;
-            options.Queues = new[] { "default" };
+            options.Queues = ["default"];
         });
     }
 

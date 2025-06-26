@@ -1,3 +1,4 @@
+using Cachara.Shared.Application.Abstractions;
 using Cachara.Shared.Infrastructure;
 
 namespace Cachara.Users.API.API.Authentication;

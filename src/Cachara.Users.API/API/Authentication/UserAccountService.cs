@@ -1,5 +1,8 @@
 using System.Security.Claims;
+using Cachara.Shared.Domain.Entities;
+using Cachara.Shared.Infrastructure;
 using Cachara.Users.API.Infrastructure;
+using Cachara.Users.API.Infrastructure.Security;
 using Cachara.Users.API.Services.Abstractions;
 
 namespace Cachara.Users.API.API.Authentication;

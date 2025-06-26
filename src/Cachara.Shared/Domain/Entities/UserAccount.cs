@@ -1,6 +1,7 @@
-using Cachara.Shared.Infrastructure;
+using Cachara.Shared.Application.Abstractions;
+using Cachara.Shared.Infrastructure.Security;
 
-namespace Cachara.Users.API.API.Authentication;
+namespace Cachara.Shared.Domain.Entities;
 
 public class UserAccount : IAccount
 {

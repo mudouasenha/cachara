@@ -1,9 +1,9 @@
 using System.Security.Claims;
-using Cachara.Users.API.API.Authentication;
-using Cachara.Users.API.Services.Models;
+using Cachara.Shared.Domain.Entities;
+using Cachara.Shared.Infrastructure;
 using Cachara.Users.API.Services.Models.Internal;
 
-namespace Cachara.Users.API.Infrastructure;
+namespace Cachara.Users.API.Infrastructure.Security;
 
 public interface IJwtProvider
 {

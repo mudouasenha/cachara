@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cachara.Users.API.Controllers.Management;
 
 [ApiController]
-[Route("management/[controller]")]
-[ApiExplorerSettings(GroupName = "user")]
+[Route("api/management/[controller]")]
+[ApiExplorerSettings(GroupName = "management")]
 [Tags("User")]
 public class UserManagementController() : ControllerBase
 {

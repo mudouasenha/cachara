@@ -3,7 +3,7 @@ using Cachara.Shared.Infrastructure.Security;
 using Cachara.Users.API.Infrastructure.Data.Repository;
 using Cachara.Users.API.Services.Models;
 
-namespace Cachara.Users.API.Services.Externals;
+namespace Cachara.Users.API.Services.Internals;
 
 public abstract class UserInternalService(
     IUserRepository userRepository,

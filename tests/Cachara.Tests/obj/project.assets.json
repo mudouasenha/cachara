@@ -3083,6 +3083,7 @@
           "FluentResults": "3.16.0",
           "FluentValidation": "12.0.0",
           "Hangfire.Core": "1.8.20",
+          "Hellang.Middleware.ProblemDetails": "6.5.1",
           "Microsoft.AspNetCore.Http": "2.3.0",
           "Microsoft.AspNetCore.Http.Extensions": "2.3.0",
           "Microsoft.AspNetCore.Mvc.Core": "2.3.0",

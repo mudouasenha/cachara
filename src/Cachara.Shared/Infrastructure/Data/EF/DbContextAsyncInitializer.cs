@@ -2,7 +2,7 @@ using Extensions.Hosting.AsyncInitialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Cachara.Shared.Application;
+namespace Cachara.Shared.Infrastructure.Data.EF;
 
 public class DbContextInitializer<TDbContext>(TDbContext dbContext, ILogger<DbContextInitializer<TDbContext>> logger)
     : IAsyncInitializer

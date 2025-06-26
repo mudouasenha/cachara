@@ -1,10 +1,9 @@
 ﻿using Cachara.Content.API.Infrastructure.Data.Repository;
 using Cachara.Content.API.Services.Models;
-using Cachara.Shared.Infrastructure.Data.Interfaces;
 using Cachara.Shared.Domain;
 using Post = Cachara.Content.API.Domain.Entities.Post;
 
-namespace Cachara.Content.API.Services.External;
+namespace Cachara.Content.API.Services.Internal;
 
 public partial class PostInternalService
 {

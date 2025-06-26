@@ -1,6 +1,7 @@
 using Cachara.Users.API.Domain.Entities;
 using Cachara.Users.API.Infrastructure;
 using Cachara.Users.API.Infrastructure.Data.Repository;
+using Cachara.Users.API.Infrastructure.Security;
 using Cachara.Users.API.Services.Abstractions;
 using Cachara.Users.API.Services.Models;
 using FluentResults;

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Caching.Memory;
 namespace Cachara.Users.API.Controllers.Internal;
 
 [ApiController]
-[Route("internal/[controller]")]
+[Route("api/internal/[controller]")]
 [ApiExplorerSettings(GroupName = "internal")]
 [Tags("Dev")]
 public class DevTestController : ControllerBase

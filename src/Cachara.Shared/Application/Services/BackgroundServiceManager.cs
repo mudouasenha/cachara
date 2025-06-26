@@ -2,7 +2,7 @@
 using Cachara.Shared.Infrastructure.Hangfire;
 using Hangfire;
 
-namespace Cachara.Shared.Application;
+namespace Cachara.Shared.Application.Services;
 
 public class BackgroundServiceManager(IBackgroundJobClient backgroundJobClient) : IBackgroundServiceManager
 {

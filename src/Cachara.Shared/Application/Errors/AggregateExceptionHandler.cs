@@ -1,11 +1,8 @@
 ﻿using System.Reflection;
-using Cachara.Shared.Application.Errors;
 using FluentResults;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
-namespace Cachara.Shared.Application;
+namespace Cachara.Shared.Application.Errors;
 
 public class AggregateExceptionHandler : IAggregateExceptionHandler
 {

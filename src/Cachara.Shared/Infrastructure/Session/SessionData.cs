@@ -1,7 +1,7 @@
 ﻿
-using Cachara.Users.API.API.Authentication;
+using Cachara.Shared.Infrastructure.Security;
 
-namespace Cachara.Shared.Infrastructure;
+namespace Cachara.Shared.Infrastructure.Session;
 
 public class SessionData
 {
