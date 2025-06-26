@@ -13,9 +13,6 @@ namespace Cachara.Content.API.API.Controllers.Internal;
 [Tags("Posts")]
 public class PostsInternalController(InternalPostService postService, ILogger<PostController> logger)
 {
-    private readonly ILogger<PostController> _logger = logger;
-
-
     [HttpGet()]
     public async Task<List<Post>> GetPosts()
     {
